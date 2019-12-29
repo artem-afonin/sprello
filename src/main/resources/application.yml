@@ -1,0 +1,10 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://91.196.245.199:5432/sprellotest
+    username: $(psql_login)
+    password: $(psql_password)
+  jpa:
+    generate-ddl: true
