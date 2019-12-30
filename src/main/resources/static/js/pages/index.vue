@@ -11,7 +11,10 @@
 
             <div class="row" id="main">
                 <div class="col" id="content">
-                    <h1>A place for main content</h1>
+                    <span v-for="msg in messages">
+                        <b>id:{{ msg.id }}</b> -> <i>{{ msg.text }}</i>
+                        <br/>
+                    </span>
                 </div>
 
                 <aside class="col-3" id="sidebar">
@@ -36,11 +39,35 @@
 <script>
   export default {
     name: "index",
+
+    data: function () {
+      return {
+        messages: []
+      }
+    },
+
     mounted: function () {
-      const blocks = document.querySelectorAll('.row');
-      blocks.forEach((el) => {
-        el.classList.add('no-gutters');
-      })
+      this.addClasses('no-gutters', '.row');
+      this.getAllMessages(this.messages);
+    },
+
+    methods: {
+      addClasses: function (newClass, searchClass) {
+        document.querySelectorAll(searchClass).forEach((el) => {
+          el.classList.add(newClass);
+        })
+      },
+
+      getAllMessages: function (msgArray) {
+        this.$http.get('/messages/').then(
+            response => {
+              if (response.ok)
+                response.body.forEach(msg => msgArray.push(msg));
+              else
+                console.log(response.status);
+            },
+            error => console.log(error));
+      }
     }
   }
 </script>
