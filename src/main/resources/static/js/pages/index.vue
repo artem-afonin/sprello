@@ -1,6 +1,8 @@
 <template>
-    <div id="wrapper">
-        <div id="container">
+    <div class="wrapper">
+        <!--CONTAINER START-->
+        <div class="container">
+            <!--HEADER START-->
             <header id="header">
                 <div class="row">
                     <div class="col">
@@ -8,31 +10,55 @@
                     </div>
                 </div>
             </header>
+            <!--HEADER END-->
 
-            <div class="row" id="main">
-                <div class="col" id="content">
-                    <span v-for="msg in messages">
-                        <b>id:{{ msg.id }}</b> -> <i>{{ msg.text }}</i>
-                        <br/>
-                    </span>
+            <!--CENTRAL BLOCK START-->
+            <div class="center row">
+                <!--CONTENT START-->
+                <div class="col-9">
+                    <div v-if="!messagesEmpty" class="row">
+                        <div v-for="msg in messages" class="col-3">
+                            <div class="panel" style="border: red solid 2px">
+                                <b>{{ msg.id }}</b>) {{ msg.text }}
+                                <hr/>
+                                Amors sunt fortiss de regius clabulare.
+                                Sunt gemnaes experientia regius, domesticus guttuses.
+                                A falsis, fortis salvus tabes.
+                                Est barbatus victrix, cesaris.
+                                Resistentia velums, tanquam festus guttus.
+                            </div>
+                        </div>
+                    </div>
+                    <div v-else class="row">
+                        <div class="col">
+                            <h2>Не удалось связаться с сервером!</h2>
+                        </div>
+                    </div>
                 </div>
+                <!--CONTENT END-->
 
-                <aside class="col-3" id="sidebar">
-                    <ul>
-                        <li>1 menu</li>
-                        <li>2 menu</li>
-                        <li>3 menu</li>
-                        <li>4 menu</li>
+                <!--SIDEBAR START-->
+                <aside class="col-3">
+                    <ul class="list-group">
+                        <li class="list-group-item">1 menu</li>
+                        <li class="list-group-item">2 menu</li>
+                        <li class="list-group-item">3 menu</li>
+                        <li class="list-group-item">4 menu</li>
                     </ul>
                 </aside>
+                <!--SIDEBAR END-->
             </div>
+            <!--CENTRAL BLOCK END-->
 
+            <!--FOOTER START-->
             <footer id="footer" class="row">
                 <div>
                     <h3>Footer</h3>
                 </div>
             </footer>
+            <!--FOOTER END-->
         </div>
+        <!--CONTAINER END-->
     </div>
 </template>
 
@@ -46,9 +72,16 @@
       }
     },
 
+    created: function () {
+      this.getAllMessages(this.messages);
+    },
+
     mounted: function () {
       this.addClasses('no-gutters', '.row');
-      this.getAllMessages(this.messages);
+    },
+
+    updated: function () {
+      this.addClasses('no-gutters', '.row');
     },
 
     methods: {
@@ -68,28 +101,41 @@
             },
             error => console.log(error));
       }
+    },
+
+    computed: {
+      messagesEmpty: function () {
+        return this.messages.length === 0;
+      }
     }
   }
 </script>
 
 <style>
-    #container {
-        border: 1px solid blue;
+    .wrapper {
+        background-color: #eeeeee;
     }
 
-    #header {
+    .container {
+        border: 1px solid blue;
+        padding: 0;
+    }
+
+    header {
+        border: inherit;
         background-color: yellow;
     }
 
-    #content {
-        background-color: lightgreen;
+    .center {
+        border: inherit;
     }
 
-    #sidebar {
-        background-color: bisque;
+    aside {
+        border-left: inherit;
     }
 
-    #footer {
+    footer {
+        border: inherit;
         background-color: lightcoral;
     }
 </style>
