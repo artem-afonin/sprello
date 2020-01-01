@@ -1,44 +1,78 @@
 <template>
-    <div class="wrapper">
+    <div class="wrapper bg-light text-black-50">
         <!--CONTAINER START-->
-        <div class="container">
+        <div class="container border p-0 bg-light">
             <!--HEADER START-->
-            <header id="header">
-                <div class="row">
+            <header class="border-bottom bg-primary">
+                <div class="row no-gutters">
                     <div class="col">
-                        <h1>Sprello</h1>
+                        <h1 class="text-center text-black-50">Sprello</h1>
                     </div>
                 </div>
             </header>
             <!--HEADER END-->
 
+            <!--NAVIGATION START-->
+            <nav class="navbar navbar-light">
+                <ul class="nav nav-pills nav-fill mr-auto">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link font-weight-bold">Главная</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link font-weight-bold">Доски</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link font-weight-bold">Группы</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link font-weight-bold">Пользователи</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link font-weight-bold">О Sprello</a>
+                    </li>
+                </ul>
+            </nav>
+            <!--NAVIGATION END-->
+
             <!--CENTRAL BLOCK START-->
-            <div class="center row">
+            <div class="row no-gutters">
                 <!--CONTENT START-->
                 <div class="col-9">
-                    <div v-if="!messagesEmpty" class="row">
-                        <div v-for="msg in messages" class="col-3">
-                            <div class="panel" style="border: red solid 2px">
-                                <b>{{ msg.id }}</b>) {{ msg.text }}
-                                <hr/>
-                                Amors sunt fortiss de regius clabulare.
-                                Sunt gemnaes experientia regius, domesticus guttuses.
-                                A falsis, fortis salvus tabes.
-                                Est barbatus victrix, cesaris.
-                                Resistentia velums, tanquam festus guttus.
+                    <div class="row no-gutters">
+                        <template v-if="!messagesEmpty">
+                            <div v-for="msg in messages" class="col-lg-3 col-sm-6">
+                                <div class="panel border border-primary">
+                                    <b>{{ msg.id }}</b>) {{ msg.text }}
+                                    <hr/>
+                                    Amors sunt fortiss de regius clabulare.
+                                    Sunt gemnaes experientia regius, domesticus guttuses.
+                                    A falsis, fortis salvus tabes.
+                                    Est barbatus victrix, cesaris.
+                                    Resistentia velums, tanquam festus guttus.
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div v-else class="row">
-                        <div class="col">
-                            <h2>Не удалось связаться с сервером!</h2>
-                        </div>
+                        </template>
+                        <template v-else-if="messagesEmpty && serverResponded">
+                            <div class="col">
+                                <h2>Нет сообщений</h2>
+                            </div>
+                        </template>
+                        <template v-else-if="messagesEmpty">
+                            <div class="col">
+                                <h2>Связываемся с сервером...</h2>
+                            </div>
+                        </template>
+                        <template v-if="messagesNull">
+                            <div class="col">
+                                <h2>Не удалось получить данные с сервера!</h2>
+                            </div>
+                        </template>
                     </div>
                 </div>
                 <!--CONTENT END-->
 
                 <!--SIDEBAR START-->
-                <aside class="col-3">
+                <aside class="col-3 border-left">
                     <ul class="list-group">
                         <li class="list-group-item">1 menu</li>
                         <li class="list-group-item">2 menu</li>
@@ -51,8 +85,8 @@
             <!--CENTRAL BLOCK END-->
 
             <!--FOOTER START-->
-            <footer id="footer" class="row">
-                <div>
+            <footer class="row no-gutters border-top">
+                <div class="col">
                     <h3>Footer</h3>
                 </div>
             </footer>
@@ -63,79 +97,67 @@
 </template>
 
 <script>
+  import $ from 'jquery';
+
   export default {
     name: "index",
 
     data: function () {
       return {
+        serverResponded: false,
         messages: []
       }
     },
 
     created: function () {
-      this.getAllMessages(this.messages);
+      try {
+        this.getAllMessages(this.messages);
+        this.serverResponded = true;
+      } catch (error) {
+        this.messages = null;
+        console.error(error);
+      }
     },
 
     mounted: function () {
-      this.addClasses('no-gutters', '.row');
-    },
-
-    updated: function () {
-      this.addClasses('no-gutters', '.row');
+      const classes = 'active';
+      $('nav>ul>li>a').hover(function () {
+        $(this).addClass(classes);
+      }, function () {
+        $(this).removeClass(classes);
+      });
     },
 
     methods: {
-      addClasses: function (newClass, searchClass) {
-        document.querySelectorAll(searchClass).forEach((el) => {
-          el.classList.add(newClass);
-        })
-      },
-
       getAllMessages: function (msgArray) {
         this.$http.get('/messages/').then(
             response => {
               if (response.ok)
                 response.body.forEach(msg => msgArray.push(msg));
               else
-                console.log(response.status);
+                console.log("Server response: " + response.status);
             },
-            error => console.log(error));
+            error => {
+              console.log(error);
+              throw new Error("Server ERROR response: " + error.status);
+            }
+        );
       }
     },
 
     computed: {
       messagesEmpty: function () {
         return this.messages.length === 0;
+      },
+      messagesNull: function () {
+        return this.messages === null;
       }
     }
   }
 </script>
 
 <style>
-    .wrapper {
-        background-color: #eeeeee;
-    }
-
-    .container {
-        border: 1px solid blue;
-        padding: 0;
-    }
-
-    header {
-        border: inherit;
-        background-color: yellow;
-    }
-
-    .center {
-        border: inherit;
-    }
-
-    aside {
-        border-left: inherit;
-    }
-
-    footer {
-        border: inherit;
-        background-color: lightcoral;
+    nav {
+        background-color: #e3f2fd;
     }
 </style>
