@@ -73,7 +73,6 @@
 </template>
 
 <script>
-  import $ from 'jquery';
   import siteHeader from "../components/siteHeader.vue";
   import siteNavigation from "../components/siteNavigation.vue";
 
