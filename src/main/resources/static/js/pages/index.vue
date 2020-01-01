@@ -3,35 +3,11 @@
         <!--CONTAINER START-->
         <div class="container border p-0 bg-light">
             <!--HEADER START-->
-            <header class="border-bottom bg-primary">
-                <div class="row no-gutters">
-                    <div class="col">
-                        <h1 class="text-center text-black-50">Sprello</h1>
-                    </div>
-                </div>
-            </header>
+            <site-header v-bind:class="'border-bottom bg-primary'">Sprelloooo</site-header>
             <!--HEADER END-->
 
             <!--NAVIGATION START-->
-            <nav class="navbar navbar-light">
-                <ul class="nav nav-pills nav-fill mr-auto">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link font-weight-bold">Главная</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link font-weight-bold">Доски</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link font-weight-bold">Группы</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link font-weight-bold">Пользователи</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link font-weight-bold">О Sprello</a>
-                    </li>
-                </ul>
-            </nav>
+            <site-navigation v-bind:buttons="navigationButtons"/>
             <!--NAVIGATION END-->
 
             <!--CENTRAL BLOCK START-->
@@ -98,14 +74,28 @@
 
 <script>
   import $ from 'jquery';
+  import siteHeader from "../components/siteHeader.vue";
+  import siteNavigation from "../components/siteNavigation.vue";
 
   export default {
     name: "index",
 
+    components: {
+      siteHeader,
+      siteNavigation
+    },
+
     data: function () {
       return {
+        messages: [],
         serverResponded: false,
-        messages: []
+        navigationButtons: [
+          {name: 'Главная', href: '#'},
+          {name: 'Доски', href: '#'},
+          {name: 'Группы', href: '#'},
+          {name: 'Пользователи', href: '#'},
+          {name: 'О Sprello', href: '#'}
+        ]
       }
     },
 
@@ -117,15 +107,6 @@
         this.messages = null;
         console.error(error);
       }
-    },
-
-    mounted: function () {
-      const classes = 'active';
-      $('nav>ul>li>a').hover(function () {
-        $(this).addClass(classes);
-      }, function () {
-        $(this).removeClass(classes);
-      });
     },
 
     methods: {
@@ -156,8 +137,6 @@
   }
 </script>
 
-<style>
-    nav {
-        background-color: #e3f2fd;
-    }
+<style scoped>
+
 </style>
