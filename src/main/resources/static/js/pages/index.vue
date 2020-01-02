@@ -23,14 +23,7 @@
                 <!--CONTENT END-->
 
                 <!--SIDEBAR START-->
-                <aside class="col-3 border-left">
-                    <ul class="list-group">
-                        <li class="list-group-item">1 menu</li>
-                        <li class="list-group-item">2 menu</li>
-                        <li class="list-group-item">3 menu</li>
-                        <li class="list-group-item">4 menu</li>
-                    </ul>
-                </aside>
+                <site-sidebar v-bind:elements="sidebarElements"/>
                 <!--SIDEBAR END-->
             </div>
             <!--CENTRAL BLOCK END-->
@@ -51,6 +44,7 @@
   import siteHeader from "components/siteHeader.vue";
   import siteNavigation from "components/siteNavigation.vue";
   import siteContent from "components/siteContent.vue";
+  import siteSidebar from "components/siteSidebar.vue";
 
   export default {
     name: "index",
@@ -58,7 +52,8 @@
     components: {
       siteHeader,
       siteNavigation,
-      siteContent
+      siteContent,
+      siteSidebar
     },
 
     data: function () {
@@ -69,6 +64,13 @@
           {name: 'Группы', href: '#'},
           {name: 'Пользователи', href: '#'},
           {name: 'О Sprello', href: '#'}
+        ],
+        sidebarElements: [
+            "Menu 1",
+            "Menu 2",
+            "Menu 3",
+            "Menu 4",
+            "Menu 5"
         ]
       }
     }
