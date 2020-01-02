@@ -13,54 +13,25 @@
             <!--CENTRAL BLOCK START-->
             <div class="row no-gutters">
                 <!--CONTENT START-->
-                <div class="col-9">
-                    <div class="row no-gutters">
-                        <template v-if="serverResponded && !messagesEmpty">
-                            <div v-for="msg in messages" class="col-lg-3 col-sm-6">
-                                <div class="panel border border-primary">
-                                    <b>{{ msg.id }}</b>) {{ msg.text }}
-                                    <hr/>
-                                    Amors sunt fortiss de regius clabulare.
-                                    Sunt gemnaes experientia regius, domesticus guttuses.
-                                    A falsis, fortis salvus tabes.
-                                    Est barbatus victrix, cesaris.
-                                    Resistentia velums, tanquam festus guttus.
-                                </div>
-                            </div>
-                        </template>
-                        <template v-else-if="serverResponded && messagesEmpty">
-                            <div class="col">
-                                <h2>Нет сообщений</h2>
-                            </div>
-                        </template>
-                        <template v-else-if="!serverResponded && messagesEmpty">
-                            <div class="col">
-                                <h2>Связываемся с сервером...</h2>
-                            </div>
-                        </template>
-                    </div>
-                </div>
+                <site-content :class="'col-6'">
+                    Amors sunt fortiss de regius clabulare.
+                    Sunt gemnaes experientia regius, domesticus guttuses.
+                    A falsis, fortis salvus tabes.
+                    Est barbatus victrix, cesaris.
+                    Resistentia velums, tanquam festus guttus.
+                </site-content>
                 <!--CONTENT END-->
 
+                <message-form :class="'col-3'"/>
+
                 <!--SIDEBAR START-->
-                <aside class="col-3 border-left">
-                    <ul class="list-group">
-                        <li class="list-group-item">1 menu</li>
-                        <li class="list-group-item">2 menu</li>
-                        <li class="list-group-item">3 menu</li>
-                        <li class="list-group-item">4 menu</li>
-                    </ul>
-                </aside>
+                <site-sidebar :class="'col-3 border-left'" :elements="sidebarElements"/>
                 <!--SIDEBAR END-->
             </div>
             <!--CENTRAL BLOCK END-->
 
             <!--FOOTER START-->
-            <footer class="row no-gutters bg-primary border-top">
-                <div class="col">
-                    <h3>Footer</h3>
-                </div>
-            </footer>
+            <site-footer>&copy; Artem and Vasiliy</site-footer>
             <!--FOOTER END-->
         </div>
         <!--CONTAINER END-->
@@ -68,55 +39,41 @@
 </template>
 
 <script>
-  import siteHeader from "../components/siteHeader.vue";
-  import siteNavigation from "../components/siteNavigation.vue";
+  import siteHeader from "components/siteHeader.vue";
+  import siteNavigation from "components/siteNavigation.vue";
+  import siteContent from "components/siteContent.vue";
+  import siteSidebar from "components/siteSidebar.vue";
+  import siteFooter from "components/siteFooter.vue";
+  import messageForm from "components/messageForm.vue";
 
   export default {
     name: "index",
 
     components: {
       siteHeader,
-      siteNavigation
+      siteNavigation,
+      siteContent,
+      siteSidebar,
+      siteFooter,
+      messageForm
     },
 
     data: function () {
       return {
-        messages: [],
-        serverResponded: false,
         navigationButtons: [
           {name: 'Главная', href: '#'},
           {name: 'Доски', href: '#'},
           {name: 'Группы', href: '#'},
           {name: 'Пользователи', href: '#'},
           {name: 'О Sprello', href: '#'}
+        ],
+        sidebarElements: [
+            "Menu 1",
+            "Menu 2",
+            "Menu 3",
+            "Menu 4",
+            "Menu 5"
         ]
-      }
-    },
-
-    created: function () {
-        this.getAllMessages(this.messages);
-    },
-
-    methods: {
-      getAllMessages: function (msgArray) {
-        this.$http.get('/api/messages/').then(
-            response => {
-                if (response.ok) {
-                    response.body.forEach(msg => msgArray.push(msg));
-                    this.serverResponded = true;
-                }
-                else
-                    throw new Error("Server response: " + error.status);
-            }
-        ).catch((error) => {
-            console.error(error.body);
-        });
-      }
-    },
-
-    computed: {
-      messagesEmpty: function () {
-        return this.messages.length === 0;
       }
     }
   }
