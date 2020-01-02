@@ -1,8 +1,8 @@
 <template>
-    <div class="col-9">
+    <div>
         <div class="row no-gutters">
             <template v-if="serverResponded && !messagesEmpty">
-                <div v-for="msg in messages" class="col-lg-3 col-sm-6">
+                <div v-for="msg in messages" class="col-md-6 col-sm-12">
                     <div class="panel border border-primary">
                         <b>{{ msg.id }}</b>) {{ msg.text }}
                         <hr/>

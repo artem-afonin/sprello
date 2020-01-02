@@ -13,7 +13,7 @@
             <!--CENTRAL BLOCK START-->
             <div class="row no-gutters">
                 <!--CONTENT START-->
-                <site-content>
+                <site-content :class="'col-6'">
                     Amors sunt fortiss de regius clabulare.
                     Sunt gemnaes experientia regius, domesticus guttuses.
                     A falsis, fortis salvus tabes.
@@ -22,8 +22,10 @@
                 </site-content>
                 <!--CONTENT END-->
 
+                <message-form :class="'col-3'"/>
+
                 <!--SIDEBAR START-->
-                <site-sidebar v-bind:elements="sidebarElements"/>
+                <site-sidebar :class="'col-3 border-left'" :elements="sidebarElements"/>
                 <!--SIDEBAR END-->
             </div>
             <!--CENTRAL BLOCK END-->
@@ -42,6 +44,7 @@
   import siteContent from "components/siteContent.vue";
   import siteSidebar from "components/siteSidebar.vue";
   import siteFooter from "components/siteFooter.vue";
+  import messageForm from "components/messageForm.vue";
 
   export default {
     name: "index",
@@ -51,7 +54,8 @@
       siteNavigation,
       siteContent,
       siteSidebar,
-      siteFooter
+      siteFooter,
+      messageForm
     },
 
     data: function () {
