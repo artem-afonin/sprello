@@ -15,7 +15,7 @@
                 <!--CONTENT START-->
                 <div class="col-9">
                     <div class="row no-gutters">
-                        <template v-if="!messagesEmpty">
+                        <template v-if="serverResponded && !messagesEmpty">
                             <div v-for="msg in messages" class="col-lg-3 col-sm-6">
                                 <div class="panel border border-primary">
                                     <b>{{ msg.id }}</b>) {{ msg.text }}
@@ -28,19 +28,14 @@
                                 </div>
                             </div>
                         </template>
-                        <template v-else-if="messagesEmpty && serverResponded">
+                        <template v-else-if="serverResponded && messagesEmpty">
                             <div class="col">
                                 <h2>Нет сообщений</h2>
                             </div>
                         </template>
-                        <template v-else-if="messagesEmpty">
+                        <template v-else-if="!serverResponded && messagesEmpty">
                             <div class="col">
                                 <h2>Связываемся с сервером...</h2>
-                            </div>
-                        </template>
-                        <template v-if="messagesNull">
-                            <div class="col">
-                                <h2>Не удалось получить данные с сервера!</h2>
                             </div>
                         </template>
                     </div>
@@ -99,38 +94,29 @@
     },
 
     created: function () {
-      try {
         this.getAllMessages(this.messages);
-        this.serverResponded = true;
-      } catch (error) {
-        this.messages = null;
-        console.error(error);
-      }
     },
 
     methods: {
       getAllMessages: function (msgArray) {
-        this.$http.get('/messages/').then(
+        this.$http.get('/api/messages/').then(
             response => {
-              if (response.ok)
-                response.body.forEach(msg => msgArray.push(msg));
-              else
-                console.log("Server response: " + response.status);
-            },
-            error => {
-              console.log(error);
-              throw new Error("Server ERROR response: " + error.status);
+                if (response.ok) {
+                    response.body.forEach(msg => msgArray.push(msg));
+                    this.serverResponded = true;
+                }
+                else
+                    throw new Error("Server response: " + error.status);
             }
-        );
+        ).catch((error) => {
+            console.error(error.body);
+        });
       }
     },
 
     computed: {
       messagesEmpty: function () {
         return this.messages.length === 0;
-      },
-      messagesNull: function () {
-        return this.messages === null;
       }
     }
   }
