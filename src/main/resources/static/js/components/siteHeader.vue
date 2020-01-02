@@ -2,7 +2,7 @@
     <header>
         <div class="row no-gutters">
             <div class="col">
-                <h1 class="text-center text-black-50">
+                <h1 class="display-3 text-center text-black-50">
                     <slot/>
                 </h1>
             </div>

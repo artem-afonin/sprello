@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar navbar-light">
-        <ul class="nav nav-pills nav-fill mr-auto">
-            <li v-for="el in buttons" class="nav-item">
+        <ul class="nav nav-pills nav-fill mx-auto">
+            <li v-for="el in buttons" class="nav-item px-4">
                 <a v-bind:href="el.href" class="nav-link font-weight-bold">{{ el.name }}</a>
             </li>
         </ul>
@@ -29,5 +29,6 @@
 <style scoped>
     nav {
         background-color: #e3f2fd;
+        font-size: 14pt;
     }
 </style>

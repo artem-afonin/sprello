@@ -3,7 +3,7 @@
         <!--CONTAINER START-->
         <div class="container border p-0 bg-light">
             <!--HEADER START-->
-            <site-header v-bind:class="'border-bottom bg-primary'">Sprelloooo</site-header>
+            <site-header v-bind:class="'border-bottom bg-primary'">Sprello</site-header>
             <!--HEADER END-->
 
             <!--NAVIGATION START-->
@@ -61,7 +61,7 @@
             <!--CENTRAL BLOCK END-->
 
             <!--FOOTER START-->
-            <footer class="row no-gutters border-top">
+            <footer class="row no-gutters bg-primary border-top">
                 <div class="col">
                     <h3>Footer</h3>
                 </div>
@@ -137,5 +137,4 @@
 </script>
 
 <style scoped>
-
 </style>
