@@ -29,11 +29,7 @@
             <!--CENTRAL BLOCK END-->
 
             <!--FOOTER START-->
-            <footer class="row no-gutters bg-primary border-top">
-                <div class="col">
-                    <h3>Footer</h3>
-                </div>
-            </footer>
+            <site-footer>&copy; Artem and Vasiliy</site-footer>
             <!--FOOTER END-->
         </div>
         <!--CONTAINER END-->
@@ -45,6 +41,7 @@
   import siteNavigation from "components/siteNavigation.vue";
   import siteContent from "components/siteContent.vue";
   import siteSidebar from "components/siteSidebar.vue";
+  import siteFooter from "components/siteFooter.vue";
 
   export default {
     name: "index",
@@ -53,7 +50,8 @@
       siteHeader,
       siteNavigation,
       siteContent,
-      siteSidebar
+      siteSidebar,
+      siteFooter
     },
 
     data: function () {
