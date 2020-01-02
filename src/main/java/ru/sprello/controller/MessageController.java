@@ -7,7 +7,7 @@ import ru.sprello.model.Message;
 import ru.sprello.repo.MessageRepository;
 
 @RestController
-@RequestMapping("messages")
+@RequestMapping("api/messages")
 public class MessageController {
     private final MessageRepository messageRepository;
 
