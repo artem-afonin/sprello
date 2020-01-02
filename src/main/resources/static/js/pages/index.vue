@@ -13,33 +13,13 @@
             <!--CENTRAL BLOCK START-->
             <div class="row no-gutters">
                 <!--CONTENT START-->
-                <div class="col-9">
-                    <div class="row no-gutters">
-                        <template v-if="serverResponded && !messagesEmpty">
-                            <div v-for="msg in messages" class="col-lg-3 col-sm-6">
-                                <div class="panel border border-primary">
-                                    <b>{{ msg.id }}</b>) {{ msg.text }}
-                                    <hr/>
-                                    Amors sunt fortiss de regius clabulare.
-                                    Sunt gemnaes experientia regius, domesticus guttuses.
-                                    A falsis, fortis salvus tabes.
-                                    Est barbatus victrix, cesaris.
-                                    Resistentia velums, tanquam festus guttus.
-                                </div>
-                            </div>
-                        </template>
-                        <template v-else-if="serverResponded && messagesEmpty">
-                            <div class="col">
-                                <h2>Нет сообщений</h2>
-                            </div>
-                        </template>
-                        <template v-else-if="!serverResponded && messagesEmpty">
-                            <div class="col">
-                                <h2>Связываемся с сервером...</h2>
-                            </div>
-                        </template>
-                    </div>
-                </div>
+                <site-content>
+                    Amors sunt fortiss de regius clabulare.
+                    Sunt gemnaes experientia regius, domesticus guttuses.
+                    A falsis, fortis salvus tabes.
+                    Est barbatus victrix, cesaris.
+                    Resistentia velums, tanquam festus guttus.
+                </site-content>
                 <!--CONTENT END-->
 
                 <!--SIDEBAR START-->
@@ -68,21 +48,21 @@
 </template>
 
 <script>
-  import siteHeader from "../components/siteHeader.vue";
-  import siteNavigation from "../components/siteNavigation.vue";
+  import siteHeader from "components/siteHeader.vue";
+  import siteNavigation from "components/siteNavigation.vue";
+  import siteContent from "components/siteContent.vue";
 
   export default {
     name: "index",
 
     components: {
       siteHeader,
-      siteNavigation
+      siteNavigation,
+      siteContent
     },
 
     data: function () {
       return {
-        messages: [],
-        serverResponded: false,
         navigationButtons: [
           {name: 'Главная', href: '#'},
           {name: 'Доски', href: '#'},
@@ -90,33 +70,6 @@
           {name: 'Пользователи', href: '#'},
           {name: 'О Sprello', href: '#'}
         ]
-      }
-    },
-
-    created: function () {
-        this.getAllMessages(this.messages);
-    },
-
-    methods: {
-      getAllMessages: function (msgArray) {
-        this.$http.get('/api/messages/').then(
-            response => {
-                if (response.ok) {
-                    response.body.forEach(msg => msgArray.push(msg));
-                    this.serverResponded = true;
-                }
-                else
-                    throw new Error("Server response: " + error.status);
-            }
-        ).catch((error) => {
-            console.error(error.body);
-        });
-      }
-    },
-
-    computed: {
-      messagesEmpty: function () {
-        return this.messages.length === 0;
       }
     }
   }
