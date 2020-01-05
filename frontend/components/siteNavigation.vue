@@ -9,7 +9,7 @@
 </template>
 
 <script>
-  import $ from 'jquery';
+  import $ from 'jquery'
 
   export default {
     name: "siteNavigation",
@@ -18,10 +18,10 @@
     mounted: function () {
       const classes = 'active';
       $('a').hover(function () {
-        $(this).addClass(classes);
+        $(this).addClass(classes)
       }, function () {
-        $(this).removeClass(classes);
-      });
+        $(this).removeClass(classes)
+      })
     }
   }
 </script>
