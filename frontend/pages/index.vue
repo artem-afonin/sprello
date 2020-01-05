@@ -41,12 +41,12 @@
 <script>
   import "bootswatch/dist/minty/bootstrap.min.css"
 
-  import siteHeader from "components/siteHeader.vue";
-  import siteNavigation from "components/siteNavigation.vue";
-  import siteContent from "components/siteContent.vue";
-  import siteSidebar from "components/siteSidebar.vue";
-  import siteFooter from "components/siteFooter.vue";
-  import messageForm from "components/messageForm.vue";
+  import siteHeader from "frontend/components/siteHeader.vue";
+  import siteNavigation from "frontend/components/siteNavigation.vue";
+  import siteContent from "frontend/components/siteContent.vue";
+  import siteSidebar from "frontend/components/siteSidebar.vue";
+  import siteFooter from "frontend/components/siteFooter.vue";
+  import messageForm from "frontend/components/messageForm.vue";
 
   export default {
     name: "index",
