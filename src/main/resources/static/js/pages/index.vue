@@ -39,6 +39,8 @@
 </template>
 
 <script>
+  import "bootswatch/dist/minty/bootstrap.min.css"
+
   import siteHeader from "components/siteHeader.vue";
   import siteNavigation from "components/siteNavigation.vue";
   import siteContent from "components/siteContent.vue";
@@ -68,11 +70,11 @@
           {name: 'О Sprello', href: '#'}
         ],
         sidebarElements: [
-            "Menu 1",
-            "Menu 2",
-            "Menu 3",
-            "Menu 4",
-            "Menu 5"
+          "Menu 1",
+          "Menu 2",
+          "Menu 3",
+          "Menu 4",
+          "Menu 5"
         ]
       }
     }
