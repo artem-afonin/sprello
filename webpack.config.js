@@ -7,6 +7,7 @@ module.exports = {
   devtool: 'eval',
   entry: {
     index: path.join(__dirname, 'frontend', 'index.js'),
+    board: path.join(__dirname, 'frontend', 'board.js'),
     about: path.join(__dirname, 'frontend', 'about.js')
   },
   devServer: {
