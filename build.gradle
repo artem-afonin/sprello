@@ -20,6 +20,7 @@ repositories {
 }
 
 dependencies{
+    compile('org.projectlombok:lombok')
     compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.0.0.RELEASE')
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.2.2.RELEASE'
