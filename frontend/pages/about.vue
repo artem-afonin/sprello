@@ -64,7 +64,6 @@
 
   import siteHeader from "components/siteHeader.vue"
   import siteNavigation from "components/siteNavigation.vue"
-  import siteSidebar from "components/siteSidebar.vue"
   import siteFooter from "components/siteFooter.vue"
 
   export default {
@@ -73,7 +72,6 @@
     components: {
       siteHeader,
       siteNavigation,
-      siteSidebar,
       siteFooter
     },
 

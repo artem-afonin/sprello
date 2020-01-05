@@ -1,4 +1,5 @@
 module.exports = {
+  devMode: true,
   navButtons: [
     {name: 'Главная', href: '/'},
     {name: 'Доски', href: '/board'},
