@@ -45,6 +45,7 @@ module.exports = {
   resolve: {
     modules: [
       path.join(__dirname),
+      path.join(__dirname, 'frontend'),
       path.join(__dirname, 'node_modules'),
     ],
     extensions: ['.js', '.vue']

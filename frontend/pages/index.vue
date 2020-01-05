@@ -7,7 +7,7 @@
             <!--HEADER END-->
 
             <!--NAVIGATION START-->
-            <site-navigation v-bind:buttons="navigationButtons"/>
+            <site-navigation v-bind:buttons="navButtons"/>
             <!--NAVIGATION END-->
 
             <!--CENTRAL BLOCK START-->
@@ -40,13 +40,14 @@
 
 <script>
   import "bootswatch/dist/minty/bootstrap.min.css"
+  import {navButtons} from "globalDefines"
 
-  import siteHeader from "frontend/components/siteHeader.vue";
-  import siteNavigation from "frontend/components/siteNavigation.vue";
-  import siteContent from "frontend/components/siteContent.vue";
-  import siteSidebar from "frontend/components/siteSidebar.vue";
-  import siteFooter from "frontend/components/siteFooter.vue";
-  import messageForm from "frontend/components/messageForm.vue";
+  import siteHeader from "components/siteHeader.vue"
+  import siteNavigation from "components/siteNavigation.vue"
+  import siteContent from "components/siteContent.vue"
+  import siteSidebar from "components/siteSidebar.vue"
+  import siteFooter from "components/siteFooter.vue"
+  import messageForm from "components/messageForm.vue"
 
   export default {
     name: "index",
@@ -60,15 +61,9 @@
       messageForm
     },
 
-    data: function () {
+    data() {
       return {
-        navigationButtons: [
-          {name: 'Главная', href: '#'},
-          {name: 'Доски', href: '#'},
-          {name: 'Группы', href: '#'},
-          {name: 'Пользователи', href: '#'},
-          {name: 'О Sprello', href: '#'}
-        ],
+        navButtons,
         sidebarElements: [
           "Menu 1",
           "Menu 2",
