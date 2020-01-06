@@ -19,10 +19,13 @@ repositories {
     mavenCentral()
 }
 
+
 dependencies{
-    compile('org.projectlombok:lombok')
-    compile('org.springframework.boot:spring-boot-starter-security')
-    compile('org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.2.2.RELEASE')
+    compileOnly 'org.projectlombok:lombok:1.18.10'
+    annotationProcessor 'org.projectlombok:lombok:1.18.10'
+
+    compile group: 'org.springframework.boot:spring-boot-starter-security'
+    compile group: 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.2.2.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.2.2.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.2.2.RELEASE'
     compile group: 'org.postgresql', name: 'postgresql', version: '42.2.9'
