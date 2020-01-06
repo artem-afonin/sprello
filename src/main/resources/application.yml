@@ -12,8 +12,8 @@ spring:
 security:
   oauth2:
     client:
-      clientId: 1047025068395-jpvl32v8et5hnp7dgg4v06dj1g6ss1f5.apps.googleusercontent.com
-      clientSecret: 0vBdEE_5zMD0qLqNqpMng8i2
+      clientId: ${client_id}
+      clientSecret: ${client_code}
       accessTokenUri: https://www.googleapis.com/oauth2/v4/token
       userAuthorizationUri: https://accounts.google.com/o/oauth2/v2/auth
       clientAuthenticationScheme: form
