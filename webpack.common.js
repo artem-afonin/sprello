@@ -1,23 +1,13 @@
-const path = require('path');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const path = require('path')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = {
-  //TODO создать две отдельные prod и dev конфигурации
-  mode: 'development',
-  devtool: 'eval',
   entry: {
     index: path.join(__dirname, 'frontend', 'index.js'),
     board: path.join(__dirname, 'frontend', 'board.js'),
     about: path.join(__dirname, 'frontend', 'about.js')
   },
-  devServer: {
-    contentBase: path.join(__dirname, 'dist'),
-    compress: true,
-    port: 8000,
-    allowedHosts: [
-      'localhost:8080'
-    ]
-  },
+
   module: {
     rules: [
       {
@@ -40,9 +30,15 @@ module.exports = {
       }
     ]
   },
+
+  output: {
+    path: path.join(__dirname, 'build', 'frontend')
+  },
+
   plugins: [
     new VueLoaderPlugin()
   ],
+
   resolve: {
     modules: [
       path.join(__dirname),
@@ -51,4 +47,4 @@ module.exports = {
     ],
     extensions: ['.js', '.vue']
   }
-};
+}
