@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper bg-light text-black-50">
+    <div class="wrapper py-1 bg-light text-black-50">
         <!--CONTAINER START-->
         <div class="container border p-0 bg-light">
             <!--HEADER START-->

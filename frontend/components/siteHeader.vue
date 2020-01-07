@@ -1,10 +1,14 @@
 <template>
     <header>
-        <div class="row no-gutters">
+        <div class="row align-items-center no-gutters">
             <div class="col">
-                <h1 class="display-3 text-center text-black-50">
+                <h4 class="display-4 text-center text-black-50">
                     <slot/>
-                </h1>
+                </h4>
+            </div>
+
+            <div class="col-3 bg-light mx-1 p-1 rounded border-bottom">
+
             </div>
         </div>
     </header>
