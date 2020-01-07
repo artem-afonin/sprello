@@ -20,10 +20,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .mvcMatchers("/")
+                .mvcMatchers("/", "/about", "/api/**") //TODO добавить /js/**
                 .permitAll()
                 .anyRequest()
                 .authenticated()
+                .and().logout().logoutSuccessUrl("/").permitAll()
                 .and()
                 .csrf().disable();
     }
