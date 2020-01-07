@@ -11,22 +11,12 @@
             <!--NAVIGATION END-->
 
             <!--CENTRAL BLOCK START-->
-            <div class="row no-gutters">
-                <!--CONTENT START-->
-                <site-content :class="'col-6'">
-                    Amors sunt fortiss de regius clabulare.
-                    Sunt gemnaes experientia regius, domesticus guttuses.
-                    A falsis, fortis salvus tabes.
-                    Est barbatus victrix, cesaris.
-                    Resistentia velums, tanquam festus guttus.
-                </site-content>
-                <!--CONTENT END-->
-
-                <message-form :class="'col-3'"/>
-
-                <!--SIDEBAR START-->
-                <site-sidebar :class="'col-3 border-left'" :elements="sidebarElements"/>
-                <!--SIDEBAR END-->
+            <div class="row text-center my-4 justify-content-center no-gutters">
+                <h3 class="col-12">Главная страница, добавить материал</h3>
+                <div class="col-8 alert alert-warning text-black-50">
+                    Sunt capioes examinare barbatus, ferox castores. Secula, solitudo, et assimilatio. Hercle,
+                    nuptia raptus!, rumor! Tabes, particula, et demolitione. Pol, a bene heuretes.
+                </div>
             </div>
             <!--CENTRAL BLOCK END-->
 
@@ -44,7 +34,7 @@
 
   import siteHeader from "components/siteHeader.vue"
   import siteNavigation from "components/siteNavigation.vue"
-  import siteContent from "components/siteContent.vue"
+  import siteMessages from "components/siteMessages.vue"
   import siteSidebar from "components/siteSidebar.vue"
   import siteFooter from "components/siteFooter.vue"
   import messageForm from "components/messageForm.vue"
@@ -55,7 +45,7 @@
     components: {
       siteHeader,
       siteNavigation,
-      siteContent,
+      siteMessages,
       siteSidebar,
       siteFooter,
       messageForm
@@ -63,14 +53,7 @@
 
     data() {
       return {
-        navButtons,
-        sidebarElements: [
-          "Menu 1",
-          "Menu 2",
-          "Menu 3",
-          "Menu 4",
-          "Menu 5"
-        ]
+        navButtons
       }
     }
   }
