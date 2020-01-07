@@ -7,8 +7,17 @@
                 </h4>
             </div>
 
-            <div class="col-3 bg-light mx-1 p-1 rounded border-bottom">
-
+            <div v-if="user" class="col-3 bg-light mx-1 p-1 rounded border-bottom">
+                <div class="row">
+                    <div class="col">
+                        <img class="rounded-circle" width="20%" :src="pic">
+                        <strong class="ml-2">{{ name }}</strong>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                        <button class="btn btn-block py-0 my-0"><a href="/logout" style="font-size: 0.8rem">Выйти</a></button>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
@@ -16,7 +25,22 @@
 
 <script>
   export default {
-    name: "siteHeader"
+    name: "siteHeader",
+
+    data() {
+      return {
+        user: userInfo
+      }
+    },
+
+    computed: {
+      name() {
+        return this.user.name
+      },
+      pic() {
+        return this.user.userpic
+      }
+    }
   }
 </script>
 
