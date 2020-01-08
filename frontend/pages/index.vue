@@ -7,7 +7,7 @@
             <!--HEADER END-->
 
             <!--NAVIGATION START-->
-            <site-navigation v-bind:buttons="navButtons"/>
+            <site-navigation :buttons="navButtons"/>
             <!--NAVIGATION END-->
 
             <!--CENTRAL BLOCK START-->
