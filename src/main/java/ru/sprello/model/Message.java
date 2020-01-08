@@ -1,9 +1,12 @@
 package ru.sprello.model;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "message")
+@Data
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -11,19 +14,4 @@ public class Message {
     private Long id;
     @Column(name = "text", length = 256, nullable = false)
     private String text;
-
-    public Message() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
 }

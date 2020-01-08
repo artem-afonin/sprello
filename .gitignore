@@ -1,8 +1,14 @@
+# Библиотеки и данные систем сборки
 .gradle/
-build/
+node_modules/
 
+# Директории IDE
 .idea/
 
-node_modules/
+# Директории сборки
+build/
 dist/
 src/main/resources/static/js
+
+# Директория логирования
+logs/
