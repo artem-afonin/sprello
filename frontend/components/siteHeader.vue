@@ -7,15 +7,27 @@
                 </h4>
             </div>
 
-            <div v-if="user" class="col-3 bg-light mx-1 p-1 rounded border-bottom">
-                <div class="row">
-                    <div class="col">
-                        <img class="rounded-circle" width="20%" :src="pic">
-                        <strong class="ml-2">{{ name }}</strong>
+            <div class="col-3 bg-light mx-1 p-1 rounded">
+                <div v-if="user" class="card">
+                    <div class="row no-gutters align-items-center">
+                        <div class="d-none d-md-block col-md-3 pl-2">
+                            <img class="card-img rounded-circle" :src="pic">
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <div class="card-body p-2 text-center">
+                                <h6 class="card-text">{{ name }}</h6>
+                                <button class="btn btn-outline-primary py-0 my-0 mx-auto">
+                                    <a href="/logout" class="text-black-50">Выйти</a>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="w-100"></div>
-                    <div class="col">
-                        <button class="btn btn-block py-0 my-0"><a href="/logout" style="font-size: 0.8rem">Выйти</a></button>
+                </div>
+                <div v-else class="card">
+                    <div class="card-body p-2 text-center">
+                        <button class="btn btn-outline-primary py-0 my-0 mx-auto">
+                            <a href="/login" class="text-black-50">Авторизоваться</a>
+                        </button>
                     </div>
                 </div>
             </div>
