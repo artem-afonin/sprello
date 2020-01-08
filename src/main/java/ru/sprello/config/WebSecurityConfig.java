@@ -20,7 +20,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .mvcMatchers("/", "/about", "/api/**") //TODO добавить /js/**
+                .mvcMatchers(
+                        "/",
+                        "/about",
+                        "/api/**",
+                        "/js/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -30,10 +34,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PrincipalExtractor principalExtractor(UserDetailsRepo userDetailsRepo){
+    public PrincipalExtractor principalExtractor(UserDetailsRepo userDetailsRepo) {
         return map -> {
             String id = (String) map.get("sub");
-            User user = userDetailsRepo.findById(id).orElseGet(() ->{
+            User user = userDetailsRepo.findById(id).orElseGet(() -> {
                 User newUser = new User();
 
                 newUser.setId(id);
