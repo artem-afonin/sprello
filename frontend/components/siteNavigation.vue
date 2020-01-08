@@ -2,7 +2,14 @@
     <nav class="navbar navbar-light">
         <ul class="nav nav-pills nav-fill mx-auto">
             <li v-for="el in buttons" class="nav-item px-4">
-                <a v-bind:href="el.href" class="nav-link font-weight-bold">{{ el.name }}</a>
+                <a v-if="!user && el.authRequired" href="#"
+                   class="nav-link font-weight-bold bg-light text-black-50"
+                   title="Сначала необходимо авторизоваться">
+                    {{ el.name }}
+                </a>
+                <a v-else :href="el.href" class="nav-link font-weight-bold">
+                    {{ el.name }}
+                </a>
             </li>
         </ul>
     </nav>
@@ -15,13 +22,26 @@
     name: "siteNavigation",
     props: ['buttons'],
 
+    data() {
+      return {
+        user: userInfo
+      }
+    },
+
     mounted: function () {
-      const classes = 'active';
-      $('a').hover(function () {
-        $(this).addClass(classes)
-      }, function () {
-        $(this).removeClass(classes)
-      })
+      this.addClasses('active')
+    },
+
+    methods: {
+      addClasses(classes) {
+        classes.split(' ').forEach((el) => {
+          $('a').hover(function () {
+            $(this).addClass(el)
+          }, function () {
+            $(this).removeClass(el)
+          })
+        })
+      }
     }
   }
 </script>
