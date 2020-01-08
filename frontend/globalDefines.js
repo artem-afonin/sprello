@@ -1,9 +1,9 @@
 module.exports = {
-  devMode: true,
+  devMode: process.env.NODE_ENV === 'development',
   navButtons: [
-    {name: 'Главная', href: '/'},
-    {name: 'Доски', href: '/board'},
-    {name: 'Пользователи', href: '/users'},
-    {name: 'О Sprello', href: '/about'}
+    {name: 'Главная', href: '/', authRequired: false},
+    {name: 'Доски', href: '/board', authRequired: true},
+    {name: 'Пользователи', href: '/users', authRequired: true},
+    {name: 'О Sprello', href: '/about', authRequired: false}
   ]
 }
