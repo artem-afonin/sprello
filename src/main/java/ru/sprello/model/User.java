@@ -2,10 +2,9 @@ package ru.sprello.model;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "usr")
@@ -20,4 +19,8 @@ public class User {
     private String locale;
 
     private LocalDateTime lastVisit;
+
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles;
 }
