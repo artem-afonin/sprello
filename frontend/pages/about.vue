@@ -1,13 +1,13 @@
 <template>
-    <div class="wrapper bg-light text-black-50">
+    <div class="wrapper py-1 bg-light text-black-50">
         <!--CONTAINER START-->
         <div class="container border p-0 bg-light">
             <!--HEADER START-->
-            <site-header v-bind:class="'border-bottom bg-primary'">Sprello</site-header>
+            <site-header class="bg-primary">Sprello</site-header>
             <!--HEADER END-->
 
             <!--NAVIGATION START-->
-            <site-navigation v-bind:buttons="navButtons"/>
+            <site-navigation :buttons="navButtons"/>
             <!--NAVIGATION END-->
 
             <!--CENTRAL BLOCK START-->

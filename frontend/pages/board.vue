@@ -1,27 +1,29 @@
 <template>
-    <div class="wrapper bg-light text-black-50">
+    <div class="wrapper py-1 bg-light text-black-50">
         <!--CONTAINER START-->
         <div class="container border p-0 bg-light">
             <!--HEADER START-->
-            <site-header v-bind:class="'border-bottom bg-primary'">Sprello</site-header>
+            <site-header class="bg-primary">Sprello</site-header>
             <!--HEADER END-->
 
             <!--NAVIGATION START-->
-            <site-navigation v-bind:buttons="navButtons"/>
+            <site-navigation :buttons="navButtons"/>
             <!--NAVIGATION END-->
 
             <!--CENTRAL BLOCK START-->
-            <div class="row justify-content-around">
+            <div class="row justify-content-around no-gutters">
                 <template v-for="el in boards">
-                    <div class="col-10 col-md-5 py-1 my-1  border border-secondary text-center">
-                        <h5>{{ el.id }} -> {{ el.name }}</h5>
-                        <hr/>
-                        <p>
-                            Возможно здесь в будущем будет описание. <br/>
-                            Calcarias accelerare in infernum! A falsis, particula germanus ausus.
-                        </p>
-                        <hr/>
-                        <button class="btn btn-info">Подписаться</button>
+                    <div class="col-10 col-md-5">
+                        <div class="card my-1">
+                            <div class="card-body text-center">
+                                <h5 class="card-title text-dark">{{ el.id }} -> <b>{{ el.name }}</b></h5>
+                                <p class="card-text">
+                                    Возможно здесь в будущем будет описание. <br/>
+                                    Calcarias accelerare in infernum! A falsis, particula germanus ausus.
+                                </p>
+                                <button class="btn btn-info">Подписаться</button>
+                            </div>
+                        </div>
                     </div>
                 </template>
             </div>
@@ -85,7 +87,4 @@
 </script>
 
 <style scoped>
-    .border {
-        border-width: 2px !important;
-    }
 </style>
