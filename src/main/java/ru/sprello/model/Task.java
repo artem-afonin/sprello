@@ -16,5 +16,6 @@ public class Task {
     private String name;
     @OneToMany
     private List<TaskElement> elements;
-
+    @ManyToOne
+    private Board board;
 }

@@ -17,5 +17,7 @@ public class Board {
     @OneToMany
     private List<User> users;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Task> tasks;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> messages;
 }
