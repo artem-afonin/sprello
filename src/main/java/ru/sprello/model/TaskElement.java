@@ -3,7 +3,6 @@ package ru.sprello.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @Entity
@@ -12,12 +11,10 @@ public class TaskElement {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "name")
-    private String name;
+    @Column(name = "text")
+    private String text;
     @Column(name = "color")
     private Color color;
     @OneToOne
     private Task parent;
-    @OneToMany
-    private List<User> users;
 }
