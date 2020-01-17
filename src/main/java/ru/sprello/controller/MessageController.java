@@ -8,7 +8,7 @@ import ru.sprello.model.Message;
 import ru.sprello.repo.MessageRepository;
 
 @RestController
-@RequestMapping("api/messages")
+@RequestMapping("api/v1/message")
 public class MessageController {
     private static final Logger LOG = Logger.getLogger(MessageController.class);
     private final MessageRepository messageRepository;
