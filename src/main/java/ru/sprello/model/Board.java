@@ -14,7 +14,7 @@ public class Board {
     private Long id;
     @Column(name="name")
     private String name;
-    @OneToMany
+    @ManyToMany
     private List<User> users;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> tasks;
