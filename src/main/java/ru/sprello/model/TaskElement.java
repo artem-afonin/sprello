@@ -15,6 +15,6 @@ public class TaskElement {
     private String text;
     @Column(name = "color")
     private Color color;
-    @OneToOne
+    @ManyToOne
     private Task parent;
 }
