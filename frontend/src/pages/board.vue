@@ -39,11 +39,12 @@
 
 <script>
   import "bootswatch/dist/minty/bootstrap.min.css"
-  import {navButtons, devMode} from "globalDefines"
+  import "bootstrap-vue/dist/bootstrap-vue.min.css"
+  import {navButtons, devMode} from "@/globalDefines"
 
-  import siteHeader from "components/siteHeader.vue"
-  import siteNavigation from "components/siteNavigation.vue"
-  import siteFooter from "components/siteFooter.vue"
+  import siteHeader from "@components/siteHeader.vue"
+  import siteNavigation from "@components/siteNavigation.vue"
+  import siteFooter from "@components/siteFooter.vue"
 
   export default {
     name: "board",
