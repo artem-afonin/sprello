@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "message")
+@Table(name = "messages")
 @Data
 public class Message {
     @Id
@@ -14,4 +14,6 @@ public class Message {
     private Long id;
     @Column(name = "text", length = 256, nullable = false)
     private String text;
+    @ManyToOne
+    private Board board;
 }
