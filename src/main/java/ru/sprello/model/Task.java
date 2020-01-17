@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "task")
 @Data
 public class Task {
     @Id
@@ -19,3 +20,4 @@ public class Task {
     @ManyToOne
     private Board board;
 }
+
