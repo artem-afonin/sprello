@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @EnableWebSecurity
 @EnableOAuth2Sso
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private UserPrincipalDetailsService userPrincipalDetailsService;
+    private final UserPrincipalDetailsService userPrincipalDetailsService;
 
     @Autowired
     public WebSecurityConfig(UserPrincipalDetailsService userPrincipalDetailsService) {
