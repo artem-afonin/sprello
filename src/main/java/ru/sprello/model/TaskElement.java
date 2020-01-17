@@ -3,6 +3,8 @@ package ru.sprello.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 @Entity
@@ -12,6 +14,7 @@ public class TaskElement {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(name = "text")
+    @NotBlank
     private String text;
     @Column(name = "color")
     private Color color;
