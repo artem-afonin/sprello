@@ -46,12 +46,12 @@
 <script>
   import "bootswatch/dist/minty/bootstrap.min.css"
   import axios from 'axios'
-  import {navButtons, devMode} from "@/globalDefines"
+  import {navButtons, devMode} from "../globalDefines"
 
-  import siteHeader from "@components/siteHeader.vue"
-  import siteNavigation from "@components/siteNavigation.vue"
-  import siteBoardSidebar from "@components/siteBoardSidebar.vue"
-  import siteFooter from "@components/siteFooter.vue"
+  import siteHeader from "../components/siteHeader.vue"
+  import siteNavigation from "../components/siteNavigation.vue"
+  import siteBoardSidebar from "../components/siteBoardSidebar.vue"
+  import siteFooter from "../components/siteFooter.vue"
 
   export default {
     name: "board",

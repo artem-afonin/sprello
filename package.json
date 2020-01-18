@@ -5,8 +5,8 @@
   "author": "Artem Afonin <joniclife@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "cross-env NODE_ENV=production webpack --config frontend/webpack.prod.js",
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --config frontend/webpack.dev.js"
+    "build": "cross-env NODE_ENV=production webpack --config frontend1/webpack.prod.js",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --config frontend1/webpack.dev.js"
   },
   "dependencies": {
     "axios": "^0.19.1",
