@@ -30,14 +30,11 @@
 
 <script>
   import "bootswatch/dist/minty/bootstrap.min.css"
-  import {navButtons} from "globalDefines"
+  import {navButtons} from "@/globalDefines"
 
-  import siteHeader from "components/siteHeader.vue"
-  import siteNavigation from "components/siteNavigation.vue"
-  import siteMessages from "components/siteMessages.vue"
-  import siteSidebar from "components/siteSidebar.vue"
-  import siteFooter from "components/siteFooter.vue"
-  import messageForm from "components/messageForm.vue"
+  import siteHeader from "@components/siteHeader.vue"
+  import siteNavigation from "@components/siteNavigation.vue"
+  import siteFooter from "@components/siteFooter.vue"
 
   export default {
     name: "index",
@@ -45,10 +42,7 @@
     components: {
       siteHeader,
       siteNavigation,
-      siteMessages,
-      siteSidebar,
       siteFooter,
-      messageForm
     },
 
     data() {

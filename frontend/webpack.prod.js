@@ -7,6 +7,7 @@ module.exports = merge(common, {
 
   output: {
     //TODO направить компиляцию в другую директорию
-    path: path.join(__dirname, 'src', 'main', 'resources', 'static', 'js')
+    filename: '[name].js',
+    path: path.join(__dirname, '..', 'src', 'main', 'resources', 'static', 'js')
   }
 })
