@@ -41,7 +41,7 @@
 
     data() {
       return {
-        user: userInfo
+        user: null //TODO добавить fetch данных юзера с API сервера
       }
     },
 
