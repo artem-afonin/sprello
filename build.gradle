@@ -19,6 +19,16 @@ repositories {
     mavenCentral()
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs= ["src/main/java"]
+        }
+        resources {
+            srcDirs= ["src/main/resources", "frontend/dist"]
+        }
+    }
+}
 
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.10'

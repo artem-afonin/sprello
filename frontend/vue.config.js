@@ -1,34 +1,25 @@
-const path = require('path')
+const clientPort = 8081
+const serverPort = 8080
+const serverUrl = `http://localhost:${serverPort}`
 
 module.exports = {
-  pages: {
-    index: {
-      // точка входа для страницы
-      entry: 'src/index.js',
-      template: 'public/index.html',
-      filename: 'index.html',
-      title: 'Index Page',
-    },
-    about: {
-      entry: 'src/about.js',
-      template: 'public/index.html',
-      filename: 'about.html',
-      title: 'About Page'
-    },
-    board: {
-      entry: 'src/board.js',
-      template: 'public/index.html',
-      filename: 'board.html',
-      title: 'Boards Page'
-    }
-  },
+  outputDir: 'dist/public',
+  assetsDir: 'static',
+  filenameHashing: false,
+
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
+    contentBase: './dist/public',
     compress: true,
-    port: 8000,
-    allowedHosts: [
-      'localhost:8080'
-    ],
-    stats: 'errors-only'
+    port: clientPort,
+    stats: 'errors-only',
+    clientLogLevel: 'error',
+    proxy: {
+      '/*': {
+        target: serverUrl,
+        secure: false,
+        prependPath: false
+      }
+    },
+    historyApiFallback: true
   }
 }
