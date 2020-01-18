@@ -11,21 +11,27 @@
             <!--NAVIGATION END-->
 
             <!--CENTRAL BLOCK START-->
-            <div class="row justify-content-around no-gutters">
-                <template v-for="el in boards">
-                    <div class="col-10 col-md-5">
-                        <div class="card my-1">
-                            <div class="card-body text-center">
-                                <h5 class="card-title text-dark">{{ el.id }} -> <b>{{ el.name }}</b></h5>
-                                <p class="card-text">
-                                    Возможно здесь в будущем будет описание. <br/>
-                                    Calcarias accelerare in infernum! A falsis, particula germanus ausus.
-                                </p>
-                                <button class="btn btn-info">Подписаться</button>
+
+            <div class="row no-gutters">
+                <site-board-sidebar class="col-12 col-md-4 mb-2 mx-auto"/>
+                <div class="col-12 col-md-8">
+                    <div class="row justify-content-around">
+                        <template v-for="el in boards">
+                            <div class="col-9 col-md-5">
+                                <div class="card my-1">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title text-dark">{{ el.id }} -> <b>{{ el.name }}</b></h5>
+                                        <p class="card-text">
+                                            Возможно здесь в будущем будет описание. <br/>
+                                            Calcarias accelerare in infernum! A falsis, particula germanus ausus.
+                                        </p>
+                                        <button class="btn btn-info">Подписаться</button>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        </template>
                     </div>
-                </template>
+                </div>
             </div>
             <!--CENTRAL BLOCK END-->
 
@@ -39,11 +45,12 @@
 
 <script>
   import "bootswatch/dist/minty/bootstrap.min.css"
-  import "bootstrap-vue/dist/bootstrap-vue.min.css"
+  import axios from 'axios'
   import {navButtons, devMode} from "@/globalDefines"
 
   import siteHeader from "@components/siteHeader.vue"
   import siteNavigation from "@components/siteNavigation.vue"
+  import siteBoardSidebar from "@components/siteBoardSidebar.vue"
   import siteFooter from "@components/siteFooter.vue"
 
   export default {
@@ -52,19 +59,14 @@
     components: {
       siteHeader,
       siteNavigation,
+      siteBoardSidebar,
       siteFooter
     },
 
     data() {
       return {
         navButtons,
-        boards: [ //FIXME убрать статичное заполнение сразу как появится API
-          {id: 1, name: "First board"},
-          {id: 2, name: "Second board"},
-          {id: 3, name: "Third board"},
-          {id: 4, name: "Fourth board"},
-          {id: 5, name: "Fifth board"}
-        ]
+        boards: []
       }
     },
 
@@ -75,12 +77,13 @@
     methods: {
       //TODO передавать в запросе количество досок для отображения (12?)
       getBoards() {
-        this.$http.get('/api/board/').then(
-            response => {
-              response.body.forEach(this.boards.push)
-            }
-        ).catch(error => {
-          if (devMode) console.log(error)
+        axios.get('api/v1/board').then(r => r.data).then(data => {
+          if (devMode) console.log(data)
+          data.forEach(el => {
+            this.boards.push(el)
+          })
+        }).catch(err => {
+          if (devMode) console.error(err)
         })
       }
     }

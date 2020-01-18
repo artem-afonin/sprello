@@ -30,12 +30,10 @@
 
 <script>
   import "bootswatch/dist/minty/bootstrap.min.css"
-  import "bootstrap-vue/dist/bootstrap-vue.min.css"
   import {navButtons} from "@/globalDefines"
 
   import siteHeader from "@components/siteHeader.vue"
   import siteNavigation from "@components/siteNavigation.vue"
-  import siteMessages from "@components/siteMessages.vue"
   import siteFooter from "@components/siteFooter.vue"
 
   export default {
@@ -44,7 +42,6 @@
     components: {
       siteHeader,
       siteNavigation,
-      siteMessages,
       siteFooter,
     },
 

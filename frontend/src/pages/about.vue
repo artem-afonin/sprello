@@ -60,7 +60,6 @@
 
 <script>
   import "bootswatch/dist/minty/bootstrap.min.css"
-  import "bootstrap-vue/dist/bootstrap-vue.min.css"
   import {navButtons} from "@/globalDefines"
 
   import siteHeader from "@components/siteHeader.vue"

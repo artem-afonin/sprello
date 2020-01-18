@@ -1,15 +1,4 @@
 <template>
-    <!--    <b-nav pills>-->
-    <!--        <b-nav-item v-for="el in buttons" @click="active">-->
-    <!--            <a v-if="!user && el.authRequired" href="#"-->
-    <!--               title="Сначала необходимо авторизоваться">-->
-    <!--                {{ el.name }}-->
-    <!--            </a>-->
-    <!--            <a v-else :href="el.href">-->
-    <!--                {{ el.name }}-->
-    <!--            </a>-->
-    <!--        </b-nav-item>-->
-    <!--    </b-nav>-->
     <nav class="navbar navbar-light">
         <ul class="nav nav-pills nav-fill mx-auto">
             <li v-for="el in buttons" class="nav-item px-4">
