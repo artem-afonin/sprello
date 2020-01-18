@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import ru.sprello.model.Board;
+import ru.sprello.model.board.Board;
 import ru.sprello.model.User;
 import ru.sprello.repo.BoardRepository;
 

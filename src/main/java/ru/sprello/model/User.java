@@ -1,6 +1,7 @@
 package ru.sprello.model;
 
 import lombok.Data;
+import ru.sprello.model.board.Board;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

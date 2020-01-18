@@ -1,6 +1,8 @@
-package ru.sprello.model;
+package ru.sprello.model.board;
 
 import lombok.Data;
+import ru.sprello.model.Message;
+import ru.sprello.model.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;

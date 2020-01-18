@@ -1,4 +1,4 @@
-package ru.sprello.model;
+package ru.sprello.model.board;
 
 import lombok.Data;
 
