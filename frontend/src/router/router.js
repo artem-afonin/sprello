@@ -17,6 +17,14 @@ const routes = [
     component: about
   },
   {
+    path: '/login',
+    redirect: '/login'
+  },
+  {
+    path: '/logout',
+    redirect: '/logout'
+  },
+  {
     path: '/board',
     component: board
   },

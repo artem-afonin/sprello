@@ -8,7 +8,7 @@
             </div>
 
             <div class="col-3 bg-light mx-1 p-1 rounded">
-                <div v-if="user" class="card">
+                <div v-if="$root.user" class="card">
                     <div class="row no-gutters align-items-center">
                         <div class="d-none d-md-block col-md-3 pl-2">
                             <img class="card-img rounded-circle" :src="pic">
@@ -42,20 +42,14 @@
   export default {
     name: 'siteHeader',
 
-    data() {
-      return {
-        user: null
-      }
-    },
-
-    mounted() {
+    created() {
       this.fetchUser()
     },
 
     methods: {
       fetchUser() {
         axios.get(`${apiurl}/user`).then(response => {
-          this.user = response.data
+          this.$root.user = response.data
         }).catch(err => {
           if (devMode) console.error(err)
         })
@@ -64,12 +58,12 @@
 
     computed: {
       name() {
-        return this.user.name
+        return this.$root.user.name
       },
       pic() {
-        return this.user.userpic
+        return this.$root.user.userpic
       }
-    }
+    },
   }
 </script>
 

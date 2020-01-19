@@ -2,7 +2,12 @@
     <nav class="navbar navbar-light">
         <ul class="nav nav-pills nav-fill mx-auto">
             <li v-for="el in buttons" class="nav-item px-4">
-                <router-link :to="el.href" class="nav-link font-weight-bolder">
+                <router-link v-if="!$root.user && el.authRequired" to="#"
+                   class="nav-link font-weight-bold bg-light text-black-50"
+                   title="Сначала необходимо авторизоваться">
+                    {{ el.name }}
+                </router-link>
+                <router-link v-else :to="el.href" class="nav-link font-weight-bolder">
                     {{ el.name }}
                 </router-link>
             </li>

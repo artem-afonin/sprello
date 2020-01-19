@@ -46,7 +46,6 @@
     },
 
     methods: {
-      //TODO передавать в запросе количество досок для отображения (12?)
       getBoards() {
         axios.get(`${apiurl}/board`).then(r => r.data).then(data => {
           if (devMode) console.log(data)
