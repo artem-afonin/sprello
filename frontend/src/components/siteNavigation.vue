@@ -2,9 +2,9 @@
     <nav class="navbar navbar-light">
         <ul class="nav nav-pills nav-fill mx-auto">
             <li v-for="el in buttons" class="nav-item px-4">
-                <a :href="el.href" class="nav-link font-weight-bold">
+                <router-link :to="el.href" class="nav-link font-weight-bolder">
                     {{ el.name }}
-                </a>
+                </router-link>
             </li>
         </ul>
     </nav>
