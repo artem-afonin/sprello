@@ -5,6 +5,9 @@
             Запрашиваемая вами страница
             <b class="text-info">{{ pageUrl }}</b>
             не существует
+            <i class="material-icons md-48">
+                mood_bad
+            </i>
         </h2>
     </div>
 </template>
@@ -22,4 +25,7 @@
 </script>
 
 <style scoped>
+    .material-icons.md-48 {
+        font-size: 48px;
+    }
 </style>
