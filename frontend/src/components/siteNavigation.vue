@@ -14,7 +14,7 @@
   import $ from 'jquery'
 
   export default {
-    name: "siteNavigation",
+    name: 'siteNavigation',
     props: ['buttons'],
 
     mounted: function () {

@@ -1,13 +1,23 @@
 <template>
-    <div class="text-center text-danger">
-        <h1>Такой страницы не существует</h1>
-        <router-link to="/">Вернуться на главную страницу</router-link>
+    <div class="text-center">
+        <h1 class="my-5 text-danger">404 NOT FOUND</h1>
+        <h2 class="my-5 text-black-50">
+            Запрашиваемая вами страница
+            <b class="text-info">{{ pageUrl }}</b>
+            не существует
+        </h2>
     </div>
 </template>
 
 <script>
   export default {
-    name: "error404"
+    name: 'error404',
+
+    computed: {
+      pageUrl() {
+        return this.$route.fullPath
+      }
+    }
   }
 </script>
 

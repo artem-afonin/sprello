@@ -40,7 +40,7 @@
   import {devMode, apiurl} from '../globalDefines'
 
   export default {
-    name: "siteHeader",
+    name: 'siteHeader',
 
     data() {
       return {

@@ -24,12 +24,12 @@
 
 <script>
   import axios from 'axios'
-  import {devMode, apiurl} from "../globalDefines"
+  import {devMode, apiurl} from '../globalDefines'
 
-  import siteBoardSidebar from "../components/siteBoardSidebar.vue"
+  import siteBoardSidebar from '../components/siteBoardSidebar.vue'
 
   export default {
-    name: "board",
+    name: 'board',
 
     components: {
       siteBoardSidebar

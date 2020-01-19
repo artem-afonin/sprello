@@ -23,7 +23,7 @@
 </template>
 
 <script>
-  import "bootswatch/dist/minty/bootstrap.min.css"
+  import 'bootswatch/dist/minty/bootstrap.min.css'
   import siteHeader from './components/siteHeader'
   import siteNavigation from './components/siteNavigation'
   import siteFooter from './components/siteFooter'

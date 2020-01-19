@@ -29,7 +29,7 @@
   import {devMode, apiurl} from '../globalDefines'
 
   export default {
-    name: "siteBoardSidebar",
+    name: 'siteBoardSidebar',
 
     // READONLY! Объект передаётся только для реактивного отображения добавленных данных в родителе
     props: ['boards'],

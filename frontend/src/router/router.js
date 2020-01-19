@@ -21,12 +21,8 @@ const routes = [
     component: board
   },
   {
-    path: '/404',
-    component: error404
-  },
-  {
     path: '*',
-    redirect: '/404'
+    component: error404
   }
 ]
 
