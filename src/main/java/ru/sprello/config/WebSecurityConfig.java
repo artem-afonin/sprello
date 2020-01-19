@@ -10,11 +10,13 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import ru.sprello.model.Role;
 import ru.sprello.model.User;
 import ru.sprello.repo.UserRepository;
 import ru.sprello.security.UserPrincipalDetailsService;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -54,10 +56,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 newUser.setId(id);
                 newUser.setName((String) map.get("name"));
-                newUser.setEmail((String) map.get("email"));
-                newUser.setGender((String) map.get("gender"));
-                newUser.setLocale((String) map.get("locale"));
                 newUser.setUserpic((String) map.get("picture"));
+                newUser.setRoles(Collections.singleton(Role.USER));
+                newUser.setBoards(Collections.emptySet());
 
                 return newUser;
             });

@@ -1,9 +1,10 @@
-package ru.sprello.model;
+package ru.sprello.model.board;
 
 import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 @Entity
@@ -14,9 +15,12 @@ public class TaskElement {
     private Long id;
     @Column(name = "text")
     @NotBlank
+    @NotNull
     private String text;
     @Column(name = "color")
+    @NotNull
     private Color color;
     @ManyToOne
+    @NotNull
     private Task parent;
 }

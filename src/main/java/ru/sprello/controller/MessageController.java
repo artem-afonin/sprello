@@ -4,11 +4,12 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.sprello.Application;
 import ru.sprello.model.Message;
 import ru.sprello.repo.MessageRepository;
 
 @RestController
-@RequestMapping("api/v1/message")
+@RequestMapping(Application.apiUrl + "message")
 public class MessageController {
     private static final Logger LOG = Logger.getLogger(MessageController.class);
     private final MessageRepository messageRepository;

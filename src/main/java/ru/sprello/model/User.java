@@ -1,33 +1,37 @@
 package ru.sprello.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
+import ru.sprello.model.board.Board;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
+@Data
 @Entity
 @Table(name = "usr")
-@Data
 public class User {
     @Id
+    @JsonView(Views.PublicSimple.class)
     private String id;
-    private String name;
-    private String userpic;
-    private String email;
-    private String gender;
-    private String locale;
 
+    @JsonView(Views.PublicSimple.class)
+    private String name;
+
+    @JsonView(Views.PublicSimple.class)
+    private String userpic;
+
+    @JsonView(Views.PublicExtendedUser.class)
     private LocalDateTime lastVisit;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
+    @NotNull
     private Set<Role> roles;
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<Board> board;
 
-    public User(){
-
-    }
+    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
+    @JsonView(Views.PublicExtendedUser.class)
+    private Set<Board> boards;
 }
