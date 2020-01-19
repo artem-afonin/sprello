@@ -23,12 +23,7 @@ public class User {
     @JsonView(Views.PublicSimple.class)
     private String userpic;
 
-    private String email;
-
-    private String gender;
-
-    private String locale;
-
+    @JsonView(Views.PublicExtendedUser.class)
     private LocalDateTime lastVisit;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)

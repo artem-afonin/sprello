@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import ru.sprello.Application;
 import ru.sprello.model.Views;
 import ru.sprello.model.board.Board;
 import ru.sprello.model.User;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/v1/board")
+@RequestMapping(Application.apiUrl + "board")
 public class BoardController {
     private static final Logger LOG = Logger.getLogger(BoardController.class);
     private final BoardRepository boardRepository;
@@ -70,7 +71,6 @@ public class BoardController {
      */
     @JsonView(Views.PublicExtendedBoard.class)
     @GetMapping("{id}")
-    @ResponseBody
     public ResponseEntity<?> getBoard(@PathVariable Long id, @AuthenticationPrincipal User user) {
         Optional<Board> optionalBoard = boardRepository.findById(id);
         if (optionalBoard.isPresent()) {
@@ -102,7 +102,6 @@ public class BoardController {
      */
     @JsonView(Views.PublicSimple.class)
     @PostMapping
-    @ResponseBody
     public ResponseEntity<Board> createBoard(@RequestBody Board board, @AuthenticationPrincipal User user) {
         if (board.getName() == null || board.getName().equals("")
                 || board.getIsPrivate() == null) {
