@@ -59,7 +59,7 @@ public class UserController {
      * @return {@link UserController#getUserBoards(String, User)}
      */
     @GetMapping("boards")
-    @JsonView(Views.PublicExtendedUser.class)
+    @JsonView(Views.PublicSimple.class)
     public ResponseEntity<?> getMyUserBoards(@AuthenticationPrincipal User requestor) {
         return this.getUserBoards(requestor.getId(), requestor);
     }
@@ -75,7 +75,7 @@ public class UserController {
      * <b>code: 404</b> если список не найден в базе
      */
     @GetMapping("{id}/boards")
-    @JsonView(Views.PublicExtendedUser.class)
+    @JsonView(Views.PublicSimple.class)
     public ResponseEntity<?> getUserBoards(@PathVariable String id, @AuthenticationPrincipal User requestor) {
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
