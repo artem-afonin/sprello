@@ -26,7 +26,7 @@
   import axios from 'axios'
   import {devMode, apiurl} from '../globalDefines'
 
-  import siteBoardSidebar from '../components/siteBoardSidebar.vue'
+  import siteBoardSidebar from '../components/siteBoardSidebar'
 
   export default {
     name: 'board',

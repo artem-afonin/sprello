@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import index from '../views/index.vue'
-import about from '../views/about.vue'
-import board from '../views/board.vue'
-import error404 from '../views/error404.vue'
+import index from '../views/index'
+import about from '../views/about'
+import board from '../views/board'
+import error404 from '../views/error404'
 
 Vue.use(VueRouter)
 
