@@ -25,7 +25,4 @@
 </script>
 
 <style scoped>
-    .material-icons.md-48 {
-        font-size: 48px;
-    }
 </style>
