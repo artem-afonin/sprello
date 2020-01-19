@@ -36,12 +36,29 @@
 </template>
 
 <script>
+  import axios from 'axios'
+  import {devMode, apiurl} from '../globalDefines'
+
   export default {
     name: "siteHeader",
 
     data() {
       return {
-        user: null //TODO добавить fetch данных юзера с API сервера
+        user: null
+      }
+    },
+
+    mounted() {
+      this.fetchUser()
+    },
+
+    methods: {
+      fetchUser() {
+        axios.get(`${apiurl}/user`).then(response => {
+          this.user = response.data
+        }).catch(err => {
+          if (devMode) console.error(err)
+        })
       }
     },
 

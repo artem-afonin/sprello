@@ -2,12 +2,7 @@
     <nav class="navbar navbar-light">
         <ul class="nav nav-pills nav-fill mx-auto">
             <li v-for="el in buttons" class="nav-item px-4">
-                <a v-if="!user && el.authRequired" href="#"
-                   class="nav-link font-weight-bold bg-light text-black-50"
-                   title="Сначала необходимо авторизоваться">
-                    {{ el.name }}
-                </a>
-                <a v-else :href="el.href" class="nav-link font-weight-bold">
+                <a :href="el.href" class="nav-link font-weight-bold">
                     {{ el.name }}
                 </a>
             </li>
@@ -21,12 +16,6 @@
   export default {
     name: "siteNavigation",
     props: ['buttons'],
-
-    data() {
-      return {
-        user: userInfo
-      }
-    },
 
     mounted: function () {
       this.addClasses('active')

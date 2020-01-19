@@ -46,7 +46,7 @@
 <script>
   import "bootswatch/dist/minty/bootstrap.min.css"
   import axios from 'axios'
-  import {navButtons, devMode} from "../globalDefines"
+  import {navButtons, devMode, apiurl} from "../globalDefines"
 
   import siteHeader from "../components/siteHeader.vue"
   import siteNavigation from "../components/siteNavigation.vue"
@@ -77,7 +77,7 @@
     methods: {
       //TODO передавать в запросе количество досок для отображения (12?)
       getBoards() {
-        axios.get('api/v1/board').then(r => r.data).then(data => {
+        axios.get(`${apiurl}/board`).then(r => r.data).then(data => {
           if (devMode) console.log(data)
           data.forEach(el => {
             this.boards.push(el)
