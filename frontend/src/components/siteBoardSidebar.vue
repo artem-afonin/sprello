@@ -26,9 +26,13 @@
 <script>
   import $ from 'jquery'
   import axios from 'axios'
+  import {devMode, apiurl} from '../globalDefines'
 
   export default {
     name: "siteBoardSidebar",
+
+    // READONLY! Объект передаётся только для реактивного отображения добавленных данных в родителе
+    props: ['boards'],
 
     data() {
       return {
@@ -53,9 +57,14 @@
       },
       postBoard() {
         if (this.name !== '') {
-          axios.post('api/v1/board', {
+          axios.post(`${apiurl}/board`, {
             name: this.name,
             isPrivate: this.isPrivate
+          }).then(response => {
+            if (response.statusText.toLowerCase() === 'ok')
+              this.boards.push(response.data) //TODO будущем должно переходить на страничку с бордой
+          }).catch(err => {
+            if (devMode) console.error(err)
           })
           this.name = ''
           this.isPrivate = false

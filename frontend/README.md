@@ -1,19 +1,28 @@
-# frontend
+# Sprello frontend
 
-## Project setup
+#### Установка
 ```
 yarn install
 ```
-
-### Compiles and hot-reloads for development
+###### или
 ```
-yarn serve
+npm install
 ```
 
-### Compiles and minifies for production
+#### Production сборка
 ```
 yarn build
 ```
+###### или
+```
+npm run build
+```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+#### Запуск проекта на тестовом сервере с hot-reload
+```
+yarn serve
+```
+###### или
+```
+npm run serve
+```

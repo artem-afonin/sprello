@@ -13,7 +13,7 @@
             <!--CENTRAL BLOCK START-->
 
             <div class="row no-gutters">
-                <site-board-sidebar class="col-12 col-md-4 mb-2 mx-auto"/>
+                <site-board-sidebar class="col-12 col-md-4 mb-2 mx-auto" :boards="boards"/>
                 <div class="col-12 col-md-8">
                     <div class="row justify-content-around">
                         <template v-for="el in boards">
