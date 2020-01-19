@@ -1,28 +1,53 @@
 package ru.sprello.model.board;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonView;
+import lombok.Getter;
+import lombok.Setter;
 import ru.sprello.model.Message;
 import ru.sprello.model.User;
+import ru.sprello.model.Views;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.util.List;
+import java.util.Set;
 
-@Data
 @Entity
 @Table(name="board")
 public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonView(Views.PublicSimple.class)
+    @Getter
+    @Setter
     private Long id;
+
     @Column(name="name")
-    @NotBlank
+    @JsonView(Views.PublicSimple.class)
+    @Getter
+    @Setter
     private String name;
+
+    @JsonView(Views.PublicSimple.class)
+    @Getter
+    @Setter
     private Boolean isPrivate;
-    @ManyToMany
-    private List<User> users;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "board_users",
+            joinColumns = @JoinColumn(name = "BOARD_ID", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "id")
+    )
+    @JsonView(Views.PublicExtendedBoard.class)
+    @Getter
+    @Setter
+    private Set<User> users;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @Getter
+    @Setter
+    private Set<Task> tasks;
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Task> tasks;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Message> messages;
+    @Getter
+    @Setter
+    private Set<Message> messages;
 }
