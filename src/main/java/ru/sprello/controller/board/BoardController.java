@@ -41,9 +41,14 @@ public class BoardController {
     @JsonView(Views.PublicSimple.class)
     @GetMapping
     public ResponseEntity<?> getAll(
-            @RequestBody(required = false) String type,
+            @RequestParam(name = "type") Optional<String> optionalType,
             @AuthenticationPrincipal User user) {
-        if (type == null) type = "all";
+        String type;
+        if (optionalType.isPresent()) {
+            type = optionalType.get();
+        } else {
+            type = "all";
+        }
         List<Board> boards;
         if ("all".equals(type)) {
             boards = boardRepository.findAllByIsPrivateFalse();

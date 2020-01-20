@@ -2,9 +2,14 @@
     <nav class="navbar navbar-light">
         <ul class="nav nav-pills nav-fill mx-auto">
             <li v-for="el in buttons" class="nav-item px-4">
-                <a :href="el.href" class="nav-link font-weight-bold">
+                <router-link v-if="!$root.user && el.authRequired" to="#"
+                   class="nav-link font-weight-bold bg-light text-black-50"
+                   title="Сначала необходимо авторизоваться">
                     {{ el.name }}
-                </a>
+                </router-link>
+                <router-link v-else :to="el.href" class="nav-link font-weight-bolder">
+                    {{ el.name }}
+                </router-link>
             </li>
         </ul>
     </nav>
@@ -14,7 +19,7 @@
   import $ from 'jquery'
 
   export default {
-    name: "siteNavigation",
+    name: 'siteNavigation',
     props: ['buttons'],
 
     mounted: function () {

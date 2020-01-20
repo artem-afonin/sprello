@@ -1,89 +1,70 @@
 <template>
-    <div class="wrapper py-1 bg-light text-black-50">
-        <!--CONTAINER START-->
-        <div class="container border p-0 bg-light">
-            <!--HEADER START-->
-            <site-header class="bg-primary">Sprello</site-header>
-            <!--HEADER END-->
-
-            <!--NAVIGATION START-->
-            <site-navigation :buttons="navButtons"/>
-            <!--NAVIGATION END-->
-
-            <!--CENTRAL BLOCK START-->
-
-            <div class="row no-gutters">
-                <site-board-sidebar class="col-12 col-md-4 mb-2 mx-auto" :boards="boards"/>
-                <div class="col-12 col-md-8">
-                    <div class="row justify-content-around">
-                        <template v-for="el in boards">
-                            <div class="col-9 col-md-5">
-                                <div class="card my-1">
-                                    <div class="card-body text-center">
-                                        <h5 class="card-title text-dark">{{ el.id }} -> <b>{{ el.name }}</b></h5>
-                                        <p class="card-text">
-                                            Возможно здесь в будущем будет описание. <br/>
-                                            Calcarias accelerare in infernum! A falsis, particula germanus ausus.
-                                        </p>
-                                        <button class="btn btn-info">Подписаться</button>
-                                    </div>
+    <div>
+        <div class="row no-gutters">
+            <site-board-sidebar class="col-10 my-2 mx-auto"
+                                :boards="boards"
+                                v-on:updatePosts="this.getBoards"/>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-12">
+                <div class="row justify-content-around">
+                    <template v-for="el in boards">
+                        <div class="col-9 col-md-5">
+                            <div class="card my-1">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title text-dark">{{ el.id }} -> <b>{{ el.name }}</b></h5>
+                                    <p class="card-text">
+                                        Возможно здесь в будущем будет описание. <br/>
+                                        Calcarias accelerare in infernum! A falsis, particula germanus ausus.
+                                    </p>
+                                    <button class="btn btn-info">Подписаться</button>
                                 </div>
                             </div>
-                        </template>
-                    </div>
+                        </div>
+                    </template>
                 </div>
             </div>
-            <!--CENTRAL BLOCK END-->
-
-            <!--FOOTER START-->
-            <site-footer>&copy; Artem and Vasiliy</site-footer>
-            <!--FOOTER END-->
         </div>
-        <!--CONTAINER END-->
     </div>
 </template>
 
 <script>
-  import "bootswatch/dist/minty/bootstrap.min.css"
   import axios from 'axios'
-  import {navButtons, devMode, apiurl} from "../globalDefines"
+  import {devMode, apiurl} from '../globalDefines'
 
-  import siteHeader from "../components/siteHeader.vue"
-  import siteNavigation from "../components/siteNavigation.vue"
-  import siteBoardSidebar from "../components/siteBoardSidebar.vue"
-  import siteFooter from "../components/siteFooter.vue"
+  import siteBoardSidebar from '../components/siteBoardSidebar'
 
   export default {
-    name: "board",
+    name: 'board',
 
     components: {
-      siteHeader,
-      siteNavigation,
-      siteBoardSidebar,
-      siteFooter
+      siteBoardSidebar
     },
 
     data() {
       return {
-        navButtons,
         boards: []
       }
     },
 
     created() {
-      this.getBoards()
+      this.getBoards(false)
     },
 
     methods: {
-      //TODO передавать в запросе количество досок для отображения (12?)
-      getBoards() {
-        axios.get(`${apiurl}/board`).then(r => r.data).then(data => {
-          if (devMode) console.log(data)
+      getBoards(isTypeOwn) {
+        this.boards.splice(0, this.boards.length)
+        const typeStr = isTypeOwn ? 'own' : 'all'
+        console.log(typeStr)
+        axios.get(`${apiurl}/board`, {
+          params: {type: typeStr}
+        }).then(r => r.data).then(data => {
+          if (devMode) console.log('Полученные борды:', data)
           data.forEach(el => {
             this.boards.push(el)
           })
         }).catch(err => {
-          if (devMode) console.error(err)
+          if (devMode) console.error('При получении бордов ошибка:', err)
         })
       }
     }
