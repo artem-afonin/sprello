@@ -11,14 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.sprello.Application;
 import ru.sprello.model.User;
-import ru.sprello.model.Views;
-import ru.sprello.model.board.Board;
 import ru.sprello.repo.BoardRepository;
 import ru.sprello.repo.UserRepository;
+import ru.sprello.utils.Views;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(Application.apiUrl + "user")
@@ -34,15 +31,17 @@ public class UserController {
     }
 
     /**
-     * Обработчик для получения основной информации о пользователе, выполняющем запрос
+     * Обработчик для получения информации о пользователе, выполняющем запрос
      *
      * @param requestor пользователь, запрашивающий информацию
      *
      * @return основная информация о данном пользователе
      */
     @GetMapping
-    @JsonView(Views.PublicSimple.class)
-    public ResponseEntity<?> getMyUser(@AuthenticationPrincipal User requestor) {
+    @JsonView(Views.PublicExtendedUser.class)
+    public ResponseEntity<?> getMyUser(
+            @AuthenticationPrincipal User requestor
+    ) {
         Optional<User> optionalUser = userRepository.findById(requestor.getId());
         if (optionalUser.isPresent()) {
             return ResponseEntity.ok(optionalUser.get());
@@ -52,42 +51,22 @@ public class UserController {
     }
 
     /**
-     * Обработчик для получения списка Board, в которых состоит текущий пользователь
+     * Обработчик для получения информации о пользователе с id
      *
      * @param requestor пользователь, запрашивающий информацию
+     * @param id        уникальный идентификатор пользователя, о котором запрашивается информация
      *
-     * @return {@link UserController#getUserBoards(String, User)}
+     * @return основная информация о пользователе с id
      */
-    @GetMapping("boards")
-    @JsonView(Views.PublicSimple.class)
-    public ResponseEntity<?> getMyUserBoards(@AuthenticationPrincipal User requestor) {
-        return this.getUserBoards(requestor.getId(), requestor);
-    }
-
-    /**
-     * Обработчик для получения списка Board, в которых состоит пользователь с id<br/>
-     * <i>В список войдут только Board, на доступ к которым у requestor есть права</i>
-     *
-     * @param id        идентификатор пользователя, список Board которого запрашивается
-     * @param requestor пользователь, запрашивающий список
-     *
-     * @return <b>code: 200</b> если список успешно найден в базе <i>(даже если список пуст)</i>
-     * <b>code: 404</b> если список не найден в базе
-     */
-    @GetMapping("{id}/boards")
-    @JsonView(Views.PublicSimple.class)
-    public ResponseEntity<?> getUserBoards(@PathVariable String id, @AuthenticationPrincipal User requestor) {
+    @GetMapping("{id}")
+    @JsonView(Views.PublicExtendedUser.class)
+    public ResponseEntity<?> getMyUser(
+            @AuthenticationPrincipal User requestor,
+            @PathVariable String id
+    ) {
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
-            // Получаю пользователя, по которому нужна информация
-            User user = optionalUser.get();
-
-            // Отдаю список состоящий только из тех бордов, которые можно показывать requestor
-            List<Board> boards = boardRepository.findAllByUsersContaining(user).stream().filter(board -> {
-                return !board.getIsPrivate() || board.getUsers().contains(requestor);
-            }).collect(Collectors.toList());
-
-            return ResponseEntity.ok(boards);
+            return ResponseEntity.ok(optionalUser.get());
         } else {
             return ResponseEntity.notFound().build();
         }
