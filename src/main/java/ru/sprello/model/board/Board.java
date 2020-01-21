@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.sprello.model.Message;
 import ru.sprello.model.User;
-import ru.sprello.model.Views;
+import ru.sprello.utils.Views;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -42,11 +42,13 @@ public class Board {
     private Set<User> users;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonView(Views.PrivateBoard.class)
     @Getter
     @Setter
     private Set<Task> tasks;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonView(Views.PrivateBoard.class)
     @Getter
     @Setter
     private Set<Message> messages;
