@@ -18,18 +18,14 @@ public class TaskElement {
     private Long id;
 
     @Column(name = "text")
-    @NotBlank
-    @NotNull
     @JsonView(Views.PrivateBoard.class)
     private String text;
 
     @Column(name = "color")
-    @NotNull
     @JsonView(Views.PrivateBoard.class)
     private Color color;
 
     @ManyToOne
-    @NotNull
     @JsonView(Views.PrivateBoard.class)
     private Task parent;
 }
