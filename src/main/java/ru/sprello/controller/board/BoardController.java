@@ -23,12 +23,10 @@ import java.util.Optional;
 public class BoardController {
     private static final Logger LOG = Logger.getLogger(BoardController.class);
     private final BoardRepository boardRepository;
-    private final UserRepository userRepository;
 
     @Autowired
-    public BoardController(BoardRepository boardRepository, UserRepository userRepository) {
+    public BoardController(BoardRepository boardRepository) {
         this.boardRepository = boardRepository;
-        this.userRepository = userRepository;
     }
 
     /**
@@ -100,8 +98,9 @@ public class BoardController {
     /**
      * Обработчик POST маппинга для создания нового Board
      *
-     * @param board объект из тела запроса
-     * @param user  создатель доски, <i>становится его первым участником</i>
+     * @param user      создатель доски, <i>становится её первым участником</i>
+     * @param name      имя доски
+     * @param isPrivate приватная ли доска
      *
      * @return <b>header: 200; body: Board</b> в случае успешного создания и сохранения в базу данных<br/>
      * <b>header: 400</b> в случае отсутствия параметров "name" или "isPrivate", а также если "name" - пустая строка<br/>
@@ -110,12 +109,15 @@ public class BoardController {
     @PostMapping
     public ResponseEntity<Board> createBoard(
             @AuthenticationPrincipal User user,
-            @RequestBody Board board
+            @RequestParam String name,
+            @RequestParam Boolean isPrivate
     ) {
-        if (board.getName() == null || board.getName().equals("")
-                || board.getIsPrivate() == null) {
+        if (name.equals("")) {
             return ResponseEntity.badRequest().build();
         }
+        Board board = new Board();
+        board.setName(name);
+        board.setIsPrivate(isPrivate);
         board.setUsers(Collections.singleton(user));
         board.setTasks(Collections.emptySet());
         board.setMessages(Collections.emptySet());
@@ -128,9 +130,10 @@ public class BoardController {
      * Обработчик PATCH маппинга для частичного или полного обновления Board<br/>
      * <b>Обновляются только обычные поля. Поля коллекций обновлены не будут</b>
      *
-     * @param id           уникальный идентификатор Board
-     * @param boardFromUsr объект из тела запроса
-     * @param user         пользователь, выполняющий запрос
+     * @param user      пользователь, выполняющий запрос
+     * @param id        уникальный идентификатор Board
+     * @param name      новое название доски
+     * @param isPrivate сделать приватной или нет
      *
      * @return <b>header: 200; body: Board</b> в случае успешного обновления данных<br/>
      * <b>header: 403</b> если у пользователя нет прав для изменения доски<br/>
@@ -138,32 +141,31 @@ public class BoardController {
      */
     // TODO реализовать обновление списков в специальных контроллерах для Task, User и Message
     @JsonView(Views.PublicSimple.class)
-    @PatchMapping("{id}")
+    @PatchMapping
     public ResponseEntity<?> updateBoard(
             @AuthenticationPrincipal User user,
-            @PathVariable Long id,
-            @RequestBody Board boardFromUsr
+            @RequestParam Long id,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Boolean isPrivate
     ) {
         Optional<Board> optionalBoard = boardRepository.findById(id);
-        Board boardFromDb;
+        Board board;
         if (optionalBoard.isPresent()) {
-            boardFromDb = optionalBoard.get();
+            board = optionalBoard.get();
         } else {
             return ResponseEntity.notFound().build();
         }
 
-        if (!boardFromDb.getUsers().contains(user)) {
+        if (!board.getUsers().contains(user)) {
             // если юзер в ней не состоит - 403 FORBIDDEN
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         } else {
-            String name = boardFromUsr.getName();
-            Boolean isPrivate = boardFromUsr.getIsPrivate();
-            if (name != null)
-                boardFromDb.setName(name);
+            if (name != null && !"".equals(name))
+                board.setName(name);
             if (isPrivate != null)
-                boardFromDb.setIsPrivate(isPrivate);
-            boardRepository.save(boardFromDb);
-            return ResponseEntity.ok(boardFromDb);
+                board.setIsPrivate(isPrivate);
+            board = boardRepository.save(board);
+            return ResponseEntity.ok(board);
         }
     }
 
@@ -177,10 +179,10 @@ public class BoardController {
      * <b>header: 403</b> в случае отсутствия у пользователя прав на удаление данных
      */
     @JsonView(Views.PublicSimple.class)
-    @DeleteMapping("{id}")
+    @DeleteMapping
     public ResponseEntity<?> deleteBoard(
             @AuthenticationPrincipal User user,
-            @PathVariable Long id
+            @RequestParam Long id
     ) {
         Optional<Board> optionalBoard = boardRepository.findById(id);
         Board board;
