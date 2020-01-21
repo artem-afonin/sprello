@@ -8,10 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.sprello.Application;
-import ru.sprello.model.Views;
-import ru.sprello.model.board.Board;
 import ru.sprello.model.User;
+import ru.sprello.utils.Views;
+import ru.sprello.model.board.Board;
 import ru.sprello.repo.BoardRepository;
+import ru.sprello.repo.UserRepository;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,43 +23,40 @@ import java.util.Optional;
 public class BoardController {
     private static final Logger LOG = Logger.getLogger(BoardController.class);
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public BoardController(BoardRepository boardRepository) {
+    public BoardController(BoardRepository boardRepository, UserRepository userRepository) {
         this.boardRepository = boardRepository;
+        this.userRepository = userRepository;
     }
 
     /**
      * Обработчик GET маппинга для получения всех доступных Board для данного пользователя
      * с учётом type параметра
      *
-     * @param type тип Board, которые необходимо получить <br/>
-     *             <i>Возможные значения: </i><b>"all", "own"</b>
-     * @param user пользователь, который выполняет запрос
+     * <i>Параметры </i>
      *
-     * @return список Board, соответствующий параметрам запроса
+     * @param user пользователь, который выполняет запрос
+     * @param own  <ul>
+     *             <li><b>true</b> - вернуть только доски данного пользователя</li>
+     *             <li><b>false</b> - вернуть все возможные доски</li>
+     *             </ul>
+     *
+     * @return список досок, соответствующий параметру запроса
      */
     @JsonView(Views.PublicSimple.class)
     @GetMapping
     public ResponseEntity<?> getAll(
-            @RequestParam(name = "type") Optional<String> optionalType,
-            @AuthenticationPrincipal User user) {
-        String type;
-        if (optionalType.isPresent()) {
-            type = optionalType.get();
-        } else {
-            type = "all";
-        }
+            @AuthenticationPrincipal User user,
+            @RequestParam(required = false) Boolean own) {
         List<Board> boards;
-        if ("all".equals(type)) {
-            boards = boardRepository.findAllByIsPrivateFalse();
-            LOG.info("GET[type=all] boards for user with id " + user.getId());
-        } else if ("own".equals(type)) {
+        if (own) {
             boards = boardRepository.findAllByUsersContaining(user);
-            LOG.info("GET[type=own] boards for user with id " + user.getId());
+            LOG.info("GET[own] boards for user with id " + user.getId());
         } else {
-            LOG.warn("GET[type=unknown] Invalid parameter \"type\" received");
-            return ResponseEntity.badRequest().build();
+            boards = boardRepository.findAll();
+            LOG.info("GET[all] boards for user with id " + user.getId());
         }
 
         return ResponseEntity.ok(boards);
@@ -70,13 +68,16 @@ public class BoardController {
      * @param id   уникальный идентификатор Board
      * @param user пользователь, запрашивающий данные
      *
-     * @return <b>header: 200; body: Board</b> в случае существования Board и наличия прав на её просмотр у user<br/>
+     * @return <b>header: 200; body: Board</b> в случае существования доски и наличия прав на её просмотр у user<br/>
      * <b>header: 403</b> в случае отсутствия у пользователя прав на просмотр<br/>
-     * <b>header: 404</b> если Board не существует
+     * <b>header: 404</b> если досок не существует
      */
-    @JsonView(Views.PublicExtendedBoard.class)
+    @JsonView(Views.PrivateBoard.class)
     @GetMapping("{id}")
-    public ResponseEntity<?> getBoard(@PathVariable Long id, @AuthenticationPrincipal User user) {
+    public ResponseEntity<?> getOne(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long id
+    ) {
         Optional<Board> optionalBoard = boardRepository.findById(id);
         if (optionalBoard.isPresent()) {
             Board board = optionalBoard.get();
@@ -90,7 +91,7 @@ public class BoardController {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
         } else {
-                // возвращаю код 404 (не найдено) и пустой body
+            // возвращаю код 404 (не найдено) и пустой body
             LOG.info("GET[id=" + id + "] 404 NOT FOUND");
             return ResponseEntity.notFound().build();
         }
@@ -100,14 +101,17 @@ public class BoardController {
      * Обработчик POST маппинга для создания нового Board
      *
      * @param board объект из тела запроса
-     * @param user  создатель Board, <i>становится его первым участником</i>
+     * @param user  создатель доски, <i>становится его первым участником</i>
      *
      * @return <b>header: 200; body: Board</b> в случае успешного создания и сохранения в базу данных<br/>
      * <b>header: 400</b> в случае отсутствия параметров "name" или "isPrivate", а также если "name" - пустая строка<br/>
      */
     @JsonView(Views.PublicSimple.class)
     @PostMapping
-    public ResponseEntity<Board> createBoard(@RequestBody Board board, @AuthenticationPrincipal User user) {
+    public ResponseEntity<Board> createBoard(
+            @AuthenticationPrincipal User user,
+            @RequestBody Board board
+    ) {
         if (board.getName() == null || board.getName().equals("")
                 || board.getIsPrivate() == null) {
             return ResponseEntity.badRequest().build();
@@ -129,13 +133,17 @@ public class BoardController {
      * @param user         пользователь, выполняющий запрос
      *
      * @return <b>header: 200; body: Board</b> в случае успешного обновления данных<br/>
-     * <b>header: 403</b> если у пользователя нет прав для изменения Board<br/>
+     * <b>header: 403</b> если у пользователя нет прав для изменения доски<br/>
      * <b>header: 404</b> если Board отсутствует в базе данных
      */
     // TODO реализовать обновление списков в специальных контроллерах для Task, User и Message
     @JsonView(Views.PublicSimple.class)
     @PatchMapping("{id}")
-    public ResponseEntity<?> updateBoard(@PathVariable Long id, @RequestBody Board boardFromUsr, @AuthenticationPrincipal User user) {
+    public ResponseEntity<?> updateBoard(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long id,
+            @RequestBody Board boardFromUsr
+    ) {
         Optional<Board> optionalBoard = boardRepository.findById(id);
         Board boardFromDb;
         if (optionalBoard.isPresent()) {
@@ -144,8 +152,8 @@ public class BoardController {
             return ResponseEntity.notFound().build();
         }
 
-        if (boardFromDb.getIsPrivate() && !boardFromDb.getUsers().contains(user)) {
-            // если борда приватная, а юзер в ней не состоит - 403 FORBIDDEN
+        if (!boardFromDb.getUsers().contains(user)) {
+            // если юзер в ней не состоит - 403 FORBIDDEN
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         } else {
             String name = boardFromUsr.getName();
@@ -154,15 +162,15 @@ public class BoardController {
                 boardFromDb.setName(name);
             if (isPrivate != null)
                 boardFromDb.setIsPrivate(isPrivate);
-            boardRepository.saveAndFlush(boardFromDb);
+            boardRepository.save(boardFromDb);
             return ResponseEntity.ok(boardFromDb);
         }
     }
 
     /**
-     * Обработчик DELETE маппинга для удаления Board из базы данных
+     * Обработчик DELETE маппинга для удаления доски из базы данных
      *
-     * @param id   уникальный идентификатор Board
+     * @param id   уникальный идентификатор доски
      * @param user пользователь, выполняющий запрос
      *
      * @return <b>header: 200</b> если удаление прошло успешно<br/>
@@ -170,7 +178,10 @@ public class BoardController {
      */
     @JsonView(Views.PublicSimple.class)
     @DeleteMapping("{id}")
-    public ResponseEntity<?> deleteBoard(@PathVariable Long id, @AuthenticationPrincipal User user) {
+    public ResponseEntity<?> deleteBoard(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long id
+    ) {
         Optional<Board> optionalBoard = boardRepository.findById(id);
         Board board;
         if (optionalBoard.isPresent()) {
