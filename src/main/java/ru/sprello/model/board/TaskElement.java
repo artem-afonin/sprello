@@ -12,18 +12,19 @@ import javax.persistence.*;
 public class TaskElement {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView(Views.PrivateBoard.class)
+    @JsonView({Views.PrivateBoard.class, Views.TaskElementInfo.class})
     private Long id;
 
     @Column(name = "text")
-    @JsonView(Views.PrivateBoard.class)
+    @JsonView({Views.PrivateBoard.class, Views.TaskElementInfo.class})
     private String text;
 
     @Column(name = "color")
-    @JsonView(Views.PrivateBoard.class)
+    @Enumerated(EnumType.STRING)
+    @JsonView({Views.PrivateBoard.class, Views.TaskElementInfo.class})
     private Color color;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JsonView(Views.PrivateBoard.class)
+    @JsonView(Views.TaskElementInfo.class)
     private Task parent;
 }

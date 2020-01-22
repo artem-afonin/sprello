@@ -44,6 +44,8 @@ public final class Views {
     }
 
     public interface TaskInfo extends PublicSimple {
+    }
 
+    public interface TaskElementInfo extends PublicSimple {
     }
 }
