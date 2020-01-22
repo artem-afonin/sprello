@@ -61,6 +61,30 @@ public class BoardTasksController {
         return ResponseEntity.ok(newTask);
     }
 
+    @PatchMapping
+    @JsonView(Views.TaskInfo.class)
+    public ResponseEntity<?> updateTask(
+            @AuthenticationPrincipal User user,
+            @RequestParam Long taskId,
+            @RequestParam(required = false) String name
+    ) {
+        Optional<Task> optionalTask = taskRepository.findById(taskId);
+        Task task;
+        if (optionalTask.isPresent()) {
+            task = optionalTask.get();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (!task.getBoard().containsUser(user))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
+        if (name != null) task.setName(name);
+
+        task = taskRepository.save(task);
+        return ResponseEntity.ok(task);
+    }
+
     @DeleteMapping
     @JsonView(Views.TaskInfo.class)
     public ResponseEntity<?> deleteTask(

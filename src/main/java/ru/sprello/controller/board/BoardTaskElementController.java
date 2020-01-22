@@ -62,6 +62,32 @@ public class BoardTaskElementController {
         return ResponseEntity.ok(taskElement);
     }
 
+    @PatchMapping
+    @JsonView(Views.TaskElementInfo.class)
+    public ResponseEntity<?> updateTask(
+            @AuthenticationPrincipal User user,
+            @RequestParam Long taskElementId,
+            @RequestParam(required = false) String text,
+            @RequestParam(required = false) Color color
+    ) {
+        Optional<TaskElement> optionalTaskElement = taskElementRepository.findById(taskElementId);
+        TaskElement taskElement;
+        if (optionalTaskElement.isPresent()) {
+            taskElement = optionalTaskElement.get();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (!taskElement.getParent().getBoard().containsUser(user))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
+        if (text != null) taskElement.setText(text);
+        if (color != null) taskElement.setColor(color);
+
+        taskElement = taskElementRepository.save(taskElement);
+        return ResponseEntity.ok(taskElement);
+    }
+
     @DeleteMapping
     @JsonView(Views.TaskElementInfo.class)
     public ResponseEntity<?> deleteTaskElement(
