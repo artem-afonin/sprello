@@ -5,8 +5,6 @@ import lombok.Data;
 import ru.sprello.utils.Views;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Data
 @Entity
@@ -25,7 +23,7 @@ public class TaskElement {
     @JsonView(Views.PrivateBoard.class)
     private Color color;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JsonView(Views.PrivateBoard.class)
     private Task parent;
 }

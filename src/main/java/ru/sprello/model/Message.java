@@ -22,7 +22,7 @@ public class Message {
     @JsonView(Views.PrivateBoard.class)
     private String text;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JsonView(Views.PrivateBoard.class)
     private User author;
 
@@ -30,7 +30,7 @@ public class Message {
     @JsonView(Views.PrivateBoard.class)
     private LocalDateTime posted;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JsonView(Views.PrivateBoard.class)
     private Board board;
 }

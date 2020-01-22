@@ -42,4 +42,8 @@ public final class Views {
 
     public interface PrivateBoard extends PublicExtendedBoard {
     }
+
+    public interface TaskInfo extends PublicSimple {
+
+    }
 }

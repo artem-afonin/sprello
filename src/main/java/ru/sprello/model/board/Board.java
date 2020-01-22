@@ -41,15 +41,20 @@ public class Board {
     @Setter
     private Set<User> users;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER, mappedBy = "board")
     @JsonView(Views.PrivateBoard.class)
     @Getter
     @Setter
     private Set<Task> tasks;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER, mappedBy = "board")
     @JsonView(Views.PrivateBoard.class)
     @Getter
     @Setter
     private Set<Message> messages;
+
+    public boolean containsUser(User user) {
+        String id = user.getId();
+        return this.getUsers().stream().map(User::getId).anyMatch(id::equals);
+    }
 }

@@ -65,7 +65,7 @@ public class BoardUsersController {
             }
 
             // если автор запроса сам состоит в доске
-            if (board.getUsers().contains(requestor)) {
+            if (board.containsUser(requestor)) {
                 board.getUsers().add(newUser);
                 board = boardRepository.save(board);
                 return ResponseEntity.ok(board);

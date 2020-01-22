@@ -12,7 +12,6 @@ import ru.sprello.model.User;
 import ru.sprello.utils.Views;
 import ru.sprello.model.board.Board;
 import ru.sprello.repo.BoardRepository;
-import ru.sprello.repo.UserRepository;
 
 import java.util.Collections;
 import java.util.List;
@@ -49,7 +48,7 @@ public class BoardController {
             @AuthenticationPrincipal User user,
             @RequestParam(required = false) Boolean own) {
         List<Board> boards;
-        if (own) {
+        if (own != null && own) {
             boards = boardRepository.findAllByUsersContaining(user);
             LOG.info("GET[own] boards for user with id " + user.getId());
         } else {
@@ -79,7 +78,7 @@ public class BoardController {
         Optional<Board> optionalBoard = boardRepository.findById(id);
         if (optionalBoard.isPresent()) {
             Board board = optionalBoard.get();
-            if (!board.getIsPrivate() || board.getUsers().contains(user)) {
+            if (!board.getIsPrivate() || board.containsUser(user)) {
                 // возвращаю код 200 (успех) и board
                 LOG.info("GET[id=" + id + "] board for user with id " + user.getId());
                 return ResponseEntity.ok(board);
@@ -156,7 +155,7 @@ public class BoardController {
             return ResponseEntity.notFound().build();
         }
 
-        if (!board.getUsers().contains(user)) {
+        if (!board.containsUser(user)) {
             // если юзер в ней не состоит - 403 FORBIDDEN
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         } else {
@@ -192,7 +191,7 @@ public class BoardController {
             return ResponseEntity.notFound().build();
         }
 
-        if (!board.getUsers().contains(user)) {
+        if (!board.containsUser(user)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         } else {
             boardRepository.delete(board);
