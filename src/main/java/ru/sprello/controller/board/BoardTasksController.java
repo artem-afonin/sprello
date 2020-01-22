@@ -22,7 +22,7 @@ import java.util.Optional;
     обязательно делать проверку пользователя
  */
 @RestController
-@RequestMapping(Application.apiUrl + "board/tasks")
+@RequestMapping(Application.apiUrl + "board/task")
 public class BoardTasksController {
     private static final Logger LOG = Logger.getLogger(BoardTasksController.class);
     private final TaskRepository taskRepository;
