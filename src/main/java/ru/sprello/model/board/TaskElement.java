@@ -1,10 +1,10 @@
 package ru.sprello.model.board;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
+import ru.sprello.utils.Views;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Data
 @Entity
@@ -12,15 +12,19 @@ import javax.validation.constraints.NotNull;
 public class TaskElement {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonView({Views.PrivateBoard.class, Views.TaskElementInfo.class})
     private Long id;
+
     @Column(name = "text")
-    @NotBlank
-    @NotNull
+    @JsonView({Views.PrivateBoard.class, Views.TaskElementInfo.class})
     private String text;
+
     @Column(name = "color")
-    @NotNull
+    @Enumerated(EnumType.STRING)
+    @JsonView({Views.PrivateBoard.class, Views.TaskElementInfo.class})
     private Color color;
-    @ManyToOne
-    @NotNull
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonView(Views.TaskElementInfo.class)
     private Task parent;
 }

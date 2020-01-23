@@ -3,6 +3,7 @@ package ru.sprello.model;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 import ru.sprello.model.board.Board;
+import ru.sprello.utils.Views;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -23,7 +24,7 @@ public class User {
     @JsonView(Views.PublicSimple.class)
     private String userpic;
 
-    @JsonView(Views.PublicExtendedUser.class)
+    @JsonView(Views.PublicSimple.class)
     private LocalDateTime lastVisit;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)

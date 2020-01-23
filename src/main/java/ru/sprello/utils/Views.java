@@ -1,6 +1,7 @@
-package ru.sprello.model;
+package ru.sprello.utils;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import ru.sprello.model.User;
 import ru.sprello.model.board.Board;
 
 /**
@@ -37,5 +38,14 @@ public final class Views {
      * @see Board
      */
     public interface PublicExtendedUser extends PublicSimple {
+    }
+
+    public interface PrivateBoard extends PublicExtendedBoard {
+    }
+
+    public interface TaskInfo extends PublicSimple {
+    }
+
+    public interface TaskElementInfo extends PublicSimple {
     }
 }

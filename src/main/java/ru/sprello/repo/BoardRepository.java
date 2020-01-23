@@ -7,6 +7,5 @@ import ru.sprello.model.User;
 import java.util.List;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
-    List<Board> findAllByIsPrivateFalse();
     List<Board> findAllByUsersContaining(User user);
 }
