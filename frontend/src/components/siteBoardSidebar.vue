@@ -87,9 +87,11 @@
       },
       postBoard() {
         if (this.name !== '') {
-          axios.post(`${apiurl}/board`, {
-            name: this.newPost.name,
-            isPrivate: this.newPost.isPrivate
+          axios.post(`${apiurl}/board`, null, {
+            params: {
+              name: this.newPost.name,
+              isPrivate: this.newPost.isPrivate
+            }
           }).then(response => {
             if (response.statusText.toLowerCase() === 'ok')
               this.boards.push(response.data) //TODO будущем должно переходить на страничку с бордой

@@ -11,12 +11,16 @@
                 <div v-if="$root.user" class="card">
                     <div class="row no-gutters align-items-center">
                         <div class="d-none d-md-block col-md-3 pl-2">
-                            <img class="card-img rounded-circle" :src="pic">
+                            <router-link :to="`/users/${$root.user.id}`">
+                                <img class="card-img rounded-circle" :src="pic">
+                            </router-link>
                         </div>
                         <div class="col-12 col-md-9">
                             <div class="card-body p-2 text-center">
-                                <h6 class="card-text">{{ name }}</h6>
-                                <button class="btn btn-outline-primary py-0 my-0 mx-auto">
+                                <router-link :to="`/users/${$root.user.id}`">
+                                    <h6 class="card-text">{{ name }}</h6>
+                                </router-link>
+                                <button class="btn btn-outline-primary py-0 mt-1 mb-0 mx-auto">
                                     <a href="/logout" class="text-black-50">Выйти</a>
                                 </button>
                             </div>
