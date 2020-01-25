@@ -8,17 +8,17 @@
             </div>
 
             <div class="col-3 bg-light mx-1 p-1 rounded">
-                <div v-if="$root.user" class="card">
+                <div v-if="myUserInfo" class="card">
                     <div class="row no-gutters align-items-center">
                         <div class="d-none d-md-block col-md-3 pl-2">
-                            <router-link :to="`/users/${$root.user.id}`">
-                                <img class="card-img rounded-circle" :src="pic">
+                            <router-link :to="`/users/${myUserInfo.id}`">
+                                <img class="card-img rounded-circle" :src="myUserInfo.userpic">
                             </router-link>
                         </div>
                         <div class="col-12 col-md-9">
                             <div class="card-body p-2 text-center">
-                                <router-link :to="`/users/${$root.user.id}`">
-                                    <h6 class="card-text">{{ name }}</h6>
+                                <router-link :to="`/users/${myUserInfo.id}`">
+                                    <h6 class="card-text">{{ myUserInfo.name }}</h6>
                                 </router-link>
                                 <button class="btn btn-outline-primary py-0 mt-1 mb-0 mx-auto">
                                     <a href="/logout" class="text-black-50">Выйти</a>
@@ -40,34 +40,18 @@
 </template>
 
 <script>
-  import axios from 'axios'
-  import {devMode, apiurl} from '../globalDefines'
+  import {mapActions, mapGetters} from 'vuex'
 
   export default {
     name: 'siteHeader',
 
     created() {
-      this.fetchUser()
+      this.fetchMyUser()
     },
 
-    methods: {
-      fetchUser() {
-        axios.get(`${apiurl}/user`).then(response => {
-          this.$root.user = response.data
-        }).catch(err => {
-          if (devMode) console.error(err)
-        })
-      }
-    },
+    methods: mapActions(['fetchMyUser']),
 
-    computed: {
-      name() {
-        return this.$root.user.name
-      },
-      pic() {
-        return this.$root.user.userpic
-      }
-    },
+    computed: mapGetters(['myUserInfo'])
   }
 </script>
 
