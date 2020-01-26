@@ -1,15 +1,15 @@
 <template>
     <div>
-        <template v-if="!getBoardsError">
+        <template v-if="getBoards !== null">
             <div class="row no-gutters">
                 <site-board-sidebar class="col-10 my-2 mx-auto"
-                                    :boards="boards"
-                                    v-on:updatePosts="this.getBoards"/>
+                                    :boards="getBoards"
+                                    v-on:updatePosts="fetchBoards"/>
             </div>
             <div class="row no-gutters">
                 <div class="col-12">
                     <div class="row justify-content-around">
-                        <template v-for="el in boards">
+                        <template v-for="el in getBoards">
                             <div class="col-9 col-md-5">
                                 <div class="card my-1">
                                     <router-link :to="{
@@ -59,10 +59,8 @@
 </template>
 
 <script>
-  import axios from 'axios'
-  import {devMode, apiurl} from '../globalDefines'
-
-  import siteBoardSidebar from '../components/siteBoardSidebar'
+  import siteBoardSidebar from '../components/board/siteBoardSidebar'
+  import {mapActions, mapGetters} from 'vuex'
 
   export default {
     name: 'board',
@@ -71,34 +69,13 @@
       siteBoardSidebar
     },
 
-    data() {
-      return {
-        boards: [],
-        getBoardsError: false
-      }
-    },
-
     created() {
-      this.getBoards(false)
+      this.fetchBoards(false)
     },
 
-    methods: {
-      getBoards(isTypeOwn) {
-        this.boards.splice(0, this.boards.length)
-        console.log(`own: ${isTypeOwn}`)
-        axios.get(`${apiurl}/board`, {
-          params: {own: isTypeOwn}
-        }).then(r => r.data).then(data => {
-          if (devMode) console.log('Полученные досок:', data)
-          data.forEach(el => {
-            this.boards.push(el)
-          })
-        }).catch(err => {
-          if (devMode) console.error('При получении досок ошибка:', err)
-          this.getBoardsError = true
-        })
-      }
-    }
+    methods: mapActions(['fetchBoards']),
+
+    computed: mapGetters(['getBoards'])
   }
 </script>
 

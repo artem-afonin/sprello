@@ -1,8 +1,6 @@
 <template>
     <div class="row no-gutters">
-        <template v-if="board">
-        </template>
-        <template v-else-if="isForbidden">
+        <template v-if="isForbidden">
             <div class="col-12 text-center">
                 <h2 class="text-danger mx-auto my-5">
                     Доступ к доске запрещён
@@ -16,6 +14,8 @@
                 </h2>
             </div>
         </template>
+        <template v-else-if="boardInfo">
+        </template>
         <template v-else>
             <div class="col-12 my-5 text-center">
                 <div class="spinner-border text-warning mx-auto"
@@ -27,43 +27,39 @@
 </template>
 
 <script>
-  import axios from 'axios'
-  import {apiurl, devMode} from '../globalDefines'
+  import {mapGetters} from 'vuex'
 
   export default {
     name: 'boardpage',
 
     data() {
       return {
-        board: null,
-        isForbidden: false,
-        isNotExist: false
+        errorCode: ''
       }
     },
 
-    created() {
-      this.getBoard()
+    async created() {
+      await this.getBoard()
     },
 
     methods: {
-      getBoard() {
-        const boardId = this.$route.params.boardid
-        axios.get(`${apiurl}/board/${boardId}`, {
-          params: {
-            boardId
-          }
-        }).then(response => {
-          if (response.statusText.toLowerCase() === 'ok') {
-            this.board = response.data
-            if (devMode) console.log('Информация о доске: ', this.board)
-          }
-        }).catch(err => {
-          if (devMode) console.log(err.response)
-          if (err.response.status === 403)
-            this.isForbidden = true
-          else if (err.response.status === 404)
-            this.isNotExist = true
-        })
+      async getBoard() {
+        this.errorCode = ''
+        try {
+          await this.$store.dispatch('fetchBoard', this.$route.params.boardid)
+        } catch (e) {
+          this.errorCode = e.message
+        }
+      }
+    },
+
+    computed: {
+      ...mapGetters(['boardInfo']),
+      isForbidden() {
+        return this.errorCode === '403'
+      },
+      isNotExist() {
+        return this.errorCode === '404'
       }
     }
   }

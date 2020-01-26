@@ -41,10 +41,14 @@ export default {
 
   getters: {
     myUserInfo(state) {
-      return state.myUser
+      return Object.keys(state.myUser).length !== 0
+          ? state.myUser
+          : null
     },
     userInfo(state) {
-      return state.otherUser
+      return Object.keys(state.otherUser).length !== 0
+          ? state.otherUser
+          : null
     }
   }
 }
