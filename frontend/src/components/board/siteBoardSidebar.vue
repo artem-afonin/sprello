@@ -2,10 +2,9 @@
     <div class="border border-success rounded">
         <div class="row no-gutters">
             <div class="col-8">
-                <div class="card pb-0">
+                <div class="card pb-0 text-center">
                     <div class="card-header">
                         <div class="pt-0 mx-auto mb-0 text-black-50">
-                            <i class="material-icons md-24 align-text-botto">note_add</i>
                             <span class="h5 ml-2">Создать новую доску</span>
                         </div>
                     </div>
@@ -24,10 +23,9 @@
                 </div>
             </div>
             <div class="col-4 border-left border-success">
-                <div class="card pb-0">
+                <div class="card pb-0 text-center">
                     <div class="card-header">
                         <div class="pt-0 mx-auto mb-0 text-black-50">
-                            <i class="material-icons md-24 align-text-bottom">format_list_bulleted</i>
                             <span class="h5 ml-2">Параметры поиска</span>
                         </div>
                     </div>
@@ -78,7 +76,10 @@
       ...mapActions(['postBoard']),
       post() {
         if (this.newPost.name !== '')
-          this.postBoard(this.newPost.name, this.newPost.isPrivate)
+          this.postBoard({
+            name: this.newPost.name,
+            isPrivate: this.newPost.isPrivate
+          })
       },
       addAnimation() {
         const elem = $('span.h6')
