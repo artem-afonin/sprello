@@ -24,7 +24,7 @@ public class TaskElement {
     @JsonView({Views.PrivateBoard.class, Views.TaskElementInfo.class})
     private Color color;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JsonView(Views.TaskElementInfo.class)
     private Task parent;
 }

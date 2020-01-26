@@ -20,11 +20,11 @@ public class Task {
     @JsonView({Views.PrivateBoard.class, Views.TaskInfo.class})
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER, mappedBy = "parent")
+    @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER, mappedBy = "parent")
     @JsonView({Views.PrivateBoard.class, Views.TaskInfo.class})
     private Set<TaskElement> elements;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JsonView(Views.TaskInfo.class)
     private Board board;
 }
