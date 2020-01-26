@@ -5,16 +5,16 @@ export default {
   actions: {
     async fetchMyUser(context) {
       try {
-        const response = await axios.get(`${apiurl}/user`)
+        const response = await axios.get(apiurl.user)
         const user = response.data
         context.commit('updateMyUser', user)
       } catch (e) {
         if (devMode) console.error(e)
       }
     },
-    async fetchUser(context, userId) {
+    async fetchUser(context, id) {
       try {
-        const response = await axios.get(`${apiurl}/user/${userId}`)
+        const response = await axios.get(apiurl.userId(id))
         const user = response.data
         context.commit('updateOtherUser', user)
       } catch (e) {

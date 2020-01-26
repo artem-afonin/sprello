@@ -6,7 +6,7 @@ export default {
     async fetchBoards(context, own = false) {
       try {
         context.commit('clearBoards')
-        const response = await axios.get(`${apiurl}/board`, {
+        const response = await axios.get(apiurl.board, {
           params: {own}
         })
         const boards = response.data
@@ -17,10 +17,10 @@ export default {
         context.commit('setBoards', null)
       }
     },
-    async fetchBoard(context, boardId) {
+    async fetchBoard(context, id) {
       try {
-        const response = await axios.get(`${apiurl}/board/${boardId}`, {
-          params: {boardId}
+        const response = await axios.get(apiurl.boardId(id), {
+          params: {boardId: id}
         })
         const board = response.data
         if (devMode) console.log('Информация о доске: ', board)
@@ -30,9 +30,9 @@ export default {
         throw new Error(e.response.status.toString())
       }
     },
-    async postBoard(context, name, isPrivate) {
+    async postBoard(context, {name, isPrivate}) {
       try {
-        const response = await axios.post(`${apiurl}/board`, null, {
+        const response = await axios.post(apiurl.board, null, {
           params: {name, isPrivate}
         })
         const board = response.data
@@ -68,7 +68,6 @@ export default {
     getBoards(state) {
       return state.boards
     },
-
     boardInfo(state) {
       return Object.keys(state.currentBoard).length !== 0
           ? state.currentBoard
