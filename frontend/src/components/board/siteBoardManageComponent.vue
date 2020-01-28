@@ -33,11 +33,10 @@
       create() {
         if (this.newTask.name !== '')
           this.createTask({
-                boardId: this.$store.getters.boardInfo.id,
-                name: this.newTask.name
-              }
-          )
-        console.log(this.newTask.name)
+            boardId: this.$store.getters.boardInfo.id,
+            name: this.newTask.name
+          })
+        this.newTask.name = ''
       }
     }
   }

@@ -47,7 +47,6 @@
 </template>
 
 <script>
-  import $ from 'jquery'
   import {mapActions} from 'vuex'
 
   export default {
@@ -68,10 +67,6 @@
       }
     },
 
-    mounted() {
-      this.addAnimation()
-    },
-
     methods: {
       ...mapActions(['postBoard']),
       post() {
@@ -80,15 +75,6 @@
             name: this.newPost.name,
             isPrivate: this.newPost.isPrivate
           })
-      },
-      addAnimation() {
-        const elem = $('span.h6')
-        elem.on('mouseenter', function () {
-          $(this).addClass('font-weight-bolder').css('cursor', 'default')
-        })
-        elem.on('mouseleave', function () {
-          $(this).removeClass('font-weight-bolder')
-        })
       }
     }
   }

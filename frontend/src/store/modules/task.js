@@ -39,6 +39,46 @@ export default {
       } catch (e) {
         if (devMode) console.error(e)
       }
+    },
+    async createElement(context, {taskId, text, color}) {
+      try {
+        const response = await axios.post(apiurl.taskElement, null, {
+          params: {
+            taskId,
+            text,
+            color
+          }
+        })
+        const newElement = response.data
+        context.commit('addElement', newElement)
+      } catch (e) {
+        if (devMode) console.error(e)
+      }
+    },
+    async patchElement(context, {taskElementId, text, color}) {
+      try {
+        const response = await axios.patch(apiurl.task, null, {
+          params: {
+            taskElementId,
+            text,
+            color
+          }
+        })
+        const changedElement = response.data
+        context.commit('changeElement', changedElement)
+      } catch (e) {
+        if (devMode) console.error(e)
+      }
+    },
+    async deleteElement(context, taskElementId) {
+      try {
+        const response = await axios.delete(apiurl.task, {
+          params: {taskElementId}
+        })
+        context.commit('removeElement', taskElementId)
+      } catch (e) {
+        if (devMode) console.error(e)
+      }
     }
   },
 
@@ -59,6 +99,28 @@ export default {
     },
     removeTask(state, taskId) {
       state.tasks = state.tasks.filter(el => el.id !== taskId)
+    },
+    addElement(state, element) {
+      debugger
+      const parent = element.parent
+      state.tasks.forEach(task => {
+        if (task.id === parent.id)
+          task.elements.push(element)
+      })
+    },
+    changeElement(state, element) {
+      const parent = element.parent
+      state.tasks.forEach(task => {
+        task.elements.forEach(el => {
+          if (el.id === element.id)
+            el = element
+        })
+      })
+    },
+    removeElement(state, elementId) {
+      state.tasks.forEach(task => {
+        task.elements = task.elements.filter(el => el.id !== elementId)
+      })
     }
   },
 

@@ -13,13 +13,13 @@ import java.util.Set;
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView({Views.PrivateBoard.class, Views.TaskInfo.class})
+    @JsonView({Views.PrivateBoard.class, Views.TaskInfo.class, Views.TaskElementInfo.class})
     @Getter
     @Setter
     private Long id;
 
     @Column(name = "name")
-    @JsonView({Views.PrivateBoard.class, Views.TaskInfo.class})
+    @JsonView({Views.PrivateBoard.class, Views.TaskInfo.class, Views.TaskElementInfo.class})
     @Getter
     @Setter
     private String name;
