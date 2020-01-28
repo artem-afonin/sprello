@@ -101,7 +101,6 @@ export default {
       state.tasks = state.tasks.filter(el => el.id !== taskId)
     },
     addElement(state, element) {
-      debugger
       const parent = element.parent
       state.tasks.forEach(task => {
         if (task.id === parent.id)
