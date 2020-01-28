@@ -8,7 +8,8 @@ export default {
         const response = await axios.post(apiurl.task, null, {
           params: {
             boardId,
-            name}
+            name
+          }
         })
         const newTask = response.data
         context.commit('addTask', newTask)
@@ -57,7 +58,7 @@ export default {
     },
     async patchElement(context, {taskElementId, text, color}) {
       try {
-        const response = await axios.patch(apiurl.task, null, {
+        const response = await axios.patch(apiurl.taskElement, null, {
           params: {
             taskElementId,
             text,
@@ -72,7 +73,7 @@ export default {
     },
     async deleteElement(context, taskElementId) {
       try {
-        const response = await axios.delete(apiurl.task, {
+        const response = await axios.delete(apiurl.taskElement, {
           params: {taskElementId}
         })
         context.commit('removeElement', taskElementId)
@@ -110,10 +111,9 @@ export default {
     changeElement(state, element) {
       const parent = element.parent
       state.tasks.forEach(task => {
-        task.elements.forEach(el => {
-          if (el.id === element.id)
-            el = element
-        })
+        const index = task.elements.findIndex(el => el.id === element.id)
+        if (index > -1)
+          task.elements.splice(index, 1, element)
       })
     },
     removeElement(state, elementId) {

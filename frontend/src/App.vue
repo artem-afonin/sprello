@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper py-1 bg-light text-black-50">
         <!--CONTAINER START-->
-        <div class="container border p-0 bg-light">
+        <div class="container-fluid border py-0 px-4 bg-light">
             <!--HEADER START-->
             <site-header class="bg-primary">Sprello</site-header>
             <!--HEADER END-->
