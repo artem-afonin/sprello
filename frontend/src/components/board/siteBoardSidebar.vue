@@ -2,10 +2,9 @@
     <div class="border border-success rounded">
         <div class="row no-gutters">
             <div class="col-8">
-                <div class="card pb-0">
+                <div class="card pb-0 text-center">
                     <div class="card-header">
                         <div class="pt-0 mx-auto mb-0 text-black-50">
-                            <i class="material-icons md-24 align-text-botto">note_add</i>
                             <span class="h5 ml-2">Создать новую доску</span>
                         </div>
                     </div>
@@ -20,22 +19,21 @@
                             <label class="custom-control-label" for="newPostCheck">Закрытая доска</label>
                         </div>
                     </div>
-                    <button type="button" @click="postBoard" class="btn btn-outline-primary">Создать</button>
+                    <button type="button" @click="post" class="btn btn-outline-primary">Создать</button>
                 </div>
             </div>
             <div class="col-4 border-left border-success">
-                <div class="card pb-0">
+                <div class="card pb-0 text-center">
                     <div class="card-header">
                         <div class="pt-0 mx-auto mb-0 text-black-50">
-                            <i class="material-icons md-24 align-text-bottom">format_list_bulleted</i>
                             <span class="h5 ml-2">Параметры поиска</span>
                         </div>
                     </div>
                     <div class="form-group py-2 my-1 mx-auto">
                         <div class="custom-control custom-checkbox">
                             <input class="custom-control-input"
-                                   v-model="searchParams.isTypeOwn"
-                                   @click="$emit('updatePosts', !searchParams.isTypeOwn)"
+                                   v-model="searchParams.own"
+                                   @click="$emit('updatePosts', !searchParams.own)"
                                    type="checkbox" value="" id="searchParamsCheck">
                             <label class="custom-control-label" for="searchParamsCheck">
                                 Показывать только свои доски
@@ -49,9 +47,7 @@
 </template>
 
 <script>
-  import $ from 'jquery'
-  import axios from 'axios'
-  import {devMode, apiurl} from '../globalDefines'
+  import {mapActions} from 'vuex'
 
   export default {
     name: 'siteBoardSidebar',
@@ -66,39 +62,19 @@
           isPrivate: false
         },
         searchParams: {
-          isTypeOwn: false
+          own: false
         }
       }
     },
 
-    mounted() {
-      this.addAnimation()
-    },
-
     methods: {
-      addAnimation() {
-        const elem = $('span.h6')
-        elem.on('mouseenter', function () {
-          $(this).addClass('font-weight-bolder').css('cursor', 'default')
-        })
-        elem.on('mouseleave', function () {
-          $(this).removeClass('font-weight-bolder')
-        })
-      },
-      postBoard() {
-        if (this.name !== '') {
-          axios.post(`${apiurl}/board`, {
+      ...mapActions(['postBoard']),
+      post() {
+        if (this.newPost.name !== '')
+          this.postBoard({
             name: this.newPost.name,
             isPrivate: this.newPost.isPrivate
-          }).then(response => {
-            if (response.statusText.toLowerCase() === 'ok')
-              this.boards.push(response.data) //TODO будущем должно переходить на страничку с бордой
-          }).catch(err => {
-            if (devMode) console.error(err)
           })
-          this.newPost.name = ''
-          this.newPost.isPrivate = false
-        }
       }
     }
   }

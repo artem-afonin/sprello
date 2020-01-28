@@ -1,10 +1,10 @@
 import Vue from 'vue'
-
+import store from './store'
 import router from './router/router'
 import App from './App.vue'
 
 new Vue({
-  data: {user: null},
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')

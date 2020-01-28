@@ -41,13 +41,13 @@ public class Board {
     @Setter
     private Set<User> users;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER, mappedBy = "board")
+    @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER, mappedBy = "board")
     @JsonView(Views.PrivateBoard.class)
     @Getter
     @Setter
     private Set<Task> tasks;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER, mappedBy = "board")
+    @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER, mappedBy = "board")
     @JsonView(Views.PrivateBoard.class)
     @Getter
     @Setter
