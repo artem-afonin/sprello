@@ -11,7 +11,7 @@
       <div class="row no-gutters">
         <div class="col-12">
           <div class="row justify-content-around">
-            <template v-for="el in getBoards">
+            <div v-for="el in getBoards" :key="el.id">
               <div class="col-9 col-md-5">
                 <div class="card my-1">
                   <router-link
@@ -48,7 +48,7 @@
                   </router-link>
                 </div>
               </div>
-            </template>
+            </div>
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-light">
     <ul class="nav nav-pills nav-fill mx-auto">
-      <li v-for="el in buttons" class="nav-item px-4">
+      <li v-for="el in buttons" :key="el.href" class="nav-item px-4">
         <router-link
           v-if="myUserInfo || !el.authRequired"
           :to="el.href"

@@ -33,7 +33,7 @@ export default {
     },
     async deleteTask(context, taskId) {
       try {
-        const response = await axios.delete(apiurl.task, {
+        await axios.delete(apiurl.task, {
           params: { taskId }
         });
         context.commit("removeTask", taskId);
@@ -73,7 +73,7 @@ export default {
     },
     async deleteElement(context, taskElementId) {
       try {
-        const response = await axios.delete(apiurl.taskElement, {
+        await axios.delete(apiurl.taskElement, {
           params: { taskElementId }
         });
         context.commit("removeElement", taskElementId);
@@ -108,7 +108,6 @@ export default {
       });
     },
     changeElement(state, element) {
-      const parent = element.parent;
       state.tasks.forEach(task => {
         const index = task.elements.findIndex(el => el.id === element.id);
         if (index > -1) task.elements.splice(index, 1, element);
