@@ -22,5 +22,7 @@ module.exports = {
       }
     },
     historyApiFallback: true
-  }
+  },
+
+  productionSourceMap: false
 };
