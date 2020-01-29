@@ -1,21 +1,21 @@
-const clientPort = 8081
-const serverPort = 8080
-const serverUrl = `http://localhost:${serverPort}`
+const clientPort = 8081;
+const serverPort = 8080;
+const serverUrl = `http://localhost:${serverPort}`;
 
 module.exports = {
-  outputDir: 'dist/public',
-  assetsDir: 'static',
-  indexPath: '../templates/index.html',
+  outputDir: "dist/public",
+  assetsDir: "static",
+  indexPath: "../templates/index.html",
   filenameHashing: false,
 
   devServer: {
-    contentBase: './dist/public',
+    contentBase: "./dist/public",
     compress: true,
     port: clientPort,
-    stats: 'errors-only',
-    clientLogLevel: 'error',
+    stats: "errors-only",
+    clientLogLevel: "error",
     proxy: {
-      '/*': {
+      "/*": {
         target: serverUrl,
         secure: false,
         prependPath: false
@@ -23,4 +23,4 @@ module.exports = {
     },
     historyApiFallback: true
   }
-}
+};
