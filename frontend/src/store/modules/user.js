@@ -1,5 +1,5 @@
 import axios from "axios";
-import { apiurl, devMode } from "../../globalDefines";
+import { apiurl } from "../../globalDefines";
 
 export default {
   actions: {
@@ -8,9 +8,7 @@ export default {
         const response = await axios.get(apiurl.user);
         const user = response.data;
         context.commit("updateMyUser", user);
-      } catch (e) {
-        if (devMode) console.error(e);
-      }
+      } catch (e) {}
     },
     async fetchUser(context, id) {
       try {
@@ -18,7 +16,6 @@ export default {
         const user = response.data;
         context.commit("updateOtherUser", user);
       } catch (e) {
-        if (devMode) console.error(e);
         context.commit("updateOtherUser", null);
       }
     }

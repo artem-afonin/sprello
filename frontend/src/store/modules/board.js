@@ -1,5 +1,5 @@
 import axios from "axios";
-import { apiurl, devMode } from "../../globalDefines";
+import { apiurl } from "../../globalDefines";
 
 export default {
   actions: {
@@ -10,10 +10,8 @@ export default {
           params: { own }
         });
         const boards = response.data;
-        if (devMode) console.log("Полученные доски:", boards);
         boards.forEach(board => context.commit("pushBoard", board));
       } catch (e) {
-        if (devMode) console.error(e);
         context.commit("setBoards", null);
       }
     },
@@ -23,10 +21,8 @@ export default {
           params: { boardId: id }
         });
         const board = response.data;
-        if (devMode) console.log("Информация о доске: ", board);
         context.commit("setCurrentBoard", board);
       } catch (e) {
-        if (devMode) console.log(e.response);
         throw new Error(e.response.status.toString());
       }
     },
@@ -37,9 +33,7 @@ export default {
         });
         const board = response.data;
         context.commit("pushBoard", board);
-      } catch (e) {
-        if (devMode) console.error(e);
-      }
+      } catch (e) {}
     }
   },
 

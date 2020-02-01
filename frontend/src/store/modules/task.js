@@ -1,5 +1,5 @@
 import axios from "axios";
-import { apiurl, devMode } from "../../globalDefines";
+import { apiurl } from "../../globalDefines";
 
 export default {
   actions: {
@@ -13,9 +13,7 @@ export default {
         });
         const newTask = response.data;
         context.commit("addTask", newTask);
-      } catch (e) {
-        if (devMode) console.error(e);
-      }
+      } catch (e) {}
     },
     async patchTask(context, { taskId, name }) {
       try {
@@ -27,9 +25,7 @@ export default {
         });
         const changedTask = response.data;
         context.commit("changeTask", changedTask);
-      } catch (e) {
-        if (devMode) console.error(e);
-      }
+      } catch (e) {}
     },
     async deleteTask(context, taskId) {
       try {
@@ -37,9 +33,7 @@ export default {
           params: { taskId }
         });
         context.commit("removeTask", taskId);
-      } catch (e) {
-        if (devMode) console.error(e);
-      }
+      } catch (e) {}
     },
     async createElement(context, { taskId, text, color }) {
       try {
@@ -52,9 +46,7 @@ export default {
         });
         const newElement = response.data;
         context.commit("addElement", newElement);
-      } catch (e) {
-        if (devMode) console.error(e);
-      }
+      } catch (e) {}
     },
     async patchElement(context, { taskElementId, text, color }) {
       try {
@@ -67,9 +59,7 @@ export default {
         });
         const changedElement = response.data;
         context.commit("changeElement", changedElement);
-      } catch (e) {
-        if (devMode) console.error(e);
-      }
+      } catch (e) {}
     },
     async deleteElement(context, taskElementId) {
       try {
@@ -77,9 +67,7 @@ export default {
           params: { taskElementId }
         });
         context.commit("removeElement", taskElementId);
-      } catch (e) {
-        if (devMode) console.error(e);
-      }
+      } catch (e) {}
     }
   },
 
