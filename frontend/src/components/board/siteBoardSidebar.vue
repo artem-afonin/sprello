@@ -17,20 +17,6 @@
               placeholder="Введите название доски"
             />
           </div>
-          <div class="form-group my-1 mx-auto">
-            <div class="custom-control custom-switch">
-              <input
-                class="custom-control-input"
-                v-model="newPost.isPrivate"
-                type="checkbox"
-                value=""
-                id="newPostCheck"
-              />
-              <label class="custom-control-label" for="newPostCheck"
-                >Закрытая доска</label
-              >
-            </div>
-          </div>
           <button type="button" @click="post" class="btn btn-outline-primary">
             Создать
           </button>
@@ -76,8 +62,7 @@ export default {
   data() {
     return {
       newPost: {
-        name: "",
-        isPrivate: false
+        name: ""
       },
       searchParams: {
         own: false
@@ -90,8 +75,7 @@ export default {
     post() {
       if (this.newPost.name !== "")
         this.postBoard({
-          name: this.newPost.name,
-          isPrivate: this.newPost.isPrivate
+          name: this.newPost.name
         });
     }
   }

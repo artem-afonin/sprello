@@ -37,42 +37,32 @@ public class BoardUsersController {
     public ResponseEntity<?> addNewUser(
             @AuthenticationPrincipal User requestor,
             @RequestParam Long boardId,
-            @RequestParam(name = "userId", required = false) String newUserId
+            @RequestParam(name = "userId") String newUserId
     ) {
         Optional<Board> optionalBoard = boardRepository.findById(boardId);
         Board board;
-        if (newUserId == null) { // пользователь присоединяется к доске сам
-            if (optionalBoard.isPresent()) {
-                board = optionalBoard.get();
-                if (!board.getIsPrivate()) {
-                    board.getUsers().add(requestor);
-                    board = boardRepository.save(board);
-                    return ResponseEntity.ok(board);
-                } else {
-                    return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-                }
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } else { // участники добаляют пользователя в приватную доску
-            Optional<User> newOptionalUser = userRepository.findById(newUserId);
-            User newUser;
-            if (optionalBoard.isPresent() && newOptionalUser.isPresent()) {
-                board = optionalBoard.get();
-                newUser = newOptionalUser.get();
-            } else {
-                return ResponseEntity.notFound().build();
-            }
 
-            // если автор запроса сам состоит в доске
-            if (board.containsUser(requestor)) {
-                board.getUsers().add(newUser);
-                board = boardRepository.save(board);
-                return ResponseEntity.ok(board);
-            } else {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            }
+        //TODO Здесь был плохой код. Реализовать отдельный контроллер для подачи заявки на вступление в борду
+
+        // участники добаляют пользователя в приватную доску
+        Optional<User> newOptionalUser = userRepository.findById(newUserId);
+        User newUser;
+        if (optionalBoard.isPresent() && newOptionalUser.isPresent()) {
+            board = optionalBoard.get();
+            newUser = newOptionalUser.get();
+        } else {
+            return ResponseEntity.notFound().build();
         }
+
+        // если автор запроса сам состоит в доске
+        if (board.containsUser(requestor)) {
+            board.getUsers().add(newUser);
+            board = boardRepository.save(board);
+            return ResponseEntity.ok(board);
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
     }
 
     @DeleteMapping

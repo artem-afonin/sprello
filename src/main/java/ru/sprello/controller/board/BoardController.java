@@ -78,7 +78,7 @@ public class BoardController {
         Optional<Board> optionalBoard = boardRepository.findById(id);
         if (optionalBoard.isPresent()) {
             Board board = optionalBoard.get();
-            if (!board.getIsPrivate() || board.containsUser(user)) {
+            if (board.containsUser(user)) {
                 // возвращаю код 200 (успех) и board
                 LOG.info("GET[id=" + id + "] board for user with id " + user.getId());
                 return ResponseEntity.ok(board);
@@ -99,24 +99,21 @@ public class BoardController {
      *
      * @param user      создатель доски, <i>становится её первым участником</i>
      * @param name      имя доски
-     * @param isPrivate приватная ли доска
      *
      * @return <b>header: 200; body: Board</b> в случае успешного создания и сохранения в базу данных<br/>
-     * <b>header: 400</b> в случае отсутствия параметров "name" или "isPrivate", а также если "name" - пустая строка<br/>
+     * <b>header: 400</b> в случае отсутствия параметров "name" или если "name" - пустая строка<br/>
      */
     @JsonView(Views.PublicSimple.class)
     @PostMapping
     public ResponseEntity<Board> createBoard(
             @AuthenticationPrincipal User user,
-            @RequestParam String name,
-            @RequestParam Boolean isPrivate
+            @RequestParam String name
     ) {
         if (name.equals("")) {
             return ResponseEntity.badRequest().build();
         }
         Board board = new Board();
         board.setName(name);
-        board.setIsPrivate(isPrivate);
         board.setUsers(Collections.singleton(user));
         board.setTasks(Collections.emptySet());
         board.setMessages(Collections.emptySet());
@@ -132,7 +129,6 @@ public class BoardController {
      * @param user      пользователь, выполняющий запрос
      * @param id        уникальный идентификатор Board
      * @param name      новое название доски
-     * @param isPrivate сделать приватной или нет
      *
      * @return <b>header: 200; body: Board</b> в случае успешного обновления данных<br/>
      * <b>header: 403</b> если у пользователя нет прав для изменения доски<br/>
@@ -144,8 +140,7 @@ public class BoardController {
     public ResponseEntity<?> updateBoard(
             @AuthenticationPrincipal User user,
             @RequestParam Long id,
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) Boolean isPrivate
+            @RequestParam(required = false) String name
     ) {
         Optional<Board> optionalBoard = boardRepository.findById(id);
         Board board;
@@ -161,8 +156,6 @@ public class BoardController {
         } else {
             if (name != null && !"".equals(name))
                 board.setName(name);
-            if (isPrivate != null)
-                board.setIsPrivate(isPrivate);
             board = boardRepository.save(board);
             return ResponseEntity.ok(board);
         }

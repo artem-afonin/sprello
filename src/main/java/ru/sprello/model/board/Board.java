@@ -26,11 +26,6 @@ public class Board {
     @Setter
     private String name;
 
-    @JsonView(Views.PublicSimple.class)
-    @Getter
-    @Setter
-    private Boolean isPrivate;
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "board_users",
             joinColumns = @JoinColumn(name = "BOARD_ID", referencedColumnName = "id"),
@@ -40,6 +35,16 @@ public class Board {
     @Getter
     @Setter
     private Set<User> users;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "board_requestors",
+            joinColumns = @JoinColumn(name = "BOARD_ID", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "id")
+    )
+    @JsonView(Views.PrivateBoard.class)
+    @Getter
+    @Setter
+    private Set<User> requestors;
 
     @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER, mappedBy = "board")
     @JsonView(Views.PrivateBoard.class)

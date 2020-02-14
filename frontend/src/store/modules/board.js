@@ -26,10 +26,10 @@ export default {
         throw new Error(e.response.status.toString());
       }
     },
-    async postBoard(context, { name, isPrivate }) {
+    async postBoard(context, { name }) {
       try {
         const response = await axios.post(apiurl.board, null, {
-          params: { name, isPrivate }
+          params: { name }
         });
         const board = response.data;
         context.commit("pushBoard", board);

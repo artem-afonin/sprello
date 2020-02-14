@@ -29,15 +29,6 @@
                           {{ el.name }}
                         </b>
                       </h5>
-                      <h6
-                        v-if="el.isPrivate"
-                        class="card-subtitle text-muted mb-1"
-                      >
-                        <i class="material-icons md-24">
-                          lock
-                        </i>
-                        приватная
-                      </h6>
                       <p class="card-text">
                         Возможно здесь в будущем будет описание. <br />
                         Calcarias accelerare in infernum! A falsis, particula
