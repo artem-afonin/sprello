@@ -62,4 +62,9 @@ public class Board {
         String id = user.getId();
         return this.getUsers().stream().map(User::getId).anyMatch(id::equals);
     }
+
+    public boolean containsRequestor(User user) {
+        String id = user.getId();
+        return this.getRequestors().stream().map(User::getId).anyMatch(id::equals);
+    }
 }
