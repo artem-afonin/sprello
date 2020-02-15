@@ -21,6 +21,19 @@
           Создать
         </button>
       </div>
+      <hr />
+      <router-link
+        :to="{
+          name: 'requestors',
+          params: {
+            boardid: this.$route.params.boardid
+          }
+        }"
+      >
+        <button class="btn btn-outline-dark">
+          Посмотреть запросы на вступление
+        </button>
+      </router-link>
     </div>
   </div>
 </template>

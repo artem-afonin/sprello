@@ -6,7 +6,6 @@ module.exports = {
   outputDir: "dist/public",
   assetsDir: "static",
   indexPath: "../templates/index.html",
-  filenameHashing: false,
 
   devServer: {
     contentBase: "./dist/public",

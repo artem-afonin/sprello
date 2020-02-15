@@ -22,7 +22,7 @@
           </p>
         </router-link>
         <button class="btn btn-info" @click="createJoinRequest">
-          Подписаться
+          Отправить запрос на вступление
         </button>
       </div>
     </div>
