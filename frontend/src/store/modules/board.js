@@ -34,6 +34,20 @@ export default {
         const board = response.data;
         context.commit("pushBoard", board);
       } catch (e) {}
+    },
+    async createRequest(context, { boardId }) {
+      await axios.post(apiurl.requestCreate, null, {
+        params: { boardId }
+      });
+    },
+    async acceptRequest(context, { boardId, requestorId }) {
+      try {
+        const response = await axios.post(apiurl.requestAccept, null, {
+          params: { boardId, requestorId }
+        });
+        const board = response.data;
+        context.commit("setCurrentBoard", board);
+      } catch (e) {}
     }
   },
 

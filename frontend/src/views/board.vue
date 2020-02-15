@@ -10,36 +10,19 @@
       </div>
       <div class="row no-gutters">
         <div class="col-12">
-          <div class="row justify-content-around">
-            <div v-for="el in getBoards" :key="el.id">
-              <div class="col-9 col-md-5">
-                <div class="card my-1">
-                  <router-link
-                    :to="{
-                      name: 'boardpage',
-                      params: {
-                        boardid: el.id
-                      }
-                    }"
-                  >
-                    <div class="card-body text-center">
-                      <h5 class="card-title text-dark">
-                        {{ el.id }} ->
-                        <b>
-                          {{ el.name }}
-                        </b>
-                      </h5>
-                      <p class="card-text">
-                        Возможно здесь в будущем будет описание. <br />
-                        Calcarias accelerare in infernum! A falsis, particula
-                        germanus ausus.
-                      </p>
-                      <button class="btn btn-info">Подписаться</button>
-                    </div>
-                  </router-link>
-                </div>
+          <div class="row no-gutters">
+            <div class="col-2" />
+            <div class="col">
+              <div class="row justify-content-between">
+                <site-board-card
+                  class="col-12 col-md-5"
+                  v-for="el in getBoards"
+                  :key="el.id"
+                  :board="el"
+                />
               </div>
             </div>
+            <div class="col-2" />
           </div>
         </div>
       </div>
@@ -61,11 +44,13 @@
 <script>
 import siteBoardSidebar from "../components/board/siteBoardSidebar";
 import { mapActions, mapGetters } from "vuex";
+import SiteBoardCard from "../components/board/siteBoardCard";
 
 export default {
   name: "board",
 
   components: {
+    SiteBoardCard,
     siteBoardSidebar
   },
 
@@ -79,8 +64,4 @@ export default {
 };
 </script>
 
-<style scoped>
-a {
-  text-decoration: none !important;
-}
-</style>
+<style scoped></style>

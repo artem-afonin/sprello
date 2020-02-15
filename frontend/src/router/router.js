@@ -4,6 +4,7 @@ import index from "../views/index";
 import about from "../views/about";
 import board from "../views/board";
 import boardpage from "../views/boardpage";
+import requestors from "../views/requestors";
 import userpage from "../views/userpage";
 import error404 from "../views/error404";
 
@@ -39,6 +40,11 @@ const routes = [
     path: "/board/:boardid",
     name: "boardpage",
     component: boardpage
+  },
+  {
+    path: "/board/:boardid/requestors",
+    name: "requestors",
+    component: requestors
   },
   {
     path: "/users/:userid",

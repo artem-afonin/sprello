@@ -10,6 +10,8 @@ module.exports = {
     task: "api/v1/board/task",
     taskElement: "api/v1/board/task/element",
     user: "api/v1/user",
+    requestCreate: `api/v1/board/user/requestors/request`,
+    requestAccept: `api/v1/board/user/requestors/accept`,
     boardId: id => `api/v1/board/${id}`,
     userId: id => `api/v1/user/${id}`
   }

@@ -20,7 +20,7 @@ import java.util.Optional;
     обязательно делать проверку пользователя
  */
 @RestController
-@RequestMapping(Application.apiUrl + "board/users/requestors")
+@RequestMapping(Application.apiUrl + "board/user/requestors")
 public class BoardUsersRequestorsController {
     private static final Logger LOG = Logger.getLogger(BoardUsersRequestorsController.class);
     private final BoardRepository boardRepository;
@@ -46,10 +46,10 @@ public class BoardUsersRequestorsController {
             return ResponseEntity.notFound().build();
         }
 
-        if (board.containsUser(requestor)) { // нельзя отправлять запрос если ты уже состоишь в доске
+        if (board.containsUser(requestor) || board.containsRequestor(requestor)) {
+        // нельзя отправлять запрос если ты уже состоишь в доске!
+        // не нужно грузить БД, если ты уже отправлял запрос!
             return ResponseEntity.badRequest().build();
-        } else if (board.containsRequestor(requestor)) { // дабы не мучать БД лишний раз при повторяющихся запросах
-            return ResponseEntity.ok(board);
         } else {
             board.getRequestors().add(requestor);
             board = boardRepository.save(board);
