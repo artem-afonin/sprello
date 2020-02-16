@@ -1,6 +1,6 @@
 <template>
   <div class="row no-gutters">
-    <!-- ДОСТУП ЗАПРЕЩЁН -->
+    <!-- СТРАНИЦА ЗАГРУЖАЕТСЯ -->
     <template v-if="loading">
       <div class="col-12 text-center">
         <h2 class="text-black-50 mx-auto my-5">
