@@ -1,6 +1,15 @@
 <template>
   <div class="row no-gutters">
     <!-- ДОСТУП ЗАПРЕЩЁН -->
+    <template v-if="loading">
+      <div class="col-12 text-center">
+        <h2 class="text-black-50 mx-auto my-5">
+          Загрузка...
+        </h2>
+      </div>
+    </template>
+
+    <!-- ДОСТУП ЗАПРЕЩЁН -->
     <template v-if="isForbidden">
       <div class="col-12 text-center">
         <h2 class="text-danger mx-auto my-5">
@@ -66,7 +75,8 @@ export default {
 
   data() {
     return {
-      errorCode: ""
+      errorCode: "",
+      loading: false
     };
   },
 
@@ -80,10 +90,13 @@ export default {
     ...mapMutations(["clearTasks", "setTasks"]),
     async getBoard() {
       this.errorCode = "";
+      this.loading = true;
       try {
         await this.$store.dispatch("fetchBoard", this.$route.params.boardid);
       } catch (e) {
         this.errorCode = e.message;
+      } finally {
+        this.loading = false;
       }
     }
   },
