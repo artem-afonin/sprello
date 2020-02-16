@@ -2,7 +2,7 @@ module.exports = {
   navButtons: [
     { name: "Главная", href: "/", authRequired: false },
     { name: "Доски", href: "/board", authRequired: true },
-    { name: "Пользователи", href: "/users", authRequired: true },
+    // { name: "Пользователи", href: "/users", authRequired: true },
     { name: "О Sprello", href: "/about", authRequired: false }
   ],
   apiurl: {
