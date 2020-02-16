@@ -4,9 +4,10 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 }
 
-group 'ru.sprello'
 
+group 'ru.sprello'
 sourceCompatibility = 1.8
+
 
 configurations {
     developmentOnly
@@ -15,9 +16,11 @@ configurations {
     }
 }
 
+
 repositories {
     mavenCentral()
 }
+
 
 sourceSets {
     main {
@@ -29,6 +32,15 @@ sourceSets {
         }
     }
 }
+
+// Сборка фронтенда. Запускается при обработке ресурсов
+task buildFrontend(type: Exec) {
+    workingDir './frontend'
+    commandLine 'yarn', 'install'
+    commandLine 'yarn', 'build'
+}
+processResources.dependsOn(buildFrontend)
+
 
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.10'
