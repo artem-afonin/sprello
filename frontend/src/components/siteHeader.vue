@@ -11,7 +11,14 @@
         <div v-if="myUserInfo" class="card">
           <div class="row no-gutters align-items-center">
             <div class="d-none d-md-block col-md-3 pl-2">
-              <router-link :to="`/users/${myUserInfo.id}`">
+              <router-link
+                :to="{
+                  name: 'userpage',
+                  params: {
+                    userid: myUserInfo.id
+                  }
+                }"
+              >
                 <img
                   class="card-img rounded-circle"
                   :src="myUserInfo.userpic"
@@ -20,7 +27,14 @@
             </div>
             <div class="col-12 col-md-9">
               <div class="card-body p-2 text-center">
-                <router-link :to="`/users/${myUserInfo.id}`">
+                <router-link
+                  :to="{
+                    name: 'userpage',
+                    params: {
+                      userid: myUserInfo.id
+                    }
+                  }"
+                >
                   <h6 class="card-text">{{ myUserInfo.name }}</h6>
                 </router-link>
                 <button class="btn btn-outline-primary py-0 mt-1 mb-0 mx-auto">

@@ -6,6 +6,7 @@ export default {
     async fetchBoards(context, own = false) {
       try {
         context.commit("clearBoards");
+        context.commit("setIsOwn", own);
         const response = await axios.get(apiurl.board, {
           params: { own }
         });
@@ -29,10 +30,27 @@ export default {
     async postBoard(context, { name }) {
       try {
         const response = await axios.post(apiurl.board, null, {
-          params: { name }
+          params: { name: name }
         });
         const board = response.data;
         context.commit("pushBoard", board);
+      } catch (e) {}
+    },
+    async createRequest(context, { boardId }) {
+      await axios.post(apiurl.requestCreate, null, {
+        params: { boardId: boardId }
+      });
+    },
+    async acceptRequest(context, { boardId, requestorId }) {
+      try {
+        const response = await axios.post(apiurl.requestAccept, null, {
+          params: {
+            boardId: boardId,
+            requestorId: requestorId
+          }
+        });
+        const board = response.data;
+        context.commit("setCurrentBoard", board);
       } catch (e) {}
     }
   },
@@ -48,6 +66,9 @@ export default {
     pushBoard(state, board) {
       state.boards.push(board);
     },
+    setIsOwn(state, isOwn) {
+      state.isOwn = isOwn;
+    },
     setCurrentBoard(state, board) {
       state.currentBoard = board;
     }
@@ -55,12 +76,16 @@ export default {
 
   state: {
     boards: [],
+    isOwn: false,
     currentBoard: {}
   },
 
   getters: {
     getBoards(state) {
       return state.boards;
+    },
+    getIsOwn(state) {
+      return state.isOwn;
     },
     boardInfo(state) {
       return Object.keys(state.currentBoard).length !== 0

@@ -1,7 +1,7 @@
 <template>
-  <div class="wrapper py-1 bg-light text-black-50">
+  <div class="wrapper py-1 bg-light text-black-50 bg-light">
     <!--CONTAINER START-->
-    <div class="container-fluid border py-0 px-4 bg-light">
+    <div class="container-fluid border py-0 px-4">
       <!--HEADER START-->
       <site-header class="bg-primary">Sprello</site-header>
       <!--HEADER END-->
@@ -46,17 +46,4 @@ export default {
 };
 </script>
 
-<style>
-.material-icons.md-18 {
-  font-size: 18px;
-}
-.material-icons.md-24 {
-  font-size: 24px;
-}
-.material-icons.md-36 {
-  font-size: 36px;
-}
-.material-icons.md-48 {
-  font-size: 48px;
-}
-</style>
+<style></style>

@@ -11,13 +11,9 @@ export default {
       } catch (e) {}
     },
     async fetchUser(context, id) {
-      try {
-        const response = await axios.get(apiurl.userId(id));
-        const user = response.data;
-        context.commit("updateOtherUser", user);
-      } catch (e) {
-        context.commit("updateOtherUser", null);
-      }
+      const response = await axios.get(apiurl.userId(id));
+      const user = response.data;
+      context.commit("updateOtherUser", user);
     }
   },
 

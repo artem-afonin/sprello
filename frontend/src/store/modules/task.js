@@ -7,8 +7,8 @@ export default {
       try {
         const response = await axios.post(apiurl.task, null, {
           params: {
-            boardId,
-            name
+            boardId: boardId,
+            name: name
           }
         });
         const newTask = response.data;
@@ -19,8 +19,8 @@ export default {
       try {
         const response = await axios.patch(apiurl.task, null, {
           params: {
-            taskId,
-            name
+            taskId: taskId,
+            name: name
           }
         });
         const changedTask = response.data;
@@ -30,7 +30,7 @@ export default {
     async deleteTask(context, taskId) {
       try {
         await axios.delete(apiurl.task, {
-          params: { taskId }
+          params: { taskId: taskId }
         });
         context.commit("removeTask", taskId);
       } catch (e) {}
@@ -39,9 +39,9 @@ export default {
       try {
         const response = await axios.post(apiurl.taskElement, null, {
           params: {
-            taskId,
-            text,
-            color
+            taskId: taskId,
+            text: text,
+            color: color
           }
         });
         const newElement = response.data;
@@ -52,9 +52,9 @@ export default {
       try {
         const response = await axios.patch(apiurl.taskElement, null, {
           params: {
-            taskElementId,
-            text,
-            color
+            taskElementId: taskElementId,
+            text: text,
+            color: color
           }
         });
         const changedElement = response.data;
@@ -64,7 +64,7 @@ export default {
     async deleteElement(context, taskElementId) {
       try {
         await axios.delete(apiurl.taskElement, {
-          params: { taskElementId }
+          params: { taskElementId: taskElementId }
         });
         context.commit("removeElement", taskElementId);
       } catch (e) {}

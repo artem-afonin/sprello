@@ -55,7 +55,9 @@ public class BoardTaskElementController {
 
         TaskElement taskElement = new TaskElement();
         if (!"".equals(text)) taskElement.setText(text);
+        else taskElement.setText("unnamed");
         if (color != null) taskElement.setColor(color);
+        else taskElement.setColor(Color.DEFAULT);
         taskElement.setParent(task);
 
         taskElement = taskElementRepository.save(taskElement);
