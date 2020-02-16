@@ -7,8 +7,8 @@ export default {
       try {
         const response = await axios.post(apiurl.task, null, {
           params: {
-            boardId: encodeURI(boardId),
-            name: encodeURI(name)
+            boardId: boardId,
+            name: name
           }
         });
         const newTask = response.data;
@@ -19,8 +19,8 @@ export default {
       try {
         const response = await axios.patch(apiurl.task, null, {
           params: {
-            taskId: encodeURI(taskId),
-            name: encodeURI(name)
+            taskId: taskId,
+            name: name
           }
         });
         const changedTask = response.data;
@@ -30,7 +30,7 @@ export default {
     async deleteTask(context, taskId) {
       try {
         await axios.delete(apiurl.task, {
-          params: { taskId: encodeURI(taskId) }
+          params: { taskId: taskId }
         });
         context.commit("removeTask", taskId);
       } catch (e) {}
@@ -39,9 +39,9 @@ export default {
       try {
         const response = await axios.post(apiurl.taskElement, null, {
           params: {
-            taskId: encodeURI(taskId),
-            text: encodeURI(text),
-            color: encodeURI(color)
+            taskId: taskId,
+            text: text,
+            color: color
           }
         });
         const newElement = response.data;
@@ -52,9 +52,9 @@ export default {
       try {
         const response = await axios.patch(apiurl.taskElement, null, {
           params: {
-            taskElementId: encodeURI(taskElementId),
-            text: encodeURI(text),
-            color: encodeURI(color)
+            taskElementId: taskElementId,
+            text: text,
+            color: color
           }
         });
         const changedElement = response.data;
@@ -64,7 +64,7 @@ export default {
     async deleteElement(context, taskElementId) {
       try {
         await axios.delete(apiurl.taskElement, {
-          params: { taskElementId: encodeURI(taskElementId) }
+          params: { taskElementId: taskElementId }
         });
         context.commit("removeElement", taskElementId);
       } catch (e) {}

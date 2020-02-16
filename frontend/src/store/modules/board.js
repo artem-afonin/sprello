@@ -30,7 +30,7 @@ export default {
     async postBoard(context, { name }) {
       try {
         const response = await axios.post(apiurl.board, null, {
-          params: { name: encodeURI(name) }
+          params: { name: name }
         });
         const board = response.data;
         context.commit("pushBoard", board);
@@ -38,15 +38,15 @@ export default {
     },
     async createRequest(context, { boardId }) {
       await axios.post(apiurl.requestCreate, null, {
-        params: { boardId: encodeURI(boardId) }
+        params: { boardId: boardId }
       });
     },
     async acceptRequest(context, { boardId, requestorId }) {
       try {
         const response = await axios.post(apiurl.requestAccept, null, {
           params: {
-            boardId: encodeURI(boardId),
-            requestorId: encodeURI(requestorId)
+            boardId: boardId,
+            requestorId: requestorId
           }
         });
         const board = response.data;

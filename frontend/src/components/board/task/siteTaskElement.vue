@@ -1,8 +1,8 @@
 <template>
   <li class="list-group-item p-2">
     <div class="row no-gutters">
-      <div class="col-11">
-        <h5>
+      <div :class="`col-11 bg-${colorName} rounded p-1`">
+        <h5 class="font-weight-bolder">
           {{ element.text }}
         </h5>
       </div>
@@ -48,12 +48,15 @@
           <div class="modal-body">
             <div class="form-group">
               <input
-                class="form-control mt-3"
+                class="form-control my-3"
                 v-model="changedElement.text"
                 type="text"
                 maxlength="48"
                 placeholder="Введите новое описание подзадачи"
               />
+              <button class="btn btn-outline-dark" @click="onChangeColor">
+                Цвет: {{ colorTxt }}
+              </button>
             </div>
           </div>
           <div class="modal-footer text-center">
@@ -84,24 +87,94 @@ export default {
   data() {
     return {
       changedElement: {
-        text: "",
-        color: ""
+        text: this.element.text,
+        color: this.element.color
       }
     };
   },
 
   methods: {
     ...mapActions(["patchElement", "deleteElement"]),
-    patch() {
-      this.patchElement({
-        taskElementId: this.element.id,
-        text: this.changedElement.text,
-        color: this.changedElement.color
-      });
-      this.changedElement.text = "";
+    async patch() {
+      if (this.changedElement.text.trim() !== "") {
+        await this.patchElement({
+          taskElementId: this.element.id,
+          text: this.changedElement.text,
+          color: this.changedElement.color
+        });
+        this.changedElement.text = this.element.text;
+      }
     },
     del() {
       this.deleteElement(this.element.id);
+    },
+    onChangeColor({ target }) {
+      const colors = ["DEFAULT", "RED", "GREEN", "BLUE"];
+      const colorClasses = [
+        "btn-outline-dark",
+        "btn-outline-danger",
+        "btn-outline-success",
+        "btn-outline-info"
+      ];
+      for (let i = 0; i < colors.length; i++) {
+        if (this.changedElement.color.toUpperCase() === colors[i]) {
+          if (i === colors.length - 1) {
+            this.changedElement.color = colors[0];
+            target.classList.remove(colorClasses[colorClasses.length - 1]);
+            target.classList.add(colorClasses[0]);
+          } else {
+            this.changedElement.color = colors[i + 1];
+            target.classList.remove(colorClasses[i]);
+            target.classList.add(colorClasses[i + 1]);
+          }
+          break;
+        }
+      }
+    }
+  },
+
+  computed: {
+    colorTxt() {
+      let value = "";
+      switch (this.changedElement.color.toUpperCase()) {
+        case "RED": {
+          value = "Красный";
+          break;
+        }
+        case "GREEN": {
+          value = "Зелёный";
+          break;
+        }
+        case "BLUE": {
+          value = "Синий";
+          break;
+        }
+        default: {
+          value = "Обычный";
+        }
+      }
+      return value;
+    },
+    colorName() {
+      let value = "";
+      switch (this.element.color.toUpperCase()) {
+        case "RED": {
+          value = "secondary";
+          break;
+        }
+        case "GREEN": {
+          value = "success";
+          break;
+        }
+        case "BLUE": {
+          value = "info";
+          break;
+        }
+        default: {
+          value = "light";
+        }
+      }
+      return value;
     }
   }
 };
