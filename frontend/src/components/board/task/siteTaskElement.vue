@@ -1,7 +1,7 @@
 <template>
-  <li class="list-group-item px-1">
+  <li class="list-group-item p-2">
     <div class="row no-gutters">
-      <div class="col">
+      <div class="col-11">
         <h5>
           {{ element.text }}
         </h5>

@@ -54,10 +54,10 @@ export default {
   },
 
   methods: {
-    async fetchUser() {
+    async fetchUser(id) {
       try {
         this.userLoading = true;
-        await this.$store.dispatch("fetchUser", this.$route.params.userid);
+        await this.$store.dispatch("fetchUser", id);
       } catch (e) {
         this.userNotExist = true;
       } finally {
@@ -77,6 +77,10 @@ export default {
       const time = lastVisit.fromNow();
       return time;
     }
+  },
+
+  beforeRouteUpdate(to) {
+    this.fetchUser(to.params.userid);
   }
 };
 </script>

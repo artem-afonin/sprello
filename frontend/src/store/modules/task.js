@@ -7,8 +7,8 @@ export default {
       try {
         const response = await axios.post(apiurl.task, null, {
           params: {
-            boardId,
-            name
+            boardId: encodeURI(boardId),
+            name: encodeURI(name)
           }
         });
         const newTask = response.data;
@@ -19,8 +19,8 @@ export default {
       try {
         const response = await axios.patch(apiurl.task, null, {
           params: {
-            taskId,
-            name
+            taskId: encodeURI(taskId),
+            name: encodeURI(name)
           }
         });
         const changedTask = response.data;
@@ -30,7 +30,7 @@ export default {
     async deleteTask(context, taskId) {
       try {
         await axios.delete(apiurl.task, {
-          params: { taskId }
+          params: { taskId: encodeURI(taskId) }
         });
         context.commit("removeTask", taskId);
       } catch (e) {}
@@ -39,9 +39,9 @@ export default {
       try {
         const response = await axios.post(apiurl.taskElement, null, {
           params: {
-            taskId,
-            text,
-            color
+            taskId: encodeURI(taskId),
+            text: encodeURI(text),
+            color: encodeURI(color)
           }
         });
         const newElement = response.data;
@@ -52,9 +52,9 @@ export default {
       try {
         const response = await axios.patch(apiurl.taskElement, null, {
           params: {
-            taskElementId,
-            text,
-            color
+            taskElementId: encodeURI(taskElementId),
+            text: encodeURI(text),
+            color: encodeURI(color)
           }
         });
         const changedElement = response.data;
@@ -64,7 +64,7 @@ export default {
     async deleteElement(context, taskElementId) {
       try {
         await axios.delete(apiurl.taskElement, {
-          params: { taskElementId }
+          params: { taskElementId: encodeURI(taskElementId) }
         });
         context.commit("removeElement", taskElementId);
       } catch (e) {}

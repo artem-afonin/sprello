@@ -19,6 +19,7 @@
                   v-for="el in getBoards"
                   :key="el.id"
                   :board="el"
+                  :is-own-board="getIsOwn"
                 />
               </div>
             </div>
@@ -60,7 +61,7 @@ export default {
 
   methods: mapActions(["fetchBoards"]),
 
-  computed: mapGetters(["getBoards"])
+  computed: mapGetters(["getBoards", "getIsOwn"])
 };
 </script>
 

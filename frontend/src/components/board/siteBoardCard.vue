@@ -21,7 +21,11 @@
             ausus.
           </p>
         </router-link>
-        <button class="btn btn-info" @click="createJoinRequest">
+        <button
+          v-if="!isOwnBoard"
+          @click="createJoinRequest"
+          class="btn btn-info"
+        >
           Отправить запрос на вступление
         </button>
       </div>
@@ -33,7 +37,7 @@
 export default {
   name: "siteBoardCard",
 
-  props: ["board"],
+  props: ["board", "isOwnBoard"],
 
   methods: {
     async createJoinRequest(event) {
