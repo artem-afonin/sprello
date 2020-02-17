@@ -1,0 +1,23 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: ${psql_url}
+    username: ${psql_login}
+    password: ${psql_password}
+  jpa:
+    generate-ddl: true
+
+security:
+  oauth2:
+    client:
+      clientId: ${client_id}
+      clientSecret: ${client_code}
+      accessTokenUri: https://www.googleapis.com/oauth2/v4/token
+      userAuthorizationUri: https://accounts.google.com/o/oauth2/v2/auth
+      clientAuthenticationScheme: form
+      scope: openid,email,profile
+    resource:
+      userInfoUri: https://www.googleapis.com/oauth2/v3/userinfo
+      preferTokenInfo: true
