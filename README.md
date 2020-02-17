@@ -25,7 +25,7 @@ Sprello - это веб-сервис, являющийся идейным кло
 ###### Настройка переменных окружения
 Перед сборкой предварительно необходимо получить OAuth2 данные в Google OAuth2 и
 объявить следующие переменные окружения:
-- **psql-url** - URL PostgreSQL
+- **psql_url** - URL PostgreSQL
   - Пример: _jdbc:postgresql://127.0.0.1:5432/database_name_
 - **psql_login** - Логин PostgreSQL пользователя
 - **psql_password**  - Пароль PostgreSQL пользователя

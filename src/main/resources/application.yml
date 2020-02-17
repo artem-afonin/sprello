@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://91.196.245.199:5432/sprellotest
+    url: ${psql_url}
     username: ${psql_login}
     password: ${psql_password}
   jpa:
