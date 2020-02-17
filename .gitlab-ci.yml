@@ -1,0 +1,10 @@
+image: "alpine"
+
+before_script:
+  - apk add --update --no-cache npm
+  - apk add --no-cache openjdk11
+
+build:
+  script:
+    - ./gradlew bootJar
+    - java -jar ./build/libs/sprello.jar
