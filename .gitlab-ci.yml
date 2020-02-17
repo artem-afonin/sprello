@@ -7,4 +7,3 @@ before_script:
 build:
   script:
     - ./gradlew bootJar
-    - java -jar ./build/libs/sprello.jar
