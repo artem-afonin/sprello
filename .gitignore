@@ -12,3 +12,6 @@ src/main/resources/static/js
 
 # Директория логирования
 logs/
+
+# Файл с переменными окружения
+.env
