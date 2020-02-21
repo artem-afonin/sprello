@@ -9,14 +9,17 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.sprello.Application;
 import ru.sprello.model.User;
-import ru.sprello.utils.Views;
 import ru.sprello.model.board.Board;
 import ru.sprello.repo.BoardRepository;
+import ru.sprello.utils.Views;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * REST контроллер, контролирующий доступ к сведениям о {@link Board}.
+ */
 @RestController
 @RequestMapping(Application.apiUrl + "board")
 public class BoardController {
@@ -65,9 +68,10 @@ public class BoardController {
      * @param id   уникальный идентификатор Board
      * @param user пользователь, запрашивающий данные
      *
-     * @return <b>header: 200; body: Board</b> в случае существования доски и наличия прав на её просмотр у user<br/>
-     * <b>header: 403</b> в случае отсутствия у пользователя прав на просмотр<br/>
-     * <b>header: 404</b> если досок не существует
+     * @return HTTPResponse<br/>
+     * <b>status code: 200</b> в случае существования доски и наличия прав на её просмотр у user<br/>
+     * <b>status code: 403</b> в случае отсутствия у пользователя прав на просмотр<br/>
+     * <b>status code: 404</b> если досок не существует
      */
     @JsonView(Views.PrivateBoard.class)
     @GetMapping("{id}")
@@ -97,11 +101,12 @@ public class BoardController {
     /**
      * Обработчик POST маппинга для создания нового Board
      *
-     * @param user      создатель доски, <i>становится её первым участником</i>
-     * @param name      имя доски
+     * @param user создатель доски, <i>становится её первым участником</i>
+     * @param name имя доски
      *
-     * @return <b>header: 200; body: Board</b> в случае успешного создания и сохранения в базу данных<br/>
-     * <b>header: 400</b> в случае отсутствия параметров "name" или если "name" - пустая строка<br/>
+     * @return HTTPResponse<br/>
+     * <b>status code: 200</b> в случае успешного создания и сохранения в базу данных<br/>
+     * <b>status code: 400</b> в случае отсутствия параметров "name" или если "name" - пустая строка<br/>
      */
     @JsonView(Views.PublicSimple.class)
     @PostMapping
@@ -126,13 +131,14 @@ public class BoardController {
      * Обработчик PATCH маппинга для частичного или полного обновления Board<br/>
      * <b>Обновляются только обычные поля. Поля коллекций обновлены не будут</b>
      *
-     * @param user      пользователь, выполняющий запрос
-     * @param id        уникальный идентификатор Board
-     * @param name      новое название доски
+     * @param user пользователь, выполняющий запрос
+     * @param id   уникальный идентификатор Board
+     * @param name новое название доски
      *
-     * @return <b>header: 200; body: Board</b> в случае успешного обновления данных<br/>
-     * <b>header: 403</b> если у пользователя нет прав для изменения доски<br/>
-     * <b>header: 404</b> если Board отсутствует в базе данных
+     * @return HTTPResponse<br/>
+     * <b>status code: 200</b> в случае успешного обновления данных<br/>
+     * <b>status code: 403</b> если у пользователя нет прав для изменения доски<br/>
+     * <b>status code: 404</b> если Board отсутствует в базе данных
      */
     // TODO реализовать обновление списков в специальных контроллерах для Task, User и Message
     @JsonView(Views.PublicSimple.class)
@@ -167,8 +173,10 @@ public class BoardController {
      * @param id   уникальный идентификатор доски
      * @param user пользователь, выполняющий запрос
      *
-     * @return <b>header: 200</b> если удаление прошло успешно<br/>
-     * <b>header: 403</b> в случае отсутствия у пользователя прав на удаление данных
+     * @return HTTPResponse<br/>
+     * <b>status code: 200</b> если удаление прошло успешно<br/>
+     * <b>status code: 403</b> в случае отсутствия у пользователя прав на удаление данных<br/>
+     * <b>status code: 404</b> если доска не существует
      */
     @JsonView(Views.PublicSimple.class)
     @DeleteMapping

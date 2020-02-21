@@ -17,6 +17,9 @@ import ru.sprello.utils.Views;
 
 import java.util.Optional;
 
+/**
+ * REST контроллер, контролирующий доступ к сведениям о {@link User}
+ */
 @RestController
 @RequestMapping(Application.apiUrl + "user")
 public class UserController {
