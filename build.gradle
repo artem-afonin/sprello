@@ -25,10 +25,10 @@ repositories {
 sourceSets {
     main {
         java {
-            srcDirs= ["src/main/java"]
+            srcDirs = ["src/main/java"]
         }
         resources {
-            srcDirs= ["src/main/resources", "frontend/dist"]
+            srcDirs = ["src/main/resources", "frontend/dist"]
         }
     }
 }
@@ -56,9 +56,9 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.2.2.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.2.2.RELEASE'
     compile group: 'org.springframework.security.oauth.boot', name: 'spring-security-oauth2-autoconfigure', version: '2.2.2.RELEASE'
-    compile group: 'org.postgresql', name: 'postgresql', version: '42.2.9'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.2.2.RELEASE'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.2.2.RELEASE'
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.2.2.RELEASE'
 
+    compile group: 'org.postgresql', name: 'postgresql', version: '42.2.9'
     compile group: 'log4j', name: 'log4j', version: '1.2.17'
 }
