@@ -37,7 +37,7 @@ Sprello - это веб-сервис, являющийся идейным кло
 ```
 $ git clone https://gitlab.com/sprello-developers/sprello.git
 $ cd sprello
-$ ./gradlew bootJar
+$ ./gradlew bootJar -Pfrontend
 ```
 ##### Запуск
 ```
