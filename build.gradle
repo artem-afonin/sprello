@@ -24,27 +24,11 @@ repositories {
 
 sourceSets {
     main {
-        java {
-            srcDirs = ["src/main/java"]
-        }
         resources {
             srcDirs = ["src/main/resources", "frontend/dist"]
         }
     }
 }
-
-
-task installFrontend(type: Exec) {
-    workingDir './frontend'
-    commandLine 'npm', 'install'
-}
-// Сборка фронтенда. Запускается при обработке ресурсов
-task buildFrontend(type: Exec) {
-    workingDir './frontend'
-    commandLine 'npm', 'run', 'build'
-}
-buildFrontend.dependsOn(installFrontend)
-processResources.dependsOn(buildFrontend)
 
 
 dependencies {
@@ -61,4 +45,25 @@ dependencies {
 
     compile group: 'org.postgresql', name: 'postgresql', version: '42.2.9'
     compile group: 'log4j', name: 'log4j', version: '1.2.17'
+}
+
+
+/**** КАСТОМНЫЕ ЗАДАЧИ ЗДЕСЬ ****/
+
+
+/** Установка пакетов для сборки frontend **/
+task installFrontend(type: Exec) {
+    workingDir './frontend'
+    commandLine 'npm', 'install'
+}
+
+/** Сборка фронтенда **/
+task buildFrontend(type: Exec) {
+    workingDir './frontend'
+    commandLine 'npm', 'run', 'build'
+}
+
+if (project.hasProperty('frontend')) {
+    buildFrontend.dependsOn(installFrontend)
+    processResources.dependsOn(buildFrontend)
 }
