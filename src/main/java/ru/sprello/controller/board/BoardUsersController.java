@@ -64,6 +64,7 @@ public class BoardUsersController {
             board = optionalBoard.get();
             newUser = newOptionalUser.get();
         } else {
+            LOG.warn("POST " + boardId + " 404 NOT FOUND.");
             return ResponseEntity.notFound().build();
         }
 
@@ -71,8 +72,10 @@ public class BoardUsersController {
         if (board.containsUser(requestor)) {
             board.getUsers().add(newUser);
             board = boardRepository.save(board);
+            LOG.info("POST " + boardId + " created successfully.");
             return ResponseEntity.ok(board);
         } else {
+            LOG.warn("POST " + boardId + " 403 FORBIDDEN for user " + requestor.getId());
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
@@ -98,8 +101,10 @@ public class BoardUsersController {
             Board board = optionalBoard.get();
             board.getUsers().remove(requestor);
             boardRepository.save(board);
+            LOG.info("DELETE user " + requestor.getId() + " from board " + boardId +  " deleted successfully.");
             return ResponseEntity.ok().build();
         } else {
+            LOG.warn("DELETE " + boardId + " 404 NOT FOUND.");
             return ResponseEntity.notFound().build();
         }
     }

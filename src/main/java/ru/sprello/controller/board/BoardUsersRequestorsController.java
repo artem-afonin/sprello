@@ -55,16 +55,19 @@ public class BoardUsersRequestorsController {
         if (optionalBoard.isPresent()) {
             board = optionalBoard.get();
         } else {
+            LOG.warn("POST REQUEST " + boardId + " 404 NOT FOUND.");
             return ResponseEntity.notFound().build();
         }
 
         if (board.containsUser(requestor) || board.containsRequestor(requestor)) {
             // нельзя отправлять запрос если ты уже состоишь в доске!
             // не нужно грузить БД, если ты уже отправлял запрос!
+            LOG.warn("POST REQUEST " + requestor.getId() + " 400 BAD REQUEST.");
             return ResponseEntity.badRequest().build();
         } else {
             board.getRequestors().add(requestor);
             board = boardRepository.save(board);
+            LOG.info("POST REQUEST " + requestor.getId() + " requested successfully.");
             return ResponseEntity.ok(board);
         }
     }
@@ -96,19 +99,23 @@ public class BoardUsersRequestorsController {
             board = optionalBoard.get();
             newUser = optionalUser.get();
         } else {
+            LOG.warn("POST ACCEPT board " + boardId + " or " + requestorId + " 404 NOT FOUND.");
             return ResponseEntity.notFound().build();
         }
 
         if (!board.containsUser(user)) {
+            LOG.warn("POST ACCEPT " + boardId + " 403 FORBIDDEN for user " + user.getId());
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         if (!board.containsRequestor(newUser)) {
+            LOG.warn("POST ACCEPT " + requestorId + " 400 BAD REQUEST.");
             return ResponseEntity.badRequest().build();
         }
 
         board.getRequestors().remove(newUser);
         board.getUsers().add(newUser);
         board = boardRepository.save(board);
+        LOG.info("POST ACCEPT " + requestorId + " accepted successfully.");
         return ResponseEntity.ok(board);
     }
 }

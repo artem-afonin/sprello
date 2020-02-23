@@ -58,11 +58,14 @@ public class BoardTasksController {
         if (optionalBoard.isPresent()) {
             board = optionalBoard.get();
         } else {
+            LOG.warn("POST " + boardId + " 404 NOT FOUND.");
             return ResponseEntity.notFound().build();
         }
 
-        if (!board.containsUser(user))
+        if (!board.containsUser(user)) {
+            LOG.warn("POST " + boardId + " 403 FORBIDDEN for user " + user.getId());
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
 
         Task newTask = new Task();
         if (!name.equals("")) newTask.setName(name);
@@ -70,6 +73,7 @@ public class BoardTasksController {
         newTask.setBoard(board);
 
         newTask = taskRepository.save(newTask);
+        LOG.info("POST " + boardId + " created successfully.");
         return ResponseEntity.ok(newTask);
     }
 
@@ -97,15 +101,19 @@ public class BoardTasksController {
         if (optionalTask.isPresent()) {
             task = optionalTask.get();
         } else {
+            LOG.warn("PATCH " + taskId + " 404 NOT FOUND.");
             return ResponseEntity.notFound().build();
         }
 
-        if (!task.getBoard().containsUser(user))
+        if (!task.getBoard().containsUser(user)) {
+            LOG.warn("PATCH " + taskId + " 403 FORBIDDEN for user " + user.getId());
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
 
         if (name != null) task.setName(name);
 
         task = taskRepository.save(task);
+        LOG.info("PATCH " + taskId + " patched successfully.");
         return ResponseEntity.ok(task);
     }
 
@@ -131,13 +139,17 @@ public class BoardTasksController {
         if (optionalTask.isPresent()) {
             task = optionalTask.get();
         } else {
+            LOG.warn("DELETE " + taskId + " 404 NOT FOUND.");
             return ResponseEntity.notFound().build();
         }
 
-        if (!task.getBoard().containsUser(user))
+        if (!task.getBoard().containsUser(user)) {
+            LOG.warn("DELETE " + taskId + " 403 FORBIDDEN for user " + user.getId());
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
 
         taskRepository.delete(task);
+        LOG.info("DELETE " + taskId + " deleted successfully.");
         return ResponseEntity.ok().build();
     }
 }

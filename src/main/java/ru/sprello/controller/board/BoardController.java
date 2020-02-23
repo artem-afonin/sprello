@@ -53,10 +53,10 @@ public class BoardController {
         List<Board> boards;
         if (own != null && own) {
             boards = boardRepository.findAllByUsersContaining(user);
-            LOG.info("GET[own] boards for user with id " + user.getId());
+            LOG.info("GET own boards for user with id " + user.getId());
         } else {
             boards = boardRepository.findAll();
-            LOG.info("GET[all] boards for user with id " + user.getId());
+            LOG.info("GET all boards for user with id " + user.getId());
         }
 
         return ResponseEntity.ok(boards);
@@ -83,17 +83,16 @@ public class BoardController {
         if (optionalBoard.isPresent()) {
             Board board = optionalBoard.get();
             if (board.containsUser(user)) {
-                // возвращаю код 200 (успех) и board
-                LOG.info("GET[id=" + id + "] board for user with id " + user.getId());
+                LOG.info("GET " + id + " for user " + user.getId() + " successfully.");
                 return ResponseEntity.ok(board);
             } else {
                 // возвращаю код 403 (запрет доступа) и пустой body
-                LOG.warn("GET[id=" + id + "] 403 FORBIDDEN for user with id " + user.getId());
+                LOG.warn("GET " + id + " is 403 FORBIDDEN for user " + user.getId());
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
         } else {
             // возвращаю код 404 (не найдено) и пустой body
-            LOG.info("GET[id=" + id + "] 404 NOT FOUND");
+            LOG.warn("GET " + id + " is 404 NOT FOUND for user " + user.getId());
             return ResponseEntity.notFound().build();
         }
     }
@@ -115,6 +114,7 @@ public class BoardController {
             @RequestParam String name
     ) {
         if (name.equals("")) {
+            LOG.warn("POST 400 BAD REQUEST for user " + user.getId() + ". Board name is empty.");
             return ResponseEntity.badRequest().build();
         }
         Board board = new Board();
@@ -124,6 +124,7 @@ public class BoardController {
         board.setMessages(Collections.emptySet());
         board = boardRepository.save(board);
 
+        LOG.info("POST " + board.getId() + " created successfully.");
         return ResponseEntity.ok(board);
     }
 
@@ -140,7 +141,6 @@ public class BoardController {
      * <b>status code: 403</b> если у пользователя нет прав для изменения доски<br/>
      * <b>status code: 404</b> если Board отсутствует в базе данных
      */
-    // TODO реализовать обновление списков в специальных контроллерах для Task, User и Message
     @JsonView(Views.PublicSimple.class)
     @PatchMapping
     public ResponseEntity<?> updateBoard(
@@ -153,16 +153,18 @@ public class BoardController {
         if (optionalBoard.isPresent()) {
             board = optionalBoard.get();
         } else {
+            LOG.warn("PATCH " + id + " 404 NOT FOUND.");
             return ResponseEntity.notFound().build();
         }
 
         if (!board.containsUser(user)) {
-            // если юзер в ней не состоит - 403 FORBIDDEN
+            LOG.warn("PATCH " + id + " 403 FORBIDDEN for user " + user.getId());
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         } else {
             if (name != null && !"".equals(name))
                 board.setName(name);
             board = boardRepository.save(board);
+            LOG.info("PATCH " + id + " patched successfully.");
             return ResponseEntity.ok(board);
         }
     }
@@ -189,13 +191,16 @@ public class BoardController {
         if (optionalBoard.isPresent()) {
             board = optionalBoard.get();
         } else {
+            LOG.warn("DELETE " + id + " 404 NOT FOUND.");
             return ResponseEntity.notFound().build();
         }
 
         if (!board.containsUser(user)) {
+            LOG.warn("DELETE " + id + " 403 FORBIDDEN for user " + user.getId());
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         } else {
             boardRepository.delete(board);
+            LOG.info("DELETE " + id + " deleted successfully.");
             return ResponseEntity.ok().build();
         }
     }

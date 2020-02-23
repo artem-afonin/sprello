@@ -1,5 +1,6 @@
 package ru.sprello.config;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
@@ -25,6 +26,7 @@ import java.util.Collections;
 @EnableWebSecurity
 @EnableOAuth2Sso
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    private static final Logger LOG = Logger.getLogger(WebSecurityConfig.class);
     private final UserPrincipalDetailsService userPrincipalDetailsService;
 
     @Autowired
@@ -71,12 +73,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 newUser.setRoles(Collections.singleton(Role.USER));
                 newUser.setBoards(Collections.emptySet());
 
+                LOG.info("New user with id " + newUser.getId() + " created successfully.");
                 return newUser;
             });
 
             user.setLastVisit(LocalDateTime.now());
-
-            return userRepository.save(user);
+            user = userRepository.save(user);
+            LOG.info("User with id " + user.getId() + " logged in successfully.");
+            return user;
         };
     }
 
