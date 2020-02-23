@@ -68,7 +68,7 @@ public class BoardController {
      * @param id   уникальный идентификатор Board
      * @param user пользователь, запрашивающий данные
      *
-     * @return HTTPResponse<br/>
+     * @return HTTPResponse<br />
      * <b>status code: 200</b> в случае существования доски и наличия прав на её просмотр у user<br/>
      * <b>status code: 403</b> в случае отсутствия у пользователя прав на просмотр<br/>
      * <b>status code: 404</b> если досок не существует
@@ -104,7 +104,7 @@ public class BoardController {
      * @param user создатель доски, <i>становится её первым участником</i>
      * @param name имя доски
      *
-     * @return HTTPResponse<br/>
+     * @return HTTPResponse<br />
      * <b>status code: 200</b> в случае успешного создания и сохранения в базу данных<br/>
      * <b>status code: 400</b> в случае отсутствия параметров "name" или если "name" - пустая строка<br/>
      */
@@ -135,7 +135,7 @@ public class BoardController {
      * @param id   уникальный идентификатор Board
      * @param name новое название доски
      *
-     * @return HTTPResponse<br/>
+     * @return HTTPResponse<br />
      * <b>status code: 200</b> в случае успешного обновления данных<br/>
      * <b>status code: 403</b> если у пользователя нет прав для изменения доски<br/>
      * <b>status code: 404</b> если Board отсутствует в базе данных
@@ -173,7 +173,7 @@ public class BoardController {
      * @param id   уникальный идентификатор доски
      * @param user пользователь, выполняющий запрос
      *
-     * @return HTTPResponse<br/>
+     * @return HTTPResponse<br />
      * <b>status code: 200</b> если удаление прошло успешно<br/>
      * <b>status code: 403</b> в случае отсутствия у пользователя прав на удаление данных<br/>
      * <b>status code: 404</b> если доска не существует

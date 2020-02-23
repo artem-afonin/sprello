@@ -16,8 +16,8 @@ import ru.sprello.utils.Views;
 
 import java.util.Optional;
 
-/* Во всех методах этого контроллера
-    обязательно делать проверку пользователя
+/**
+ * REST контроллер, реализующий логику запросов на вступление пользователя {@link User} в доску {@link Board}
  */
 @RestController
 @RequestMapping(Application.apiUrl + "board/user/requestors")
@@ -32,6 +32,18 @@ public class BoardUsersRequestorsController {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Обработчик POST маппинга, обрабатывающий заявку пользователя на вступление в доску
+     *
+     * @param requestor пользователь, подающий заявку на вступление
+     * @param boardId   уникальный идентификатор доски
+     *
+     * @return HTTPResponse<br />
+     * <b>status code: 404</b> в случае отсутствия доски<br/>
+     * <b>status code: 400</b> если пользователь не имеет права отправить запрос<br/>
+     * (уже состоит в доске, либо уже отправлял запрос ранее)<br/>
+     * <b>status code: 200</b> если новый запрос успешно создан
+     */
     @PostMapping("/request")
     @JsonView(Views.PublicSimple.class)
     public ResponseEntity<?> createRequest(
@@ -47,8 +59,8 @@ public class BoardUsersRequestorsController {
         }
 
         if (board.containsUser(requestor) || board.containsRequestor(requestor)) {
-        // нельзя отправлять запрос если ты уже состоишь в доске!
-        // не нужно грузить БД, если ты уже отправлял запрос!
+            // нельзя отправлять запрос если ты уже состоишь в доске!
+            // не нужно грузить БД, если ты уже отправлял запрос!
             return ResponseEntity.badRequest().build();
         } else {
             board.getRequestors().add(requestor);
@@ -57,6 +69,18 @@ public class BoardUsersRequestorsController {
         }
     }
 
+    /**
+     * Обработчик POST маппинга, обрабатывающий одобрение заявки на вступление
+     *
+     * @param user        пользователь доски, одобряющий заявку на вступление
+     * @param boardId     уникальный идентификатор доски
+     * @param requestorId уникальный идентификатор пользователя, подавшего заявку на вступление
+     *
+     * @return HTTPResponse<br />
+     * <b>status code: 404</b> в случае отсутствия доски или пользователя REQUESTOR<br/>
+     * <b>status code: 403</b> если у пользователя USER нет прав на одобрение запроса<br/>
+     * <b>status code: 200</b> если запрос на вступление одобрен успешно
+     */
     @PostMapping("/accept")
     @JsonView(Views.PrivateBoard.class)
     public ResponseEntity<?> acceptRequest(

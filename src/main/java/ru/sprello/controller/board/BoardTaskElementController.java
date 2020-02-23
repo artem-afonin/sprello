@@ -18,8 +18,8 @@ import ru.sprello.utils.Views;
 
 import java.util.Optional;
 
-/* Во всех методах этого контроллера
-    обязательно делать проверку пользователя
+/**
+ * REST контроллер, контролирующий доступ к сведениям о {@link TaskElement}.
  */
 @RestController
 @RequestMapping(Application.apiUrl + "board/task/element")
@@ -34,6 +34,19 @@ public class BoardTaskElementController {
         this.taskRepository = taskRepository;
     }
 
+    /**
+     * Обработчик POST маппинга, реализующий создание подзадачи для задачи {@link Task}
+     *
+     * @param user   пользователь, создающий задачу
+     * @param taskId уникальный идентификатор родительской основной задачи
+     * @param text   текст подзадачи
+     * @param color  цвет задачи {@link Color}
+     *
+     * @return HTTPResponse<br />
+     * <b>status code: 404</b> в случае отсутствия родительской задачи<br/>
+     * <b>status code: 403</b> в случае отсутствия прав у user на совершение запроса<br/>
+     * <b>status code: 200</b> если подзадача создана успешно
+     */
     @PostMapping
     @JsonView(Views.TaskElementInfo.class)
     public ResponseEntity<?> addNewTaskElement(
@@ -64,6 +77,19 @@ public class BoardTaskElementController {
         return ResponseEntity.ok(taskElement);
     }
 
+    /**
+     * Обработчик PATCH маппинга, реализующий обновление данных о подзадаче.
+     *
+     * @param user          пользователь, редактирующий подзадачу
+     * @param taskElementId уникальный идентификатор подзадачи
+     * @param text          новое водержание подзадачи
+     * @param color         новый цвет подзадачи
+     *
+     * @return HTTPResponse<br />
+     * <b>status code: 404</b> в случае отсутствия подзадачи<br/>
+     * <b>status code: 403</b> в случае отсутствия прав у user на совершение запроса<br/>
+     * <b>status code: 200</b> если подзадача успешно обновлена
+     */
     @PatchMapping
     @JsonView(Views.TaskElementInfo.class)
     public ResponseEntity<?> updateTask(
@@ -90,6 +116,17 @@ public class BoardTaskElementController {
         return ResponseEntity.ok(taskElement);
     }
 
+    /**
+     * Обработчик DELETE маппинга, реализующий удаление задачи из доски.
+     *
+     * @param user          пользователь, удаляющуй задачу
+     * @param taskElementId уникальный идентификатор подзадачи
+     *
+     * @return HTTPResponse<br />
+     * <b>status code: 404</b> в случае отсутствия подзадачи<br/>
+     * <b>status code: 403</b> в случае отсутствия прав у user на совершение запроса<br/>
+     * <b>status code: 200</b> если подзадача удалена успешно
+     */
     @DeleteMapping
     @JsonView(Views.TaskElementInfo.class)
     public ResponseEntity<?> deleteTaskElement(

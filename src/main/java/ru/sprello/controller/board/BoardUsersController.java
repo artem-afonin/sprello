@@ -38,14 +38,14 @@ public class BoardUsersController {
     /**
      * Обработчик POST маппинга, реализующий добавление пользователя в доску
      *
-     * @param requestor пользователь, одобряющуий заявку на вступление
+     * @param requestor пользователь, одобряющий заявку на вступление
      * @param boardId   уникальный идентификатор доски
      * @param newUserId уникальный идентификатор нового пользователя, которого добавляют в доску
      *
      * @return HTTPResponse<br />
      * <b>status code: 404</b> в случае отсутствия доски<br/>
      * <b>status code: 403</b> в случае отсутствия прав у requestor на совершение запроса<br/>
-     * <b>status code: 200</b> если пользователь
+     * <b>status code: 200</b> если пользователь добавлен успешно
      */
     @PostMapping
     @JsonView(Views.PublicSimple.class)
@@ -86,7 +86,6 @@ public class BoardUsersController {
      *
      * @return HTTPResponse<br />
      * <b>status code: 404</b> в случае отсутствия доски<br/>
-     * <b>status code: 403</b> в случае отсутствия прав у requestor на совершение запроса<br/>
      * <b>status code: 200</b> если пользователь успешно удолён
      */
     @DeleteMapping

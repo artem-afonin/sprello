@@ -18,6 +18,9 @@ import ru.sprello.security.UserPrincipalDetailsService;
 import java.time.LocalDateTime;
 import java.util.Collections;
 
+/**
+ * Класс конфигурации, описывающий систему безопаности приложения, а также OAuth2 авторизацию
+ */
 @Configuration
 @EnableWebSecurity
 @EnableOAuth2Sso
@@ -29,7 +32,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.userPrincipalDetailsService = userPrincipalDetailsService;
     }
 
-    // Конфигурация доступа
+    /**
+     * Описывает конфигурацию доступа к различным маппингам приложения
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -46,7 +51,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .csrf().disable();
     }
 
-    // Взятие данных из OAuth2
+    /**
+     * Обрабатывает авторизацию пользователя.
+     * <p>
+     * В случае если пользователь входит впервые - его данные записываются в базу данных.
+     * <p>
+     * Иначе пользователь успешно авторизуется, обновляется время последнего захода.
+     */
     @Bean
     public PrincipalExtractor principalExtractor(UserRepository userRepository) {
         return map -> {

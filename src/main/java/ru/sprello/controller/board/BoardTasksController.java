@@ -18,8 +18,8 @@ import ru.sprello.utils.Views;
 import java.util.Collections;
 import java.util.Optional;
 
-/* Во всех методах этого контроллера
-    обязательно делать проверку пользователя
+/**
+ * REST контроллер, контролирующий доступ к сведениям о {@link Task}.
  */
 @RestController
 @RequestMapping(Application.apiUrl + "board/task")
@@ -34,6 +34,18 @@ public class BoardTasksController {
         this.boardRepository = boardRepository;
     }
 
+    /**
+     * Обработчик POST маппинга, реализующий добавление новой задачи на доске
+     *
+     * @param user    пользователь, создающий задачу
+     * @param boardId уникальный идентификатор доски
+     * @param name    название задачи
+     *
+     * @return HTTPResponse<br />
+     * <b>status code: 404</b> в случае отсутствия доски<br/>
+     * <b>status code: 403</b> в случае отсутствия прав у user на совершение запроса<br/>
+     * <b>status code: 200</b> если задача создана успешно
+     */
     @PostMapping
     @JsonView(Views.TaskInfo.class)
     public ResponseEntity<?> addNewTask(
@@ -61,6 +73,18 @@ public class BoardTasksController {
         return ResponseEntity.ok(newTask);
     }
 
+    /**
+     * Обработчик PATCH маппинга, реализующий обновление данных о задаче.
+     *
+     * @param user   пользователь, редактирующий задачу
+     * @param taskId уникальный идентификатор задачи
+     * @param name   новое название задачи
+     *
+     * @return HTTPResponse<br />
+     * <b>status code: 404</b> в случае отсутствия доски<br/>
+     * <b>status code: 403</b> в случае отсутствия прав у user на совершение запроса<br/>
+     * <b>status code: 200</b> если задача успешно обновлена
+     */
     @PatchMapping
     @JsonView(Views.TaskInfo.class)
     public ResponseEntity<?> updateTask(
@@ -85,6 +109,17 @@ public class BoardTasksController {
         return ResponseEntity.ok(task);
     }
 
+    /**
+     * Обработчик DELETE маппинга, реализующий удаление задачи из доски.
+     *
+     * @param user   пользователь, удаляющуй задачу
+     * @param taskId уникальный идентификатор задачи
+     *
+     * @return HTTPResponse<br />
+     * <b>status code: 404</b> в случае отсутствия доски<br/>
+     * <b>status code: 403</b> в случае отсутствия прав у user на совершение запроса<br/>
+     * <b>status code: 200</b> если задача удалена успешно
+     */
     @DeleteMapping
     @JsonView(Views.TaskInfo.class)
     public ResponseEntity<?> deleteTask(
