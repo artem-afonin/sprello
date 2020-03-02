@@ -15,14 +15,17 @@
               {{ board.name }}
             </b>
           </h3>
-          <p class="card-text">
-            Возможно здесь в будущем будет описание. <br />
-            Calcarias accelerare in infernum! A falsis, particula germanus
-            ausus.
-          </p>
+          <template class="card-text">
+            <h5 v-if="board.isMember" class="text-primary">
+              Вы состоите в этой доске
+            </h5>
+            <h5 v-else-if="board.isRequestor" class="text-secondary">
+              Вы подали заявку на вступление
+            </h5>
+          </template>
         </router-link>
         <button
-          v-if="!isOwnBoard"
+          v-if="!board.isMember && !board.isRequestor"
           @click="createJoinRequest"
           class="btn btn-info"
         >
