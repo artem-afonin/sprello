@@ -100,6 +100,30 @@ public class Board {
     private Set<Message> messages;
 
     /**
+     * Является ли запрашивающий участником доски
+     *
+     * @see User
+     * @see ru.sprello.controller.board.BoardController#getAll(User, Boolean)
+     */
+    @Transient
+    @JsonView(Views.PublicSimple.class)
+    @Getter
+    @Setter
+    private Boolean isMember = false;
+
+    /**
+     * Отправлял ли пользователь запрос на вступление в доску
+     *
+     * @see User
+     * @see ru.sprello.controller.board.BoardController#getAll(User, Boolean)
+     */
+    @Transient
+    @JsonView(Views.PublicSimple.class)
+    @Getter
+    @Setter
+    private Boolean isRequestor = false;
+
+    /**
      * Проверяет наличие пользователя user в данной доске
      *
      * @param user пользователь

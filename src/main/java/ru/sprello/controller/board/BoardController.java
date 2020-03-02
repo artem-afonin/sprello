@@ -16,6 +16,7 @@ import ru.sprello.utils.Views;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * REST контроллер, контролирующий доступ к сведениям о {@link Board}.
@@ -58,6 +59,11 @@ public class BoardController {
             boards = boardRepository.findAll();
             LOG.info("GET all boards for user with id " + user.getId());
         }
+
+        boards = boards.stream().peek(board -> {
+            if (board.containsUser(user)) board.setIsMember(true);
+            else if (board.containsRequestor(user)) board.setIsRequestor(true);
+        }).collect(Collectors.toList());
 
         return ResponseEntity.ok(boards);
     }
