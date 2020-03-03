@@ -11,23 +11,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.sprello.Application;
 import ru.sprello.model.User;
-import ru.sprello.repo.BoardRepository;
 import ru.sprello.repo.UserRepository;
 import ru.sprello.utils.Views;
 
 import java.util.Optional;
 
+/**
+ * REST контроллер, контролирующий доступ к сведениям о {@link User}
+ */
 @RestController
 @RequestMapping(Application.apiUrl + "user")
 public class UserController {
     private static final Logger LOG = Logger.getLogger(UserController.class);
     private final UserRepository userRepository;
-    private final BoardRepository boardRepository;
 
     @Autowired
-    public UserController(UserRepository userRepository, BoardRepository boardRepository) {
+    public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.boardRepository = boardRepository;
     }
 
     /**
@@ -44,8 +44,10 @@ public class UserController {
     ) {
         Optional<User> optionalUser = userRepository.findById(requestor.getId());
         if (optionalUser.isPresent()) {
+            LOG.info("User " + requestor.getId() + " got own info successfully.");
             return ResponseEntity.ok(optionalUser.get());
         } else {
+            LOG.warn("User " + requestor.getId() + " is not exist!");
             return ResponseEntity.notFound().build();
         }
     }
@@ -66,8 +68,10 @@ public class UserController {
     ) {
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
+            LOG.info("User " + requestor.getId() + " got info about " + id + " successfully.");
             return ResponseEntity.ok(optionalUser.get());
         } else {
+            LOG.warn("User " + requestor.getId() + " tried to access unknown user " + id);
             return ResponseEntity.notFound().build();
         }
     }

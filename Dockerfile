@@ -12,6 +12,4 @@ WORKDIR /home/sprello
 
 COPY . /home/sprello/
 
-CMD ./gradlew bootJar && java -jar ./build/libs/sprello.jar
-
-#TODO: прокинуть переменные окружения
+CMD ./gradlew bootJar -Pfrontend && java -jar ./build/libs/sprello.jar

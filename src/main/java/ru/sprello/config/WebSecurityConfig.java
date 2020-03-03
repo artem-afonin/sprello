@@ -1,5 +1,6 @@
 package ru.sprello.config;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
@@ -18,10 +19,14 @@ import ru.sprello.security.UserPrincipalDetailsService;
 import java.time.LocalDateTime;
 import java.util.Collections;
 
+/**
+ * Класс конфигурации, описывающий систему безопаности приложения, а также OAuth2 авторизацию
+ */
 @Configuration
 @EnableWebSecurity
 @EnableOAuth2Sso
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    private static final Logger LOG = Logger.getLogger(WebSecurityConfig.class);
     private final UserPrincipalDetailsService userPrincipalDetailsService;
 
     @Autowired
@@ -29,7 +34,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.userPrincipalDetailsService = userPrincipalDetailsService;
     }
 
-    // Конфигурация доступа
+    /**
+     * Описывает конфигурацию доступа к различным маппингам приложения
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -46,7 +53,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .csrf().disable();
     }
 
-    // Взятие данных из OAuth2
+    /**
+     * Обрабатывает авторизацию пользователя.
+     * <p>
+     * В случае если пользователь входит впервые - его данные записываются в базу данных.
+     * <p>
+     * Иначе пользователь успешно авторизуется, обновляется время последнего захода.
+     */
     @Bean
     public PrincipalExtractor principalExtractor(UserRepository userRepository) {
         return map -> {
@@ -60,12 +73,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 newUser.setRoles(Collections.singleton(Role.USER));
                 newUser.setBoards(Collections.emptySet());
 
+                LOG.info("New user with id " + newUser.getId() + " created successfully.");
                 return newUser;
             });
 
             user.setLastVisit(LocalDateTime.now());
-
-            return userRepository.save(user);
+            user = userRepository.save(user);
+            LOG.info("User with id " + user.getId() + " logged in successfully.");
+            return user;
         };
     }
 

@@ -16,8 +16,11 @@ import ru.sprello.utils.Views;
 
 import java.util.Optional;
 
-/* Во всех методах этого контроллера
-    обязательно делать проверку пользователя
+/**
+ * REST контроллер, контролирующий доступ к сведениям о {@link User}, состоящих в {@link Board}.
+ * <p>
+ * Данный контроллер работает только с данными, которые связывают {@link User} и {@link Board},
+ * приватные данные вышеописанных моделей не подвергаются изменению.
  */
 @RestController
 @RequestMapping(Application.apiUrl + "board/users")
@@ -32,6 +35,18 @@ public class BoardUsersController {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Обработчик POST маппинга, реализующий добавление пользователя в доску
+     *
+     * @param requestor пользователь, одобряющий заявку на вступление
+     * @param boardId   уникальный идентификатор доски
+     * @param newUserId уникальный идентификатор нового пользователя, которого добавляют в доску
+     *
+     * @return HTTPResponse<br />
+     * <b>status code: 404</b> в случае отсутствия доски<br/>
+     * <b>status code: 403</b> в случае отсутствия прав у requestor на совершение запроса<br/>
+     * <b>status code: 200</b> если пользователь добавлен успешно
+     */
     @PostMapping
     @JsonView(Views.PublicSimple.class)
     public ResponseEntity<?> addNewUser(
@@ -42,8 +57,6 @@ public class BoardUsersController {
         Optional<Board> optionalBoard = boardRepository.findById(boardId);
         Board board;
 
-        //TODO Здесь был плохой код. Реализовать отдельный контроллер для подачи заявки на вступление в борду
-
         // участники добаляют пользователя в приватную доску
         Optional<User> newOptionalUser = userRepository.findById(newUserId);
         User newUser;
@@ -51,6 +64,7 @@ public class BoardUsersController {
             board = optionalBoard.get();
             newUser = newOptionalUser.get();
         } else {
+            LOG.warn("POST " + boardId + " 404 NOT FOUND.");
             return ResponseEntity.notFound().build();
         }
 
@@ -58,13 +72,25 @@ public class BoardUsersController {
         if (board.containsUser(requestor)) {
             board.getUsers().add(newUser);
             board = boardRepository.save(board);
+            LOG.info("POST " + boardId + " created successfully.");
             return ResponseEntity.ok(board);
         } else {
+            LOG.warn("POST " + boardId + " 403 FORBIDDEN for user " + requestor.getId());
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
     }
 
+    /**
+     * Обработчик DELETE маппинга, реализующий удаление пользователя из доски
+     *
+     * @param requestor пользователь, покидающий доску
+     * @param boardId   уникальный идентификатор доски
+     *
+     * @return HTTPResponse<br />
+     * <b>status code: 404</b> в случае отсутствия доски<br/>
+     * <b>status code: 200</b> если пользователь успешно удолён
+     */
     @DeleteMapping
     public ResponseEntity<?> leaveBoard(
             @AuthenticationPrincipal User requestor,
@@ -75,8 +101,10 @@ public class BoardUsersController {
             Board board = optionalBoard.get();
             board.getUsers().remove(requestor);
             boardRepository.save(board);
+            LOG.info("DELETE user " + requestor.getId() + " from board " + boardId +  " deleted successfully.");
             return ResponseEntity.ok().build();
         } else {
+            LOG.warn("DELETE " + boardId + " 404 NOT FOUND.");
             return ResponseEntity.notFound().build();
         }
     }

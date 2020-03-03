@@ -18,8 +18,8 @@ import ru.sprello.utils.Views;
 import java.util.Collections;
 import java.util.Optional;
 
-/* Во всех методах этого контроллера
-    обязательно делать проверку пользователя
+/**
+ * REST контроллер, контролирующий доступ к сведениям о {@link Task}.
  */
 @RestController
 @RequestMapping(Application.apiUrl + "board/task")
@@ -34,6 +34,18 @@ public class BoardTasksController {
         this.boardRepository = boardRepository;
     }
 
+    /**
+     * Обработчик POST маппинга, реализующий добавление новой задачи на доске
+     *
+     * @param user    пользователь, создающий задачу
+     * @param boardId уникальный идентификатор доски
+     * @param name    название задачи
+     *
+     * @return HTTPResponse<br />
+     * <b>status code: 404</b> в случае отсутствия доски<br/>
+     * <b>status code: 403</b> в случае отсутствия прав у user на совершение запроса<br/>
+     * <b>status code: 200</b> если задача создана успешно
+     */
     @PostMapping
     @JsonView(Views.TaskInfo.class)
     public ResponseEntity<?> addNewTask(
@@ -46,11 +58,14 @@ public class BoardTasksController {
         if (optionalBoard.isPresent()) {
             board = optionalBoard.get();
         } else {
+            LOG.warn("POST " + boardId + " 404 NOT FOUND.");
             return ResponseEntity.notFound().build();
         }
 
-        if (!board.containsUser(user))
+        if (!board.containsUser(user)) {
+            LOG.warn("POST " + boardId + " 403 FORBIDDEN for user " + user.getId());
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
 
         Task newTask = new Task();
         if (!name.equals("")) newTask.setName(name);
@@ -58,9 +73,22 @@ public class BoardTasksController {
         newTask.setBoard(board);
 
         newTask = taskRepository.save(newTask);
+        LOG.info("POST " + boardId + " created successfully.");
         return ResponseEntity.ok(newTask);
     }
 
+    /**
+     * Обработчик PATCH маппинга, реализующий обновление данных о задаче.
+     *
+     * @param user   пользователь, редактирующий задачу
+     * @param taskId уникальный идентификатор задачи
+     * @param name   новое название задачи
+     *
+     * @return HTTPResponse<br />
+     * <b>status code: 404</b> в случае отсутствия доски<br/>
+     * <b>status code: 403</b> в случае отсутствия прав у user на совершение запроса<br/>
+     * <b>status code: 200</b> если задача успешно обновлена
+     */
     @PatchMapping
     @JsonView(Views.TaskInfo.class)
     public ResponseEntity<?> updateTask(
@@ -73,18 +101,33 @@ public class BoardTasksController {
         if (optionalTask.isPresent()) {
             task = optionalTask.get();
         } else {
+            LOG.warn("PATCH " + taskId + " 404 NOT FOUND.");
             return ResponseEntity.notFound().build();
         }
 
-        if (!task.getBoard().containsUser(user))
+        if (!task.getBoard().containsUser(user)) {
+            LOG.warn("PATCH " + taskId + " 403 FORBIDDEN for user " + user.getId());
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
 
         if (name != null) task.setName(name);
 
         task = taskRepository.save(task);
+        LOG.info("PATCH " + taskId + " patched successfully.");
         return ResponseEntity.ok(task);
     }
 
+    /**
+     * Обработчик DELETE маппинга, реализующий удаление задачи из доски.
+     *
+     * @param user   пользователь, удаляющуй задачу
+     * @param taskId уникальный идентификатор задачи
+     *
+     * @return HTTPResponse<br />
+     * <b>status code: 404</b> в случае отсутствия доски<br/>
+     * <b>status code: 403</b> в случае отсутствия прав у user на совершение запроса<br/>
+     * <b>status code: 200</b> если задача удалена успешно
+     */
     @DeleteMapping
     @JsonView(Views.TaskInfo.class)
     public ResponseEntity<?> deleteTask(
@@ -96,13 +139,17 @@ public class BoardTasksController {
         if (optionalTask.isPresent()) {
             task = optionalTask.get();
         } else {
+            LOG.warn("DELETE " + taskId + " 404 NOT FOUND.");
             return ResponseEntity.notFound().build();
         }
 
-        if (!task.getBoard().containsUser(user))
+        if (!task.getBoard().containsUser(user)) {
+            LOG.warn("DELETE " + taskId + " 403 FORBIDDEN for user " + user.getId());
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
 
         taskRepository.delete(task);
+        LOG.info("DELETE " + taskId + " deleted successfully.");
         return ResponseEntity.ok().build();
     }
 }

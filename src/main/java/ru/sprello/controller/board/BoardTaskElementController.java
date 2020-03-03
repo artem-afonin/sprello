@@ -18,8 +18,8 @@ import ru.sprello.utils.Views;
 
 import java.util.Optional;
 
-/* Во всех методах этого контроллера
-    обязательно делать проверку пользователя
+/**
+ * REST контроллер, контролирующий доступ к сведениям о {@link TaskElement}.
  */
 @RestController
 @RequestMapping(Application.apiUrl + "board/task/element")
@@ -34,6 +34,19 @@ public class BoardTaskElementController {
         this.taskRepository = taskRepository;
     }
 
+    /**
+     * Обработчик POST маппинга, реализующий создание подзадачи для задачи {@link Task}
+     *
+     * @param user   пользователь, создающий задачу
+     * @param taskId уникальный идентификатор родительской основной задачи
+     * @param text   текст подзадачи
+     * @param color  цвет задачи {@link Color}
+     *
+     * @return HTTPResponse<br />
+     * <b>status code: 404</b> в случае отсутствия родительской задачи<br/>
+     * <b>status code: 403</b> в случае отсутствия прав у user на совершение запроса<br/>
+     * <b>status code: 200</b> если подзадача создана успешно
+     */
     @PostMapping
     @JsonView(Views.TaskElementInfo.class)
     public ResponseEntity<?> addNewTaskElement(
@@ -47,11 +60,14 @@ public class BoardTaskElementController {
         if (optionalTask.isPresent()) {
             task = optionalTask.get();
         } else {
+            LOG.warn("POST " + taskId + " 404 NOT FOUND.");
             return ResponseEntity.notFound().build();
         }
 
-        if (!task.getBoard().containsUser(user))
+        if (!task.getBoard().containsUser(user)) {
+            LOG.warn("POST " + taskId + " 403 FORBIDDEN for user " + user.getId());
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
 
         TaskElement taskElement = new TaskElement();
         if (!"".equals(text)) taskElement.setText(text);
@@ -61,9 +77,23 @@ public class BoardTaskElementController {
         taskElement.setParent(task);
 
         taskElement = taskElementRepository.save(taskElement);
+        LOG.info("POST " + taskId + " created successfully.");
         return ResponseEntity.ok(taskElement);
     }
 
+    /**
+     * Обработчик PATCH маппинга, реализующий обновление данных о подзадаче.
+     *
+     * @param user          пользователь, редактирующий подзадачу
+     * @param taskElementId уникальный идентификатор подзадачи
+     * @param text          новое водержание подзадачи
+     * @param color         новый цвет подзадачи
+     *
+     * @return HTTPResponse<br />
+     * <b>status code: 404</b> в случае отсутствия подзадачи<br/>
+     * <b>status code: 403</b> в случае отсутствия прав у user на совершение запроса<br/>
+     * <b>status code: 200</b> если подзадача успешно обновлена
+     */
     @PatchMapping
     @JsonView(Views.TaskElementInfo.class)
     public ResponseEntity<?> updateTask(
@@ -77,19 +107,34 @@ public class BoardTaskElementController {
         if (optionalTaskElement.isPresent()) {
             taskElement = optionalTaskElement.get();
         } else {
+            LOG.warn("PATCH " + taskElementId + " 404 NOT FOUND.");
             return ResponseEntity.notFound().build();
         }
 
-        if (!taskElement.getParent().getBoard().containsUser(user))
+        if (!taskElement.getParent().getBoard().containsUser(user)) {
+            LOG.warn("PATCH " + taskElementId + " 403 FORBIDDEN for user " + user.getId());
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
 
         if (text != null) taskElement.setText(text);
         if (color != null) taskElement.setColor(color);
 
         taskElement = taskElementRepository.save(taskElement);
+        LOG.info("PATCH " + taskElementId + " patched successfully.");
         return ResponseEntity.ok(taskElement);
     }
 
+    /**
+     * Обработчик DELETE маппинга, реализующий удаление задачи из доски.
+     *
+     * @param user          пользователь, удаляющуй задачу
+     * @param taskElementId уникальный идентификатор подзадачи
+     *
+     * @return HTTPResponse<br />
+     * <b>status code: 404</b> в случае отсутствия подзадачи<br/>
+     * <b>status code: 403</b> в случае отсутствия прав у user на совершение запроса<br/>
+     * <b>status code: 200</b> если подзадача удалена успешно
+     */
     @DeleteMapping
     @JsonView(Views.TaskElementInfo.class)
     public ResponseEntity<?> deleteTaskElement(
@@ -101,13 +146,17 @@ public class BoardTaskElementController {
         if (optionalTaskElement.isPresent()) {
             taskElement = optionalTaskElement.get();
         } else {
+            LOG.warn("DELETE " + taskElementId + " 404 NOT FOUND.");
             return ResponseEntity.notFound().build();
         }
 
-        if (!taskElement.getParent().getBoard().containsUser(user))
+        if (!taskElement.getParent().getBoard().containsUser(user)) {
+            LOG.warn("DELETE " + taskElementId + " 403 FORBIDDEN for user " + user.getId());
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
 
         taskElementRepository.delete(taskElement);
+        LOG.info("DELETE " + taskElementId + " deleted successfully.");
         return ResponseEntity.ok().build();
     }
 }

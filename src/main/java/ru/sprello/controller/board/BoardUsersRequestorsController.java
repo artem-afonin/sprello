@@ -16,8 +16,8 @@ import ru.sprello.utils.Views;
 
 import java.util.Optional;
 
-/* Во всех методах этого контроллера
-    обязательно делать проверку пользователя
+/**
+ * REST контроллер, реализующий логику запросов на вступление пользователя {@link User} в доску {@link Board}
  */
 @RestController
 @RequestMapping(Application.apiUrl + "board/user/requestors")
@@ -32,6 +32,18 @@ public class BoardUsersRequestorsController {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Обработчик POST маппинга, обрабатывающий заявку пользователя на вступление в доску
+     *
+     * @param requestor пользователь, подающий заявку на вступление
+     * @param boardId   уникальный идентификатор доски
+     *
+     * @return HTTPResponse<br />
+     * <b>status code: 404</b> в случае отсутствия доски<br/>
+     * <b>status code: 400</b> если пользователь не имеет права отправить запрос<br/>
+     * (уже состоит в доске, либо уже отправлял запрос ранее)<br/>
+     * <b>status code: 200</b> если новый запрос успешно создан
+     */
     @PostMapping("/request")
     @JsonView(Views.PublicSimple.class)
     public ResponseEntity<?> createRequest(
@@ -43,20 +55,35 @@ public class BoardUsersRequestorsController {
         if (optionalBoard.isPresent()) {
             board = optionalBoard.get();
         } else {
+            LOG.warn("POST REQUEST " + boardId + " 404 NOT FOUND.");
             return ResponseEntity.notFound().build();
         }
 
         if (board.containsUser(requestor) || board.containsRequestor(requestor)) {
-        // нельзя отправлять запрос если ты уже состоишь в доске!
-        // не нужно грузить БД, если ты уже отправлял запрос!
+            // нельзя отправлять запрос если ты уже состоишь в доске!
+            // не нужно грузить БД, если ты уже отправлял запрос!
+            LOG.warn("POST REQUEST " + requestor.getId() + " 400 BAD REQUEST.");
             return ResponseEntity.badRequest().build();
         } else {
             board.getRequestors().add(requestor);
             board = boardRepository.save(board);
+            LOG.info("POST REQUEST " + requestor.getId() + " requested successfully.");
             return ResponseEntity.ok(board);
         }
     }
 
+    /**
+     * Обработчик POST маппинга, обрабатывающий одобрение заявки на вступление
+     *
+     * @param user        пользователь доски, одобряющий заявку на вступление
+     * @param boardId     уникальный идентификатор доски
+     * @param requestorId уникальный идентификатор пользователя, подавшего заявку на вступление
+     *
+     * @return HTTPResponse<br />
+     * <b>status code: 404</b> в случае отсутствия доски или пользователя REQUESTOR<br/>
+     * <b>status code: 403</b> если у пользователя USER нет прав на одобрение запроса<br/>
+     * <b>status code: 200</b> если запрос на вступление одобрен успешно
+     */
     @PostMapping("/accept")
     @JsonView(Views.PrivateBoard.class)
     public ResponseEntity<?> acceptRequest(
@@ -72,19 +99,23 @@ public class BoardUsersRequestorsController {
             board = optionalBoard.get();
             newUser = optionalUser.get();
         } else {
+            LOG.warn("POST ACCEPT board " + boardId + " or " + requestorId + " 404 NOT FOUND.");
             return ResponseEntity.notFound().build();
         }
 
         if (!board.containsUser(user)) {
+            LOG.warn("POST ACCEPT " + boardId + " 403 FORBIDDEN for user " + user.getId());
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         if (!board.containsRequestor(newUser)) {
+            LOG.warn("POST ACCEPT " + requestorId + " 400 BAD REQUEST.");
             return ResponseEntity.badRequest().build();
         }
 
         board.getRequestors().remove(newUser);
         board.getUsers().add(newUser);
         board = boardRepository.save(board);
+        LOG.info("POST ACCEPT " + requestorId + " accepted successfully.");
         return ResponseEntity.ok(board);
     }
 }
