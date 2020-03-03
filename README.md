@@ -16,12 +16,12 @@ Sprello - это веб-сервис, являющийся идейным кло
   - [Vuex](https://vuex.vuejs.org/)
 
 ## Сборка и запуск
-##### Для сборки необходимо иметь следующие пакеты:
+### Для сборки необходимо иметь следующие пакеты:
 - [JDK 11](https://www.oracle.com/java/technologies/javase/jdk11-readme.html)
 - [Gradle](https://gradle.org/) (опционально)
 - [npm](https://www.npmjs.com/)
 
-##### Настройка переменных окружения
+### Настройка переменных окружения
 Перед сборкой предварительно необходимо получить OAuth2 данные в Google OAuth2 и
 объявить следующие переменные окружения:
 - **psql_url** - URL PostgreSQL
@@ -31,7 +31,7 @@ Sprello - это веб-сервис, являющийся идейным кло
 - **client_id** - Google OAuth2 cliend-id
 - **client_code** - Google OAuth2 client-secret
 
-##### Сборка
+### Сборка
 Вместо `./gradlew <command>` можно использовать
 `gradle <command>`, если Gradle установлен в системе
 ```
@@ -39,7 +39,7 @@ $ git clone https://gitlab.com/sprello-developers/sprello.git
 $ cd sprello
 $ ./gradlew bootJar -Pfrontend
 ```
-##### Запуск
+### Запуск
 ```
 $ ./gradlew bootRun
 ```
